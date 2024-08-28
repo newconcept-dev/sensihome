@@ -1,18 +1,23 @@
 <?php
-    /* Contraseña: {array1Fetch@True};
-    Usuario: u224160417_devsensi	 ;
-    base de datos: u224160417_sensihome //este es de prod
-    base de datos: sensihome // Este de pruebas osea local
-     */
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-    $host = 'localhost';
-    $user = 'u224160417_devsensi';
-    $password = '{array1Fetch@True}';
-    $db = 'sensihome';
+/* Contraseña: LcQQXN3:;
+Usuario: u224160417_devsensiprb;
+base de datos: u224160417_u224160417_prb
+ */
 
-    
+$host = 'localhost';
+$user = 'u224160417_devsensiprb';
+$password = 'LcQQXN3:';
+$db = 'u224160417_u224160417_prb';
 
-    
+$con = mysqli_connect($host, $user, $password, $db);
 
+if (!$con) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
+// Resto del código...
 ?>

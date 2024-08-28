@@ -68,7 +68,7 @@
             </div>
           </div>
           <!-- ./col -->
-          <div class="col-lg-3 col-6">
+          <div class="col-lg-3 col-6 ">
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
@@ -123,7 +123,7 @@
             <!-- /.card -->
 
             <!-- DIRECT CHAT -->
-            <div class="card direct-chat direct-chat-primary">
+            <div class="card direct-chat direct-chat-primary" style="display: none;"> <!-- Quiza deba quitar esto -->
               <div class="card-header">
                 <h3 class="card-title">Chat con usuario</h3>
 
@@ -329,7 +329,7 @@
               <div class="card-header">
                 <h3 class="card-title">
                   <i class="ion ion-clipboard mr-1"></i>
-                  To Do List
+                  Pendientes
                 </h3>
 
                 <div class="card-tools">
@@ -357,7 +357,7 @@
                       <label for="todoCheck1"></label>
                     </div>
                     <!-- todo text -->
-                    <span class="text">Design a nice theme</span>
+                    <span class="text">Migrar a AJAX</span>
                     <!-- Emphasis label -->
                     <small class="badge badge-danger"><i class="far fa-clock"></i> 2 mins</small>
                     <!-- General tools such as edit or delete-->
@@ -375,7 +375,7 @@
                       <input type="checkbox" value="" name="todo2" id="todoCheck2" checked>
                       <label for="todoCheck2"></label>
                     </div>
-                    <span class="text">Make the theme responsive</span>
+                    <span class="text">Tarea generica 1</span>
                     <small class="badge badge-info"><i class="far fa-clock"></i> 4 hours</small>
                     <div class="tools">
                       <i class="fas fa-edit"></i>
@@ -391,7 +391,7 @@
                       <input type="checkbox" value="" name="todo3" id="todoCheck3">
                       <label for="todoCheck3"></label>
                     </div>
-                    <span class="text">Let theme shine like a star</span>
+                    <span class="text">Tarea generica 2</span>
                     <small class="badge badge-warning"><i class="far fa-clock"></i> 1 day</small>
                     <div class="tools">
                       <i class="fas fa-edit"></i>
@@ -407,7 +407,7 @@
                       <input type="checkbox" value="" name="todo4" id="todoCheck4">
                       <label for="todoCheck4"></label>
                     </div>
-                    <span class="text">Let theme shine like a star</span>
+                    <span class="text">Tarea generica 3</span>
                     <small class="badge badge-success"><i class="far fa-clock"></i> 3 days</small>
                     <div class="tools">
                       <i class="fas fa-edit"></i>
@@ -423,7 +423,7 @@
                       <input type="checkbox" value="" name="todo5" id="todoCheck5">
                       <label for="todoCheck5"></label>
                     </div>
-                    <span class="text">Check your messages and notifications</span>
+                    <span class="text">Tarea generica 3</span>
                     <small class="badge badge-primary"><i class="far fa-clock"></i> 1 week</small>
                     <div class="tools">
                       <i class="fas fa-edit"></i>
@@ -439,7 +439,7 @@
                       <input type="checkbox" value="" name="todo6" id="todoCheck6">
                       <label for="todoCheck6"></label>
                     </div>
-                    <span class="text">Let theme shine like a star</span>
+                    <span class="text">Tarea generica 4</span>
                     <small class="badge badge-secondary"><i class="far fa-clock"></i> 1 month</small>
                     <div class="tools">
                       <i class="fas fa-edit"></i>
@@ -450,7 +450,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer clearfix">
-                <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add item</button>
+                <button type="button" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Agregar tarea</button>
               </div>
             </div>
             <!-- /.card -->
@@ -460,7 +460,7 @@
           <section class="col-lg-5 connectedSortable">
 
             <!-- Map card -->
-            <div class="card bg-gradient-primary">
+            <div class="card bg-gradient-primary" style="display: none;"> <!-- Ya no ocultarlo -->
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-map-marker-alt mr-1"></i>
@@ -509,7 +509,7 @@
               <div class="card-header border-0">
                 <h3 class="card-title">
                   <i class="fas fa-th mr-1"></i>
-                  Sales Graph
+                  Grafica de ventas
                 </h3>
 
                 <div class="card-tools">
@@ -561,7 +561,7 @@
 
                 <h3 class="card-title">
                   <i class="far fa-calendar-alt"></i>
-                  Calendar
+                  Calendario
                 </h3>
                 <!-- tools card -->
                 <div class="card-tools">

@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!-- Validar sesion -->
-   <?php
-    session_start();
-    if( !isset($_SESSION['id'])){
-      header("location: index.php");
-    }
-    
-    $modulo = $_REQUEST['modulo'] ?? '';
-    ?>
+  <!-- Validar que exista una sesion abierta  -->
+  <?php
+  session_start();
+  session_regenerate_id(true);
+
+  /* Validar que se le halla dado click en cerrar sesion */
+  if (isset($_REQUEST['sesion']) && $_REQUEST['sesion'] == 'cerrar') {
+      session_destroy();
+      header('Location: index.php');
+  }
+
+  if (!isset($_SESSION['id'])) {
+      header('Location: index.php');
+  }
+  $modulo = $_REQUEST['modulo']??'';
+
+
+  ?>
+
     
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sensi Home test</title>
+  <title>Sensi Home</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -35,6 +45,12 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -60,9 +76,12 @@
 
       <!-- Messages Dropdown Menu -->
       
-        <a class="nav-link" href="editarPerfil.php">
+        <a class="nav-link" href="panel.php?modulo=editarUsuario&id=<?php echo $_SESSION['id'];?>">
           <i class="far fa-user"></i>
-          
+        </a>
+
+        <a class="nav-link text-danger" href="panel.php?modulo=&sesion=cerrar" title="Cerrar Sesion">
+          <i class="fas fa-door-closed"></i>
         </a>
       
       <!-- Notifications Dropdown Menu -->
@@ -151,7 +170,7 @@
             </ul>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./panel.php?modulo=usuarios" class="nav-link <?php echo ($modulo=="usuarios")?"active":"inactive"; ?>">
+                <a href="./panel.php?modulo=usuarios" class="nav-link <?php echo ($modulo=="usuarios" ||$modulo=="crearUsuario" ||$modulo=="editarUsuario")?"active":"inactive"; ?>">
                   <i class="far fa-user nav-icon"></i>
                   <p>Usuarios</p>
                 </a>
@@ -184,6 +203,19 @@
   
   <!-- Aqui se generara el contenido de forma dinamica -->
    <?php 
+   if (isset($_REQUEST['mensaje'])) {
+       ?>
+      <div class="alert alert-primary alert-dismissible fade show float-right" role="alert">
+        <button type="button" class="close" data-dismiss="alert" arial-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close </span>
+        </button>
+
+        <?php echo $_REQUEST['mensaje']?>
+
+      </div>
+       <?php
+   }
 
    if ($modulo == 'estadisticas' || $modulo == '') {
        include_once 'estadisticas.php';
@@ -192,10 +224,20 @@
    } elseif ($modulo == 'productos') {
        include_once 'productos.php';
    } elseif ($modulo == 'ventas') {
-       include_once 'ventas.php';
-   } else {
+       include_once 'ventas.php';       
+   } elseif ($modulo == 'crearUsuario') {
+       include_once 'crearUsuario.php';
+   } elseif ($modulo == 'editarUsuario') {
+       include_once 'editarUsuario.php';
+    }
+     elseif ($modulo == 'productos') {
+       include_once 'productos.php';
+    }
+      else {
        include_once 'estadisticas.php';
    }
+   
+
     ?>
 
 </div>
@@ -232,8 +274,49 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+<!-- <script src="dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<script>
+  $(function () {
+
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function(){
+    $(".borrar").click(function(e) {
+      e.preventDefault();
+      var res = confirm("¿Estas seguro de borrar este registro?");
+      if (res) {
+        window.location.href = $(this).attr('href');
+      }
+    });
+  }); 
+</script>
+
 </body>
 </html>
