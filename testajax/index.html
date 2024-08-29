@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insercion con AJAX</title>
+</head>
+<body>
+    <button onclick="sendRequest()">
+        Enviando Peticiones AJAX
+    </button>
+
+    <h1 id="title"></h1>
+</body>
+
+
+<!-- <script> Escritura de la peticion AJAX con JavaScript puro este manda al servidor
+    function sendRequest(){
+        const theObject = new XMLHttpRequest();
+        theObject.open('POST', 'backend.php', true);
+        theObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Insertar cabecera de la peticion
+        theObject.onreadystatechange = function(){
+           document.getElementById('title').innerHTML = theObject.responseText;
+
+        }
+        theObject.send('username=Nube');
+
+    }
+</script> -->
+
+
+<!--  De esta forma es como se hace una peticion AJAX con JavaScript puro
+<script>
+    function sendRequest(){
+        const theObject = new XMLHttpRequest();
+        theObject.open('GET', 'backend.php', true);        
+        theObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); // Insertar cabecera de la peticion
+        theObject.onreadystatechange = function(){
+            if (theObject.readyState === 4 && theObject.status === 200) {
+                document.getElementById('title').innerHTML = theObject.responseText;
+            }
+        }
+        theObject.send();
+    }
+</script> -->
+</html>

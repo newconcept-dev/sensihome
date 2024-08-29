@@ -186,6 +186,14 @@
             </ul>
             <ul class="nav nav-treeview">
               <li class="nav-item">
+                <a href="./panel.php?modulo=agregarProductos" class="nav-link <?php echo ($modulo=="agregarProductos")?"active":"inactive"; ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Agregar productos</p>
+                </a>
+
+            </ul>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
                 <a href="./panel.php?modulo=ventas" class="nav-link <?php echo ($modulo=="ventas")?"active":"inactive"; ?>">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Ventas</p>
@@ -221,7 +229,11 @@
        include_once 'estadisticas.php';
    } elseif ($modulo == 'usuarios') {
        include_once 'usuarios.php';
-   } elseif ($modulo == 'productos') {
+   } elseif ($modulo == 'agregarProductos') {
+       include_once 'agregarProductos.php';
+   }
+   
+   elseif ($modulo == 'productos') {
        include_once 'productos.php';
    } elseif ($modulo == 'ventas') {
        include_once 'ventas.php';       
