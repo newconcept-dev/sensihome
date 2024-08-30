@@ -37,15 +37,24 @@
     descripcion: String
     tipo: pieza, juego, accesorio
     medidas son varias{
-        ancho: Number float
+        //cada tipo de mueble tiene medidas diferentes pero se basan en esto
         {
+            largo: Number float
+            largo_asiento : Number float
+            fondo: Number float
+            fondo_asiento: Number float
+            ancho_brazo: Number float
+            ancho_respaldo: Number float
+            altura: Number float
+            altura_casco: Number float
+            altura_brazo: Number float
+            altura_asiento: Number float
+            altura_pata: Number float
+            altura_respaldo: Number float
 
         }
-        alto: Number float
-        {
-
-        }
-        largo: Number float
+        
+ 
     }
     materiales: Array{
         madera: {
