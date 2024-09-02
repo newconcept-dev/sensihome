@@ -13,10 +13,10 @@
 </head>
 <body>
 
-    <div class="container">
+    <div class="container avatar__edit">
         <h1>
-            Admin
-            <small>Administrador</small>
+            Datos del Usuario
+            <small>Esqueletos</small>
         </h1>
 
         <div class="avatar-upload">
@@ -25,12 +25,33 @@
                 <label for="imageUpload"></label>
             </div>
 
-            <div class="avatar-preview">
-                <div id="imagePreview" style="background-image: url(https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1724976000&semt=ais_hybrid);">
+            <div class="avatar-preview" id="drop-area">
+                <div id="imagePreview" class="dropzone-desc">
+                    <i class="fa fa-user"></i>
+                    <p>Usuario</p>
+                </div>
+                <div class="loading-container" id="loadingContainer" style="display: none;">
+                    <div class="wave" id="wave"></div>
+                    <div class="percentage" id="percentage">0%</div>
+                    <div class="checkmark-container" id="checkmarkContainer" style="display: none;">
+                        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                            <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                        </svg>
+                    </div>
+                    <div class="error-container" id="errorContainer" style="display: none;">
+                        <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                            <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                            <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                            <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     <script src="./app.js"></script>
 </body>
