@@ -36,7 +36,17 @@ $con = mysqli_connect($host, $user, $password, $db);
 
 ?>
 
+
 <div class="content-wrapper">
+    <!--  -->
+
+    <link rel="stylesheet" href="../inputs-files.css">
+    
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    
+    
+
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <div class="container-fluid">
@@ -59,6 +69,11 @@ $con = mysqli_connect($host, $user, $password, $db);
               <!-- /.card-header -->
               <div class="card-body">
                 <form action="panel.php?modulo=editarUsuario" method="post">
+                    <div class="form-group">
+                    <div class="container" id="avatar-edit-sg-1" data-width="80%" data-height="50vh" data-icon="fa-user" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Usuario" data-border-radius="15px"></div>
+                      
+                    </div>
+                
                     <div class="form-group">
                         <label>Email</label>
                         <input type="email" name="email" class="form-control" value="<?php echo $row['email'] ?>" required="required">
@@ -92,4 +107,10 @@ $con = mysqli_connect($host, $user, $password, $db);
       <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <script src="../inputs-files.js"></script>
   </div>
+
+
+
+  

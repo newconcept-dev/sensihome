@@ -4,34 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Esto se debe importar en cada lugar que se use -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="./inputs-files.css">
 
+    <!-- Esto tambien pero al final de archivo
+    <script src="./inputs-files.js"></script> 
+    -->
+    
     <title>Prueba de tipos de inputs</title>
 </head>
 <body>
+    <div class="container" id="avatar-edit-sg-1" data-width="192" data-height="192" data-icon="fa-user" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Usuario" data-border-radius="50%"></div>
+    <div class="container" id="avatar-edit-sg-2" data-width="192" data-height="192" data-icon="fa-user" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Usuario" data-border-radius="50%"></div>
+    <div class="container" id="avatar-edit-sg-3" data-width="192" data-height="192" data-icon="fa-user" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Usuario" data-border-radius="50%"></div>
+    
+    <div class="container" id="upload-product-img-sg-2" data-width="350" data-height="350" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
+    <div class="container" id="upload-file-sg" data-width="250" data-height="250" data-icon="fa-file" data-accept=".pdf, .doc, .docx, .xls, .xlsx" data-valid-types="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-text="Archivo" data-border-radius="5px"></div>
+    <div class="container" id="upload-video-sg" data-width="350" data-height="350" data-icon="fa-video-camera" data-accept=".mp4, .avi, .mov" data-valid-types="video/mp4, video/x-msvideo, video/quicktime" data-text="Video" data-border-radius="20px"></div>
+    <div class="container" id="upload-doc-sg" data-width="250" data-height="250" data-icon="fa-file-text" data-accept=".pdf, .doc, .docx" data-valid-types="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" data-text="Documento" data-border-radius="15px"></div> 
+    <!-- Add more containers as needed -->
 
-    <div class="container" id="avatar-edit-sg">
-        <!-- The ImageUploader component will be rendered here -->
-    </div>
-
-
-    <div class="container" id="upload-product-img-sg">
-        <!-- Another instance of the ImageUploader component will be rendered here -->
-    </div>
-
-    <div class="container" id="upload-file-sg">
-        <!-- Another instance of the ImageUploader component will be rendered here -->
-    </div>
-
-    <div class="container" id="upload-video-sg">
-        <!-- Another instance of the ImageUploader component will be rendered here -->
-    </div>
-
-    <div class="container" id="upload-doc-sg">
-        <!-- Another instance of the ImageUploader component will be rendered here -->
+    <div style="display: grid;
+                grid-template-columns: .5fr .5fr .5fr;">
+        <div class="container" id="upload-product-img-sg-1" data-width="350" data-height="350" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
+        <div class="container" id="upload-product-img-sg-1" data-width="350" data-height="350" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
+        <div class="container" id="upload-product-img-sg-1" data-width="350" data-height="350" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
     </div>
 
     <script src="./inputs-files.js"></script>

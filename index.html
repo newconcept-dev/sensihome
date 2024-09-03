@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./estilo.css">
+    <title>Sensi home</title>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <img class="logo" src="./logo.gif" alt="">
+        </div>
+        <div>
+            <h1 class="type">Descuentos patrios</h1>
+        </div>
+        <div class="social-menu" id="socialMenu">
+            <ul>
+                <li class="icon-1"><a href="" target="blank"><i class="fab fa-instagram"></i></a></li>
+                <li class="icon-2"><a href="" target="blank"><i class="fab fa-whatsapp"></i></a></li>
+                <li class="icon-3"><a href="https://wa.me/3338143022" target="blank"><i class="fab fa-facebook"></i></a></li>
+            </ul>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/66aa7c98b3.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socialMenu = document.getElementById('socialMenu');
+            socialMenu.style.display = 'none'; // Ocultar inicialmente
+
+            // Esperar a que termine la animación del texto
+            setTimeout(() => {
+                // trigger confetti
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                // Mostrar el menú social después de la animación de confetti
+                setTimeout(() => {
+                    socialMenu.style.display = 'flex';
+                }, 1000); // Duración de la animación de confetti
+            }, 2000); // Duración de la animación del texto (ajustar según sea necesario)
+        });
+    </script>
+</body>
+</html>
