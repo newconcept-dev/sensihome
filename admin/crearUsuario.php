@@ -93,31 +93,50 @@ if (isset($_REQUEST['guardar'])) {
                   <input type="text" name="apellido_materno" class="form-control" required="required">
                 </div>
 
+                <!-- Telefono -->
                 <div class="form-group">
                   <label>Telefono</label>
-                  <input type="number" name="telefono" class="form-control" required="required">
+
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                    </div>
+                    <input type="text" name="telefono" class="form-control" required="required" data-inputmask='"mask": "(99) 99-99-99-99"' data-mask>
+                  </div>
 
                 </div>
-
+          
+                <!-- 
+                Ponerle el icono de correo a este input
                 <div class="form-group">
                   <label>Email</label>
                   <input type="email" name="email" class="form-control" required="required">
-                </div>
+                </div> -->
 
                 <div class="form-group">
-                  <label>Asignar contraseña</label>
+                  <label>Email</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                    </div>
+                    <input type="email" name="email" class="form-control" required="required">
+                  </div>
+                </div> <!-- Cierre del div del grupo de entrada de correo electrónico -->
+                
+                <div class="form-group">
+                  <label>Contraseña</label>
                   <input type="password" id="password" name="pass" class="form-control">
-  
+                
                   <label>Repetir contraseña</label>
                   <input type="password" id="confirm_password" name="confirm_pass" class="form-control" disabled style="background-color: #e9ecef;">
-  
+                
                   <div class="progress mt-2" style="height: 5px;">
                     <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>                    
                   </div>
                   <div>
-                    <small id="passwordHelpBlock1" class="form-text text-muted" style="color: #dc3545;"></small>
-                    <small id="passwordHelpBlock2" class="form-text text-muted" style="color: #dc3545;"></small>
-                    <small id="passwordHelpBlock3" class="form-text text-muted" style="color: #dc3545;"></small>
+                    <small id="passwordHelpBlock1" class="form-text text-muted"></small>
+                    <small id="passwordHelpBlock2" class="form-text text-muted"></small>
+                    <small id="passwordHelpBlock3" class="form-text text-muted"></small>
                     <div id="feedback" class="mt-2"></div>
                   </div>
                 </div>

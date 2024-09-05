@@ -38,9 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 progressBar.className = 'progress-bar';
                 feedback.textContent = '';
                 input.dataset.fortaleza = '';
-                helpBlock1.style.color = '#dc3545';
-                helpBlock2.style.color = '#dc3545';
-                helpBlock3.style.color = '#dc3545';
                 helpBlock1.style.display = 'block';
                 helpBlock2.style.display = 'block';
                 helpBlock3.style.display = 'block';
@@ -84,12 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
             feedback.textContent = feedbackText;
             feedback.style.color = colorClase === 'bg-danger' ? '#dc3545' : colorClase === 'bg-warning' ? '#ffc107' : '#28a745';
 
-            // Actualizar colores de los textos de ayuda
-            const helpColor = colorClase === 'bg-danger' ? '#dc3545' : colorClase === 'bg-warning' ? '#ffc107' : '#28a745';
-            helpBlock1.style.color = helpColor;
-            helpBlock2.style.color = helpColor;
-            helpBlock3.style.color = helpColor;
-
             // Mostrar u ocultar los textos de ayuda según la fortaleza de la contraseña
             helpBlock1.style.display = value.length >= minLength && value.length <= maxLength ? 'none' : 'block';
             helpBlock2.style.display = /[^A-Za-z0-9]/.test(value) ? 'none' : 'block';
@@ -107,13 +98,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (inputElement1.value === inputElement2.value) {
                         inputElement1.style.borderColor = 'green';
                         inputElement2.style.borderColor = 'green';
+                        return true;
                     } else {
                         inputElement1.style.borderColor = 'red';
                         inputElement2.style.borderColor = 'red';
+                        return false;
                     }
                 } else {
                     inputElement1.style.borderColor = '';
                     inputElement2.style.borderColor = '';
+                    return false;
                 }
             }
 
@@ -138,15 +132,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const isPasswordWeak = passwordInput.dataset.fortaleza === 'debil';
         const doPasswordsMatch = checkPasswordEquality();
 
-        if (isPasswordWeak && !doPasswordsMatch) {
+        if (isPasswordWeak || !doPasswordsMatch) {
             event.preventDefault();
-            alert('La contraseña es débil y las contraseñas no coinciden. Por favor, elige una contraseña más segura y asegúrate de que ambas contraseñas coincidan.');
-        } else if (isPasswordWeak) {
-            event.preventDefault();
-            alert('La contraseña es débil. Por favor, elige una contraseña más segura.');
-        } else if (!doPasswordsMatch) {
-            event.preventDefault();
-            alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo de nuevo.');
+            if (isPasswordWeak) {
+                alert('La contraseña es débil. Por favor, elige una contraseña más segura.');
+            }
+            if (!doPasswordsMatch) {
+                alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo de nuevo.');
+            }
         }
     });
 });
