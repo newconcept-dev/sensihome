@@ -25,6 +25,8 @@
         }        
     }
 ?>
+<link rel="stylesheet" href="../inputs-files.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -49,18 +51,28 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <form action="panel.php?modulo=crearUsuario" method="post">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control" required="required">
+                    
+                <div class="form-group">
+                      <div class="text-center">
+                      <h2>Asignar cargo</h2>
+                      <label><?php echo $cargo_nombre; ?></label>
+                      </div>
+                    
+                      <div class="container" id="avatar-edit-sg-2" data-width="192" data-height="192" data-icon="fa-user" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Usuario" data-border-radius="50%"></div>
+                    
+                    <div class="container text-center">
+                      <p><?php echo $nombre_completo ?></p>
+                    </div>                                    
                     </div>
+
                     <div class="form-group">
-                        <label>Contraseña</label>
-                        <input type="password" name="pass" class="form-control" required="required">
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" class="form-control"  required="required">
                     </div>
-                    <div class="form-group">
-                        <label>Nombre</label>
-                        <input type="text" name="nombre" class="form-control" required="required">
-                    </div>
+
+
+
+
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary" name="guardar">Agregar</button>
                     </div>
@@ -81,4 +93,6 @@
       <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+    <script src="../inputs-files.js"></script>
+    <script src="./middleware/ocultar.editcheck.js"></script>
   </div>

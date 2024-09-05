@@ -25,12 +25,12 @@
       <p class="login-box-msg">Inicia sesion</p>
 
       <?php 
-if(isset($_REQUEST['login'])){
+if(isset($_POST['login'])){
 
     /* Inicializar variable de sesion */
     session_start();
-    $email = $_REQUEST['email'] ??'';
-    $pass = $_REQUEST['pass'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $pass = $_POST['pass'] ?? '';
     $pass = md5($pass);
 
     include_once 'db.php';
@@ -68,7 +68,7 @@ if(isset($_REQUEST['login'])){
 
       <form method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="email">
+          <input type="email" class="form-control" placeholder="Email" name="email" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -76,7 +76,7 @@ if(isset($_REQUEST['login'])){
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="pass">
+          <input type="password" class="form-control" placeholder="Password" name="pass" required>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -84,7 +84,6 @@ if(isset($_REQUEST['login'])){
           </div>
         </div>
         <div class="row">
-          
           <!-- /.col -->
           <div class="col-4">
             <button type="submit" class="btn btn-primary btn-block" name="login">Ingresar</button>

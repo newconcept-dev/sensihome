@@ -9,8 +9,8 @@ base de datos: u224160417_u224160417_prb
  */
 
 $host = 'localhost';
-$user = 'u224160417_devsensiprb';
-$password = 'LcQQXN3:';
+$user = 'root';
+$password = '';
 $db = 'u224160417_u224160417_prb';
 
 $con = mysqli_connect($host, $user, $password, $db);
@@ -18,6 +18,8 @@ $con = mysqli_connect($host, $user, $password, $db);
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
+
+
 
 // Resto del código...
 ?>
