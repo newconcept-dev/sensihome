@@ -1,0 +1,236 @@
+.avatar-upload {
+    position: relative;
+    margin: 50px auto;
+    max-width: 100%;
+  }
+  
+  .avatar-upload .avatar-preview {
+    position: relative; /* Asegura que los elementos hijos con posición absoluta se posicionen en relación a este contenedor */
+    border-radius: 100%;
+    border: 4px dashed #cccccc5b;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.075);
+    overflow: hidden; /* Ensure the fill animation does not overflow */
+  }
+  
+  .avatar-upload .avatar-preview > div {
+    width: 100%;
+    height: 100%;
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .avatar-upload .avatar-edit {
+    position: absolute; /* Cambiado de relative a absolute */
+    right: 0; /* Posiciona el contenedor al borde derecho */
+    top: 0; /* Posiciona el contenedor al borde superior */
+    z-index: 1;
+  }
+  
+  .avatar-upload .avatar-edit input {
+    display: none;
+  }
+  
+  .avatar-upload .avatar-edit input + label {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 0;
+    border-radius: 100%;
+    background: #FFFFFF;
+    border: 1px solid transparent;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+    font-weight: normal;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .avatar-upload .avatar-edit input + label:hover {
+    background: #f1f1f1;
+    border-color: #d6d6d6;
+  }
+  
+  .avatar-upload .avatar-edit input + label:after {
+    content: "\f040";
+    font-family: 'FontAwesome';
+    color: #757575;
+    position: relative;
+    text-align: center;
+    margin: auto;
+    left: 10px;
+  }
+  
+  #drop-area {
+    border: 2px dashed #ccc;
+    border-radius: 100%;
+    padding: 0px;
+    text-align: center;
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+  
+  #drop-area.loaded {
+    border: 2px dashed #ccc;
+    box-shadow: 0px 0px 10px 2px rgba(7, 7, 7, 0.482);
+  }
+  
+  #drop-area.loaded.non-image {
+    background-color: rgba(67, 255, 10, 0.2);
+  }
+  
+  #drop-area.error {
+    border-color: red;
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  
+  .dropzone-desc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #ccc;
+    transition: color 0.3s;
+  }
+  
+  .dropzone-desc i {
+    font-size: 48px;
+    margin-bottom: 10px;
+  }
+  
+  .dropzone-desc.error {
+    color: red;
+  }
+  
+  .loading-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .water-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: rgba(66, 209, 30, 0.501);
+    border-radius: inherit;
+    animation: fillWater 2s forwards;
+    overflow: hidden;
+  }
+  
+  .water-fill::before {
+    content: '';
+    position: absolute;
+    top: -20px; /* Adjust this value to control the wave height */
+    left: 0;
+    width: 200%;
+    height: 40px; /* Adjust this value to control the wave height */
+    background: url('https://i.imgur.com/uFpLbYt.png') repeat-x;
+    background-size: 200px 40px; /* Adjust this value to control the wave height */
+    animation: wave-animation 1s infinite linear;
+  }
+  
+  @keyframes fillWater {
+    to {
+      height: 100%;
+    }
+  }
+  
+  @keyframes wave-animation {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-200px);
+    }
+  }
+  
+  .error-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .error-mark {
+    width: 40px;
+    height: 40px;
+    display: block;
+    stroke-width: 4;  
+    stroke: #ffffff;
+    filter: invert(100%);
+    stroke-miterlimit: 10;
+    margin: 10px auto;
+  }
+  
+  .error-mark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #ffffff;
+    filter: invert(100%);
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+  }
+  
+  .error-mark__line {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #020202;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards 0.2s;
+  }
+  
+  @keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+  }
+  
+  .success {
+    color: white;
+  }
+  
+  .check-view {
+    filter: brightness(2);
+  }
+  
+  /* Estilos para el estado de arrastre */
+  .avatar-preview.drop-zone--over {
+    border: 4px dashed #40f00bf1; /* Cambiar el borde a verde */
+  }
+  
+  .dropzone-desc.drop-zone--over i {
+    color: #40f00bf1; /* Cambiar el color del icono a verde */
+  }
+  
+  /* Estilos para el estado de error */
+  .avatar-preview.drop-zone--error {
+    border: 4px dashed red; /* Cambiar el borde a rojo */
+  }
+  
+  .dropzone-desc.drop-zone--error i {
+    color: red; /* Cambiar el color del icono a rojo */
+  }
+  
+  .container {
+    /* Trancion pero con el filter drop shadow */
+    transition: filter 0.3s;
+  }
+  
+  .container.image-uploaded {
+    /* Sombra para que parezca que levita el contenedor */
+    filter: drop-shadow(0px 0px 10px 2px rgba(7, 7, 7, 0.482));
+  }
