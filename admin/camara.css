@@ -1,0 +1,24 @@
+@media (max-width: 576px) {
+    .modal-dialog {
+      height: 90%;
+      margin: 0;
+    }
+    .modal-content {
+      height: 90%;
+      width: 90%;
+      margin: 0 auto;
+      border-radius: 20px;
+    }
+    .modal-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+    }
+    .video-container {
+      height: calc(90vh - 120px); /* Ajusta el valor según el tamaño de tu header y footer */
+    }
+    #video {
+      height: 90%;
+    }
+  }
+
+  

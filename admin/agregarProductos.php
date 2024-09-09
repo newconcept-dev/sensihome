@@ -1,828 +1,390 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-</head>
-<body class="hold-transition sidebar-mini">
-<div class="wrapper">
+<link rel="stylesheet" href="../inputs-files.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
 
-
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Formularios Sensi</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Advanced Form</li>
-            </ol>
-          </div>
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Agregar producto</h1>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Select2 (Default Theme)</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Minimal</label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label>Disabled</label>
-                  <select class="form-control select2" disabled="disabled" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Multiple</label>
-                  <select class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
-                    <option>Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label>Disabled Result</label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option disabled="disabled">California (disabled)</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-
-            <h5>Custom Color Variants</h5>
-            <div class="row">
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label>Minimal (.select2-danger)</label>
-                  <select class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-12 col-sm-6">
-                <div class="form-group">
-                  <label>Multiple (.select2-purple)</label>
-                  <div class="select2-purple">
-                    <select class="select2" multiple="multiple" data-placeholder="Select a State" data-dropdown-css-class="select2-purple" style="width: 100%;">
-                      <option>Alabama</option>
-                      <option>Alaska</option>
-                      <option>California</option>
-                      <option>Delaware</option>
-                      <option>Tennessee</option>
-                      <option>Texas</option>
-                      <option>Washington</option>
-                    </select>
-                  </div>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
-          </div>
-        </div>
-        <!-- /.card -->
-
-        <!-- SELECT2 EXAMPLE -->
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Select2 (Bootstrap4 Theme)</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Minimal</label>
-                  <select class="form-control select2bs4" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label>Disabled</label>
-                  <select class="form-control select2bs4" disabled="disabled" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label>Multiple</label>
-                  <select class="select2bs4" multiple="multiple" data-placeholder="Select a State"
-                          style="width: 100%;">
-                    <option>Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-                <div class="form-group">
-                  <label>Disabled Result</label>
-                  <select class="form-control select2bs4" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option disabled="disabled">California (disabled)</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-            the plugin.
-          </div>
-        </div>
-        <!-- /.card -->
-
-        <div class="card card-default">
-          <div class="card-header">
-            <h3 class="card-title">Bootstrap Duallistbox</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="form-group">
-                  <label>Multiple</label>
-                  <select class="duallistbox" multiple="multiple">
-                    <option selected>Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
-                  </select>
-                </div>
-                <!-- /.form-group -->
-              </div>
-              <!-- /.col -->
-            </div>
-            <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer">
-            Visit <a href="https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox#readme">Bootstrap Duallistbox</a> for more examples and information about
-            the plugin.
-          </div>
-        </div>
-        <!-- /.card -->
-
-        <div class="row">
-          <div class="col-md-6">
-
-            <div class="card card-danger">
-              <div class="card-header">
-                <h3 class="card-title">Input masks</h3>
-              </div>
-              <div class="card-body">
-                <!-- Date dd/mm/yyyy -->
-                <div class="form-group">
-                  <label>Date masks:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                    </div>
-                    <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- Date mm/dd/yyyy -->
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
-                    </div>
-                    <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="mm/dd/yyyy" data-mask>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- phone mask -->
-                <div class="form-group">
-                  <label>US phone mask:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                    </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- phone mask -->
-                <div class="form-group">
-                  <label>Intl US phone mask:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                    </div>
-                    <input type="text" class="form-control"
-                           data-inputmask="'mask': ['999-999-9999 [x99999]', '+099 99 99 9999[9]-9999']" data-mask>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- IP mask -->
-                <div class="form-group">
-                  <label>IP mask:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-laptop"></i></span>
-                    </div>
-                    <input type="text" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-            <div class="card card-info">
-              <div class="card-header">
-                <h3 class="card-title">Color & Time Picker</h3>
-              </div>
-              <div class="card-body">
-                <!-- Color Picker -->
-                <div class="form-group">
-                  <label>Color picker:</label>
-                  <input type="text" class="form-control my-colorpicker1">
-                </div>
-                <!-- /.form group -->
-
-                <!-- Color Picker -->
-                <div class="form-group">
-                  <label>Color picker with addon:</label>
-
-                  <div class="input-group my-colorpicker2">
-                    <input type="text" class="form-control">
-
-                    <div class="input-group-append">
-                      <span class="input-group-text"><i class="fas fa-square"></i></span>
-                    </div>
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- time Picker -->
-                <div class="bootstrap-timepicker">
-                  <div class="form-group">
-                    <label>Time picker:</label>
-
-                    <div class="input-group date" id="timepicker" data-target-input="nearest">
-                      <input type="text" class="form-control datetimepicker-input" data-target="#timepicker"/>
-                      <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="far fa-clock"></i></div>
-                      </div>
-                      </div>
-                    <!-- /.input group -->
-                  </div>
-                  <!-- /.form group -->
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-          </div>
-          <!-- /.col (left) -->
-          <div class="col-md-6">
-            <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Date picker</h3>
-              </div>
-              <div class="card-body">
-                <!-- Date -->
-                <div class="form-group">
-                  <label>Date:</label>
-                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdate"/>
-                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Date and time -->
-                <div class="form-group">
-                  <label>Date and time:</label>
-                    <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                        <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime"/>
-                        <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
-                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /.form group -->
-                <!-- Date range -->
-                <div class="form-group">
-                  <label>Date range:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                      </span>
-                    </div>
-                    <input type="text" class="form-control float-right" id="reservation">
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- Date and time range -->
-                <div class="form-group">
-                  <label>Date and time range:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="far fa-clock"></i></span>
-                    </div>
-                    <input type="text" class="form-control float-right" id="reservationtime">
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-
-                <!-- Date and time range -->
-                <div class="form-group">
-                  <label>Date range button:</label>
-
-                  <div class="input-group">
-                    <button type="button" class="btn btn-default float-right" id="daterange-btn">
-                      <i class="far fa-calendar-alt"></i> Date range picker
-                      <i class="fas fa-caret-down"></i>
-                    </button>
-                  </div>
-                </div>
-                <!-- /.form group -->
-              </div>
-                <div class="card-footer">
-                  Visit <a href="https://getdatepicker.com/5-4/">tempusdominus </a> for more examples and information about
-                  the plugin.
-                </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-            <!-- iCheck -->
-            <div class="card card-success">
-              <div class="card-header">
-                <h3 class="card-title">iCheck Bootstrap - Checkbox &amp; Radio Inputs</h3>
-              </div>
-              <div class="card-body">
-                <!-- Minimal style -->
-                <div class="row">
-                  <div class="col-sm-6">
-                    <!-- checkbox -->
-                    <div class="form-group clearfix">
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary1" checked>
-                        <label for="checkboxPrimary1">
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary2">
-                        <label for="checkboxPrimary2">
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="checkbox" id="checkboxPrimary3" disabled>
-                        <label for="checkboxPrimary3">
-                          Primary checkbox
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <!-- radio -->
-                    <div class="form-group clearfix">
-                      <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary1" name="r1" checked>
-                        <label for="radioPrimary1">
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary2" name="r1">
-                        <label for="radioPrimary2">
-                        </label>
-                      </div>
-                      <div class="icheck-primary d-inline">
-                        <input type="radio" id="radioPrimary3" name="r1" disabled>
-                        <label for="radioPrimary3">
-                          Primary radio
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Minimal red style -->
-                <div class="row">
-                  <div class="col-sm-6">
-                    <!-- checkbox -->
-                    <div class="form-group clearfix">
-                      <div class="icheck-danger d-inline">
-                        <input type="checkbox" checked id="checkboxDanger1">
-                        <label for="checkboxDanger1">
-                        </label>
-                      </div>
-                      <div class="icheck-danger d-inline">
-                        <input type="checkbox" id="checkboxDanger2">
-                        <label for="checkboxDanger2">
-                        </label>
-                      </div>
-                      <div class="icheck-danger d-inline">
-                        <input type="checkbox" disabled id="checkboxDanger3">
-                        <label for="checkboxDanger3">
-                          Danger checkbox
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <!-- radio -->
-                    <div class="form-group clearfix">
-                      <div class="icheck-danger d-inline">
-                        <input type="radio" name="r2" checked id="radioDanger1">
-                        <label for="radioDanger1">
-                        </label>
-                      </div>
-                      <div class="icheck-danger d-inline">
-                        <input type="radio" name="r2" id="radioDanger2">
-                        <label for="radioDanger2">
-                        </label>
-                      </div>
-                      <div class="icheck-danger d-inline">
-                        <input type="radio" name="r2" disabled id="radioDanger3">
-                        <label for="radioDanger3">
-                          Danger radio
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <!-- Minimal red style -->
-                <div class="row">
-                  <div class="col-sm-6">
-                    <!-- checkbox -->
-                    <div class="form-group clearfix">
-                      <div class="icheck-success d-inline">
-                        <input type="checkbox" checked id="checkboxSuccess1">
-                        <label for="checkboxSuccess1">
-                        </label>
-                      </div>
-                      <div class="icheck-success d-inline">
-                        <input type="checkbox" id="checkboxSuccess2">
-                        <label for="checkboxSuccess2">
-                        </label>
-                      </div>
-                      <div class="icheck-success d-inline">
-                        <input type="checkbox" disabled id="checkboxSuccess3">
-                        <label for="checkboxSuccess3">
-                          Success checkbox
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-sm-6">
-                    <!-- radio -->
-                    <div class="form-group clearfix">
-                      <div class="icheck-success d-inline">
-                        <input type="radio" name="r3" checked id="radioSuccess1">
-                        <label for="radioSuccess1">
-                        </label>
-                      </div>
-                      <div class="icheck-success d-inline">
-                        <input type="radio" name="r3" id="radioSuccess2">
-                        <label for="radioSuccess2">
-                        </label>
-                      </div>
-                      <div class="icheck-success d-inline">
-                        <input type="radio" name="r3" disabled id="radioSuccess3">
-                        <label for="radioSuccess3">
-                          Success radio
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                Many more skins available. <a href="https://bantikyan.github.io/icheck-bootstrap/">Documentation</a>
-              </div>
-            </div>
-            <!-- /.card -->
-
-            <!-- Bootstrap Switch -->
-            <div class="card card-secondary">
-              <div class="card-header">
-                <h3 class="card-title">Bootstrap Switch</h3>
-              </div>
-              <div class="card-body">
-                <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch>
-                <input type="checkbox" name="my-checkbox" checked data-bootstrap-switch data-off-color="danger" data-on-color="success">
-              </div>
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col (right) -->
-        </div>
-        <!-- /.row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">bs-stepper</h3>
-              </div>
-              <div class="card-body p-0">
-                <div class="bs-stepper">
-                  <div class="bs-stepper-header" role="tablist">
-                    <!-- your steps here -->
-                    <div class="step" data-target="#logins-part">
-                      <button type="button" class="step-trigger" role="tab" aria-controls="logins-part" id="logins-part-trigger">
-                        <span class="bs-stepper-circle">1</span>
-                        <span class="bs-stepper-label">Logins</span>
-                      </button>
-                    </div>
-                    <div class="line"></div>
-                    <div class="step" data-target="#information-part">
-                      <button type="button" class="step-trigger" role="tab" aria-controls="information-part" id="information-part-trigger">
-                        <span class="bs-stepper-circle">2</span>
-                        <span class="bs-stepper-label">Various information</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="bs-stepper-content">
-                    <!-- your steps content here -->
-                    <div id="logins-part" class="content" role="tabpanel" aria-labelledby="logins-part-trigger">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                      </div>
-                      <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                      </div>
-                      <button class="btn btn-primary" onclick="stepper.next()">Next</button>
-                    </div>
-                    <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger">
-                      <div class="form-group">
-                        <label for="exampleInputFile">File input</label>
-                        <div class="input-group">
-                          <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="exampleInputFile">
-                            <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                          </div>
-                          <div class="input-group-append">
-                            <span class="input-group-text">Upload</span>
-                          </div>
-                        </div>
-                      </div>
-                      <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                Visit <a href="https://github.com/Johann-S/bs-stepper/#how-to-use-it">bs-stepper documentation</a> for more examples and information about the plugin.
-              </div>
-            </div>
-            <!-- /.card -->
-          </div>
-        </div>
-        <!-- /.row -->
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-default">
-              <div class="card-header">
-                <h3 class="card-title">Dropzone.js <small><em>jQuery File Upload</em> like look</small></h3>
-              </div>
-              <div class="card-body">
-                <div id="actions" class="row">
-                  <div class="col-lg-6">
-                    <div class="btn-group w-100">
-                      <span class="btn btn-success col fileinput-button">
-                        <i class="fas fa-plus"></i>
-                        <span>Add files</span>
-                      </span>
-                      <button type="submit" class="btn btn-primary col start">
-                        <i class="fas fa-upload"></i>
-                        <span>Start upload</span>
-                      </button>
-                      <button type="reset" class="btn btn-warning col cancel">
-                        <i class="fas fa-times-circle"></i>
-                        <span>Cancel upload</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="col-lg-6 d-flex align-items-center">
-                    <div class="fileupload-process w-100">
-                      <div id="total-progress" class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="table table-striped files" id="previews">
-                  <div id="template" class="row mt-2">
-                    <div class="col-auto">
-                        <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                    </div>
-                    <div class="col d-flex align-items-center">
-                        <p class="mb-0">
-                          <span class="lead" data-dz-name></span>
-                          (<span data-dz-size></span>)
-                        </p>
-                        <strong class="error text-danger" data-dz-errormessage></strong>
-                    </div>
-                    <div class="col-4 d-flex align-items-center">
-                        <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                          <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                        </div>
-                    </div>
-                    <div class="col-auto d-flex align-items-center">
-                      <div class="btn-group">
-                        <button class="btn btn-primary start">
-                          <i class="fas fa-upload"></i>
-                          <span>Start</span>
-                        </button>
-                        <button data-dz-remove class="btn btn-warning cancel">
-                          <i class="fas fa-times-circle"></i>
-                          <span>Cancel</span>
-                        </button>
-                        <button data-dz-remove class="btn btn-danger delete">
-                          <i class="fas fa-trash"></i>
-                          <span>Delete</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- /.card-body -->
-              <div class="card-footer">
-                Visit <a href="https://www.dropzonejs.com">dropzone.js documentation</a> for more examples and information about the plugin.
-              </div>
-            </div>
-            <!-- /.card -->
-          </div>
-        </div>
-        <!-- /.row -->
       </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <!-- /.card-header -->
+            <div class="card-body">
+              <form id="formValidated" action="panel.php?modulo=crearUsuario" method="post">
+                <div class="row ">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <div class="">
+                        <h2>Información del producto</h2>
+                      </div>
+                      <div class="container" id="upload-product-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
+                    </div>
+
+                    <div class="form-group">
+                      <div id="category-input-main">
+                        <label>Categoria</label>
+                        <select name="cargo_id" class="form-control" required>
+                          <option value="" selected disabled>Selecciona el tipo de producto</option>
+                          <option value="1">Opción 1</option>
+                          <option value="2">Opción 2</option>
+                          <option value="3">Opción 3</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group d-flex align-items-center">
+                        <small class="toggle-color">¿Desea añadir otra categoria?</small>
+                        <input type="checkbox" id="hidden-category" name="hidden-category" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+                      </div>
+
+                      <div id="category-container">
+                        <div class="form-group">
+                          <label>Nombre de la categoria</label>
+                          <input type="text" name="nombre" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Darle promoción a este producto</label>
+                      <div><input type="checkbox" name="my-checkbox" unchecked data-bootstrap-switch></div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>En venta</label>
+                      <div><input type="checkbox" name="my-checkbox" unchecked data-bootstrap-switch></div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Descripción</label>
+                      <textarea name="descripcion" class="form-control" required="required"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <div id="type-input-main">
+                        <label>Tipo de producto</label>
+                        <select class="form-control">
+                          <option value="" selected disabled>Selecciona el tipo de producto</option>
+                          <option value="1">v1</option>
+                          <option value="2">v2</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group d-flex align-items-center">
+                        <small class="label-type-product">¿Desea añadir otro tipo de producto?</small>
+                        <input type="checkbox" id="hidden-type-product" name="hidden-type-product" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+                      </div>
+
+                      <div id="type-product-container" style="display: none;">
+                        <div class="form-group">
+                          <label>Nombre del tipo de producto</label>
+                          <input type="text" name="nombre" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Color</label>
+                      <div id="color-select-main">
+                        <div class="input-group">
+                          <select class="form-control">
+                            <option value="" selected disabled>Selecciona el tipo de medida</option>
+                            <option value="1">v1</option>
+                            <option value="2">v2</option>
+                          </select>
+                          <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-square"></i></span>
+                          </div>
+                        </div>
+
+                        <div class="form-group d-flex align-items-center">
+                          <small class="label-color-select">¿Desea añadir otra color?</small>
+                          <input type="checkbox" id="hidden-color-select" name="hidden-color-select" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+                        </div>
+
+                        <div id="color-container">
+                          <div class="form-group">
+                            <label>Color nuevo</label>
+                            <input type="text" name="nombre" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Medidas</label>
+                      <input type="checkbox" id="measures-inputs" name="measures-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+
+                      <!-- Contenedor para los inputs -->
+                      <div id="medidas-container">
+                        <!-- Largos -->
+                        <div class="form-group">
+                          <label>Largo</label>
+                          <div class="input-group">
+                            <input type="number" name="largo" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Largo asiento</label>
+                          <div class="input-group">
+                            <input type="number" name="largo-asiento" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Fondo</label>
+                          <div class="input-group">
+                            <input type="number" name="fondo" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Fondo del asiento</label>
+                          <div class="input-group">
+                            <input type="number" name="fondo-asiento" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Ancho del Brazo</label>
+                          <div class="input-group">
+                            <input type="number" name="ancho-brazo" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Ancho del respaldo</label>
+                          <div class="input-group">
+                            <input type="number" name="ancho-respaldo" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Altura</label>
+                          <div class="input-group">
+                            <input type="number" name="altura" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Altura al casco</label>
+                          <div class="input-group">
+                            <input type="number" name="altura-casco" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Altura al brazo</label>
+                          <div class="input-group">
+                            <input type="number" name="altura-brazo" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Altura al asiento</label>
+                          <div class="input-group">
+                            <input type="number" name="altura-asiento" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Altura a la pata</label>
+                          <div class="input-group">
+                            <input type="number" name="altura-casco" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label>Altura al respaldo</label>
+                          <div class="input-group">
+                            <input type="number" name="altura-respaldo" class="form-control input-change">
+                            <div class="input-group-append">
+                              <span class="input-group-text">
+                                <small class="mr-2">Cm</small>
+                                <i class="fas fa-ruler icon-color-change"></i>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Peso</label>
+                      <input type="number" name="alto" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                      <label>¿Tiene accesorios?</label>
+                      <input type="checkbox" id="plugins-inputs" name="plugins-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+                    </div>
+
+                    <div id="plugins-inputs-container">
+                      <div class="form-group">
+                        <label>Tipo de accesorio</label>
+                        <select id="tela" class="form-control select2bs4 ml-3" style="width: 100%;">
+                          <option value="" selected disabled>Seleccion el accesorio</option>
+                          <option>V1</option>
+                        </select>
+                      </div>
+
+                      <div class="form-group">
+                        <label>¿Cuantos accesorios serán?</label>
+                        <input type="number" name="accesorios" class="form-control">
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Precio compra</label>
+                      <div class="input-group">
+                        <input type="number" name="precio" class="form-control">
+                        <div class="input-group-append">
+                          <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Precio Venta</label>
+                      <div class="input-group">
+                        <input type="number" name="precio" class="form-control">
+                        <div class="input-group-append">
+                          <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Proveedor</label>
+                      <select id="provedor" class="form-control select2bs4" style="width: 100%;">
+                        <option value="" selected disabled>Selecciona el proveedor</option>
+                        <option value="1">V1</option>
+                        <option value="2">V2</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Fecha de compra</label>
+                      <input type="date" name="fecha_compra" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Garantía</label>
+                      <input type="text" name="garantia" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Fecha de registro</label>
+                      <p><?php echo date('Y-m-d H:i:s'); ?></p>
+                    </div>
+
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary" name="guardar">Agregar</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
     </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+    <!-- /.container-fluid -->
+  </section>
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
+  <script src="./middleware/hidden.material.form.js"></script>
+  <script src="./middleware/hidden.select.color.js"></script>
+  <script src="./middleware/hidden.measures.js"></script>
+  <script src="../inputs-files.js"></script>
+  <script src="./middleware/ocultar.editcheck.js"></script>
+  <!-- <script src="./middleware/repeat.text.js"></script> -->
+  <script src="./middleware/strong.view.pwd.js"></script>
+  <script src="./middleware/change.Icons.colors.js"></script>
+  <script src="./middleware/hidden.plugins.js"></script>
+  <script src="./middleware/hidden.category.js"></script>
+  <script src="./middleware/hidden.type.product.js"></script>
 </div>
-<!-- ./wrapper -->
-
-
-</body>
-</html>

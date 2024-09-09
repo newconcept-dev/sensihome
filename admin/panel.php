@@ -67,6 +67,9 @@
   <link rel="stylesheet" href="plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
   <link rel="stylesheet" href="plugins/bs-stepper/css/bs-stepper.min.css">
   <link rel="stylesheet" href="plugins/dropzone/min/dropzone.min.css">
+
+  <!-- Modal camara -->
+  <link rel="stylesheet" href="./camara.css">
   
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
