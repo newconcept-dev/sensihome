@@ -1,10 +1,12 @@
 <link rel="stylesheet" href="../inputs-files.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="./agregarProducto.css">
 
 
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
+  
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
@@ -16,6 +18,7 @@
 
   <!-- Main content -->
   <section class="content">
+
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -24,10 +27,11 @@
             <div class="card-body">
               <form id="formValidated" action="panel.php?modulo=crearUsuario" method="post">
                 <div class="row ">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <div class="">
                         <h2>Información del producto</h2>
+                        
                       </div>
                       <div class="container" id="upload-product-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
                     </div>
@@ -119,11 +123,137 @@
                             <input type="text" name="nombre" class="form-control">
                           </div>
                         </div>
+
+                        <div class="form-group">
+                            <label>Materiales</label>
+                        
+                            <div class="form-group"> <!-- Relleno -->
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-6">
+                                        <p class="mb-0">Relleno</p>
+                                    </div>
+                                    <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                        <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra relleno?</small>
+                                        <input type="checkbox" id="material-relleno-input" name="material-relleno-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <select id="relleno-selector" class="form-control select2bs4 w-100">
+                                            <option value="" selected disabled>Busca el relleno</option>
+                                            <option>V1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                        
+                                <div id="relleno-container" class="mt-2" style="display: none;"> <!-- Aqui lo que se oculta -->
+                                    <div class="form-group d-flex align-items-center">
+                                        <p id="text-nuevo-relleno" class="mb-0 mr-2" style="white-space: nowrap;">Nuevo relleno:</p>
+                                        <input id="nuevo-relleno" type="text" name="nuevo-relleno-input" class="form-control flex-grow-1">
+                                    </div>
+                                </div>
+                            </div> <!-- Fin de relleno -->
+                        
+                            <div class="form-group"> <!-- Madera -->
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-6">
+                                        <p class="mb-0">Madera</p>
+                                    </div>
+                                    <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                        <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra madera?</small>
+                                        <input type="checkbox" id="material-madera-input" name="material-madera-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <select id="madera-selector" class="form-control select2bs4 w-100">
+                                            <option value="" selected disabled>Busca la madera</option>
+                                            <option>V1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                        
+                                <div id="madera-container" class="mt-2" style="display: none;"> <!-- Aqui lo que se oculta -->
+                                    <div class="form-group d-flex align-items-center">
+                                        <p id="text-nueva-madera" class="mb-0 mr-2" style="white-space: nowrap;">Nueva madera:</p>
+                                        <input id="nueva-madera" type="text" name="nueva-madera-input" class="form-control flex-grow-1">
+                                    </div>
+                                </div>
+                            </div> <!-- Fin de madera -->
+                        
+                            <div class="form-group"> <!-- Patas -->
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-6">
+                                        <p class="mb-0">Patas</p>
+                                    </div>
+                                    <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                        <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra pata?</small>
+                                        <input type="checkbox" id="material-patas-input" name="material-patas-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <select id="patas-selector" class="form-control select2bs4 w-100">
+                                            <option value="" selected disabled>Busca la pata</option>
+                                            <option>V1</option>
+                                        </select>
+                                    </div>
+                                </div>
+                        
+                                <div id="patas-container" class="mt-2" style="display: none;"> <!-- Aqui lo que se oculta -->
+                                    <div class="form-group d-flex align-items-center">
+                                        <p id="text-nueva-pata" class="mb-0 mr-2" style="white-space: nowrap;">Nueva pata:</p>
+                                        <input id="nueva-pata" type="text" name="nueva-pata-input" class="form-control flex-grow-1">
+                                    </div>
+                                </div>
+                            </div> <!-- Fin de patas -->
+                        
+                            <div class="form-group"> <!-- Telas -->
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-6">
+                                        <p class="mb-0">Telas</p>
+                                    </div>
+                                    <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                        <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra tela?</small>
+                                        <input type="checkbox" id="material-telas-input" name="material-telas-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="input-group">
+                                            <select id="telas-selector" class="form-control select2bs4">
+                                                <option value="" selected disabled>Busca la tela</option>
+                                                <option>V1</option>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text p-0">
+                                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK_i51UEwk-sYPTgLpK4Ok87gZTUrhqTrtxQ&s" alt="" class="img-fluid zoom" style="height: 38px; border-radius: 0 5px 5px 0;">
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <div id="telas-container" class="mt-2" style="display: none;"> <!-- Aqui lo que se oculta -->
+                                    <div class="form-group d-flex align-items-center">
+                                        <p id="text-nueva-tela" class="mb-0 mr-2" style="white-space: nowrap;">Nueva tela:</p>
+                                        <input id="nueva-tela" type="text" name="nueva-tela-input" class="form-control flex-grow-1">
+                                    </div>
+
+                                    <div class="form-group">                                                                                          
+                                        <div class="container mt-0" id="upload-tela-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Añadir imagen de la tela" data-border-radius="5px"></div>
+                                    </div>
+
+                                    <div class="form-group text-center">
+                                        <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#cameraModal">
+                                            <!-- icono de camara -->
+                                            Tomar foto <i class="fas fa-camera"></i>
+                                        </button>
+                                    </div>
+                                 
+                                    
+                                </div>
+                            </div> <!-- Fin de telas -->
+                        
+                        </div> <!-- Fin de formulario de materiales -->                      
+
                       </div>
                     </div>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Medidas</label>
                       <input type="checkbox" id="measures-inputs" name="measures-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
@@ -357,11 +487,23 @@
                       <label>Fecha de registro</label>
                       <p><?php echo date('Y-m-d H:i:s'); ?></p>
                     </div>
-
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-primary" name="guardar">Agregar</button>
-                    </div>
+                  
                   </div>
+
+                  <div class="col-md-4">
+                    <!-- Div con bordes 100% del ancho y 60vh de alto -->
+                      <div class="w-100" style="height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                      <!-- Contenido del div -->
+                      <div id="phone-view-1" data-src="http://localhost/sensi/view.e.html" style="width: 68vw; margin-top:  -6vh;"></div>
+                      <button type="submit" class="btn btn-primary btn-smg" name="guardar" style="margin-top:  -1.5vh;">Agregar producto</button>
+                      <!-- C:\xampp\htdocs\sensi\view.e.html -->
+                    </div>
+
+                    
+                  </div>
+
+
+                
                 </div>
               </form>
             </div>
@@ -374,6 +516,32 @@
       <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
+
+    <!-- Modal para tomar fotos -->
+    <div class="modal fade" id="cameraModal" tabindex="-1" role="dialog" aria-labelledby="cameraModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-fullscreen-sm-down" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cameraModalLabel">Añadiendo tela</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body p-0">
+            <div class="video-container w-100 h-100">
+              <video id="video" class="w-100 h-100" autoplay></video>
+            </div>
+            <canvas id="canvas" style="display: none;"></canvas>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="capture">Tomar Foto</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </section>
 
   <script src="./middleware/hidden.material.form.js"></script>
@@ -387,4 +555,7 @@
   <script src="./middleware/hidden.plugins.js"></script>
   <script src="./middleware/hidden.category.js"></script>
   <script src="./middleware/hidden.type.product.js"></script>
+
+  <!-- modal de la camara -->
+  <script src="./middleware/modal.cam.js"></script>
 </div>

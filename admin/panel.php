@@ -350,6 +350,17 @@
   }); 
 </script>
 
+
+<!-- Phone NC -->
+<script src="./middleware/phone.device.view.js"></script>
+  <script>
+    // Inicializar la vista responsiva para todos los contenedores con id que empiece con "phone-view-"
+    document.querySelectorAll('[id^="phone-view-"]').forEach(container => {
+      const iframeSrc = container.getAttribute('data-src');
+      createResponsiveView(container.id, iframeSrc);
+    });
+  </script>
+
 <!-- Form -->
 <script src="plugins/select2/js/select2.full.min.js"></script>
 <script src="plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const checkbox = document.getElementById('hidden-color-select');
     const medidasContainer = document.getElementById('color-container');
+    
     const colorNew = document.querySelector('#color-container input');
     const colorSelect = document.querySelector('#color-select-main select');
     const toggleColorElements = document.querySelectorAll('.label-color-select');
