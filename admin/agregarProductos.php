@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="../inputs-files.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-<link rel="stylesheet" href="./agregarProducto.css">
+<!-- <link rel="stylesheet" href="./agregarProducto.css"> -->
 
 
 <div class="content-wrapper">
@@ -35,6 +35,12 @@
                       </div>
                       <div class="container" id="upload-product-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
                     </div>
+
+                    <div class="form-group">
+                      <label>Nombre del producto</label>
+                      <input type="text" name="nombre" class="form-control" required="required">
+                    </div>
+
 
                     <div class="form-group">
                       <div id="category-input-main">
@@ -98,7 +104,12 @@
                       </div>
                     </div>
 
-                    <div class="form-group">
+
+
+                  </div>
+
+                  <div class="col-md-4">
+                  <div class="form-group">
                       <label>Color</label>
                       <div id="color-select-main">
                         <div class="input-group">
@@ -122,9 +133,12 @@
                             <label>Color nuevo</label>
                             <input type="text" name="nombre" class="form-control">
                           </div>
-                        </div>
+                        </div>                 
 
-                        <div class="form-group">
+                      </div>
+                    </div>
+                    
+                  <div class="form-group">
                             <label>Materiales</label>
                         
                             <div class="form-group"> <!-- Relleno -->
@@ -247,13 +261,8 @@
                                 </div>
                             </div> <!-- Fin de telas -->
                         
-                        </div> <!-- Fin de formulario de materiales -->                      
+                        </div> <!-- Fin de formulario de materiales -->     
 
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
                     <div class="form-group">
                       <label>Medidas</label>
                       <input type="checkbox" id="measures-inputs" name="measures-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
@@ -437,7 +446,7 @@
                           <option>V1</option>
                         </select>
                       </div>
-
+t
                       <div class="form-group">
                         <label>¿Cuantos accesorios serán?</label>
                         <input type="number" name="accesorios" class="form-control">
@@ -492,10 +501,10 @@
 
                   <div class="col-md-4">
                     <!-- Div con bordes 100% del ancho y 60vh de alto -->
-                      <div class="w-100" style="height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                        <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 1em;">
                       <!-- Contenido del div -->
-                      <div id="phone-view-1" data-src="http://localhost/sensi/view.e.html" style="width: 68vw; margin-top:  -6vh;"></div>
-                      <button type="submit" class="btn btn-primary btn-smg" name="guardar" style="margin-top:  -1.5vh;">Agregar producto</button>
+                      <div id="phone-view-1" data-src="http://localhost/sensi/view.e.html" class="d-none d-md-block" style="width: 70%; height: 100%;"></div>
+                      <button type="submit" class="btn btn-primary btn-smg mt-0 mt-md-3" name="guardar">Agregar producto</button>
                       <!-- C:\xampp\htdocs\sensi\view.e.html -->
                     </div>
 
@@ -548,7 +557,7 @@
   <script src="./middleware/hidden.select.color.js"></script>
   <script src="./middleware/hidden.measures.js"></script>
   <script src="../inputs-files.js"></script>
-  <script src="./middleware/ocultar.editcheck.js"></script>
+  
   <!-- <script src="./middleware/repeat.text.js"></script> -->
   <script src="./middleware/strong.view.pwd.js"></script>
   <script src="./middleware/change.Icons.colors.js"></script>

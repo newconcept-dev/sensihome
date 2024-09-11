@@ -174,7 +174,7 @@
                with font-awesome or any other icon font library -->
           <li class="nav-item menu-open">
             <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-shopping-cart"></i>
+              <i class="nav-icon far fa-list-alt"></i>
               <p>
                 Panel de administracion
                 <i class="right fas fa-angle-left"></i>
@@ -191,7 +191,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./panel.php?modulo=usuarios" class="nav-link <?php echo ($modulo=="usuarios" ||$modulo=="crearUsuario" ||$modulo=="editarUsuario")?"active":"inactive"; ?>">
-                  <i class="far fa-user nav-icon"></i>
+                  <i class="far fa-heart nav-icon"></i>
                   <p>Usuarios</p>
                 </a>
 
@@ -199,7 +199,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./panel.php?modulo=productos" class="nav-link <?php echo ($modulo=="productos")?"active":"inactive"; ?>">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="fas fa-shopping-cart nav-icon"></i>
                   <p>Productos</p>
                 </a>
 
@@ -207,19 +207,49 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./panel.php?modulo=agregarProductos" class="nav-link <?php echo ($modulo=="agregarProductos")?"active":"inactive"; ?>">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-edit nav-icon"></i>
                   <p>Agregar productos</p>
                 </a>
 
             </ul>
+
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="./panel.php?modulo=ventas" class="nav-link <?php echo ($modulo=="ventas")?"active":"inactive"; ?>">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-check-circle nav-icon"></i>
                   <p>Ventas</p>
                 </a>
 
             </ul>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./panel.php?modulo=cuentas" class="nav-link <?php echo ($modulo=="cuentas")?"active":"inactive"; ?>">
+                  <i class="far fa-user nav-icon"></i>
+                  <p>Cuentas</p>
+                </a>
+
+            </ul>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./panel.php?modulo=recursos" class="nav-link <?php echo ($modulo=="recursos")?"active":"inactive"; ?>">
+                  <i class="far fa-folder nav-icon"></i>
+                  <p>Recursos Edicion</p>
+                </a>
+
+            </ul>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="./panel.php?modulo=test" class="nav-link <?php echo ($modulo=="test")?"active":"inactive"; ?>">
+                  <i class="far fa-image nav-icon"></i>
+                  <p>Test</p>
+                </a>
+
+            </ul>
+
+
           </li>
 
           
@@ -265,6 +295,19 @@
      elseif ($modulo == 'productos') {
        include_once 'productos.php';
     }
+    elseif ($modulo == 'ventas') {
+       include_once 'ventas.php';
+    }
+    elseif ($modulo == 'cuentas') {
+       include_once 'cuentas.php';
+    }
+    elseif ($modulo == 'recursos') {
+       include_once 'recursos.php'; 
+    }
+    elseif ($modulo == 'test') {
+       include_once 'test.php';
+    }
+
       else {
        include_once 'estadisticas.php';
    }

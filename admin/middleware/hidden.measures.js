@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
     const checkbox = document.getElementById('measures-inputs');
     const medidasContainer = document.getElementById('medidas-container');
   

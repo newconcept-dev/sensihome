@@ -302,14 +302,14 @@ body {
   
   .px__screen__ {
     position: relative;
-    
+    padding-bottom: 218%;
     background-color: #888;
     border-radius: 10%/5%;
     box-shadow: 0 0 10px #000;
   }
   
   .px--ls .px__screen__ {
-    
+    padding-bottom: 46%;
     border-radius: 5%/10%;
   }
   

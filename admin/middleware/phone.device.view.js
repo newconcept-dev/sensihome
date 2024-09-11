@@ -8,7 +8,7 @@ function createResponsiveView(containerId, iframeSrc) {
   
     // Crear el contenido HTML
     const htmlContent = `
-      <div class="temp-wrapper">
+      
         <div class="px">
           <div class="px__body"></div>
           <div class="px__screen">
@@ -19,7 +19,7 @@ function createResponsiveView(containerId, iframeSrc) {
             </div>
           </div>
         </div>
-      </div>
+      
     `;
   
     // Insertar el contenido HTML en el contenedor
