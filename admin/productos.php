@@ -31,13 +31,11 @@
                                 <div class="app-content">
                                     <div class="app-content-header">
                                         <h1 class="app-content-headerText">Listado de invetario</h1>
-                                        <button class="mode-switch" title="Switch Theme">
-                                            <svg class="moon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="24" height="24" viewBox="0 0 24 24">
-                                                <defs></defs>
-                                                <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
-                                            </svg>
-                                        </button>
-                                        <button class="app-content-headerButton">Agregar producto</button>
+
+                                        <div class="form-group">
+                                        <a class="btn btn-primary btn-smg mt-0 mt-md-3" href="panel.php?modulo=agregarProductos">Agregar producto <span class="fa fa-plus"></span></a>
+                                        </div>
+                                        
                                     </div>
 
                                     <div class="app-content-actions">
@@ -98,7 +96,8 @@
 
                                         <!-- Para agregar columnas -->
                                         <div class="products-header">
-                                            <div class="product-cell image">
+                                            
+                                        <div class="product-cell image">
                                                 Nombre
                                                 <button class="sort-button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
@@ -176,34 +175,34 @@
                                         </div>
 
                                         <!-- Aqui se llenan los productos -->
-                                        <div class="products-row">
-                                            <button class="cell-more-button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
-                                                    <circle cx="12" cy="12" r="1" />
-                                                    <circle cx="12" cy="5" r="1" />
-                                                    <circle cx="12" cy="19" r="1" />
-                                                </svg>
-                                            </button>
-                                            <div class="product-cell image">
-                                                <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="product">
-                                                <span>Producto 1</span>
-                                            </div>
-
-
-                                            <div class="product-cell category"><span class="cell-label">Categoria</span>Cat1</div>
-                                            <div class="product-cell category"><span class="cell-label">Tipo</span>3-2-1</div>
-                                            <div class="product-cell category"><span class="cell-label">Color</span>Verde</div>
-                                            <div class="product-cell status-cell">
-                                                <span class="cell-label">Status:</span>
-                                                <span class="status active">Activo</span>
-                                            </div>
-
-                                            <div class="product-cell sales"><span class="cell-label">Ventas:</span>11</div>
-                                            <div class="product-cell stock"><span class="cell-label">Stock:</span>36</div>
-                                            <div class="product-cell price"><span class="cell-label">Precio:</span>$560</div>
+                                        
+                                        <div class="products-row" onclick="window.location.href='panel.php?modulo=editarProducto';">
+                                          <button class="cell-more-button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
+                                              <circle cx="12" cy="12" r="1" />
+                                              <circle cx="12" cy="5" r="1" />
+                                              <circle cx="12" cy="19" r="1" />
+                                            </svg>
+                                          </button>
+                                          <div class="product-cell image">
+                                            <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" alt="product">
+                                            <span>Producto 1</span>
+                                          </div>
+                                          <div class="product-cell category"><span class="cell-label">Categoria</span>Cat1</div>
+                                          <div class="product-cell category"><span class="cell-label">Tipo</span>3-2-1</div>
+                                          <div class="product-cell category"><span class="cell-label">Color</span>Verde</div>
+                                          <div class="product-cell status-cell">
+                                            <span class="cell-label">Status:</span>
+                                            <span class="status active">Activo</span>
+                                          </div>
+                                          <div class="product-cell sales"><span class="cell-label">Ventas:</span>11</div>
+                                          <div class="product-cell stock"><span class="cell-label">Stock:</span>36</div>
+                                          <div class="product-cell price"><span class="cell-label">Precio:</span>$560</div>
                                         </div>
+                                        
 
-                                        <div class="products-row">
+                                        
+                                        <div class="products-row" onclick="window.location.href='panel.php?modulo=editarProducto';">
                                             <button class="cell-more-button">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical">
                                                     <circle cx="12" cy="12" r="1" />
@@ -229,7 +228,7 @@
                                             <div class="product-cell stock"><span class="cell-label">Stock:</span>36</div>
                                             <div class="product-cell price"><span class="cell-label">Precio:</span>$560</div>
                                         </div>
-
+                                        
                                         <!--  -->
 
 

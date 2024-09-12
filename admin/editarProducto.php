@@ -1,96 +1,3 @@
-<?php 
-  include_once 'db.php';
-
-  /* Obteniendo las categorias */
-  $getCategory = "SELECT id, nombre FROM categorias";
-  $showCategory = $con->query($getCategory);
-
-  /* Obtiendo tipoProducto */
-  $getTypeProduct = "SELECT id, nombre FROM tipoProducto";
-  $showTypeProduct = $con->query($getTypeProduct);
-
-  /* Obtener colores */
-  $getColors = "SELECT id, nombre FROM color";
-  $showColors = $con->query($getColors);
-
-  /* Conjunto de valores de Materiales, para cada select */
-
-  /* Obteniendo relleno */
-  $getStuffed = "SELECT id, nombre FROM materiales WHERE tipo = 'relleno'";
-  $showStuffed = $con->query($getStuffed);
-
-  /* Obteniendo madera */
-  $getWood = "SELECT id, nombre FROM materiales WHERE tipo = 'madera'";
-  $showWood = $con->query($getWood);
-
-  /* Obteniendo patas */
-  $getLegs = "SELECT id, nombre FROM materiales WHERE tipo = 'patas'";
-  $showLegs = $con->query($getLegs);
-
-  /* Obteniendo telas */
-  $getFabrics = "SELECT id, nombre FROM materiales WHERE tipo = 'telas'";
-  $showFabrics = $con->query($getFabrics);
-
-  /* ----> Aqui termino materiales */
-  
-
-  /* Obteniendo de accesorios el nombre */
-  $getAccesories = "SELECT id, nombre FROM accesorios";
-  $showAccesories = $con->query($getAccesories);
-
-  /* Obtieniendo proveedores el nombre */
-  $getProviders = "SELECT id, nombre FROM proveedores";
-  $showProviders = $con->query($getProviders);
-
-  
-  if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Obtener los valores del formulario
-    $nombre = $_POST['nombre'];
-    $categoria_id = $_POST['categoria_id'];
-    $existencia = $_POST['existencia'];
-    $descripcion = $_POST['descripcion'];
-    $tipoProducto_id= $_POST['tipoProducto_id'];
-    $color_id = $_POST['color_id'];
-    $relleno_id= $_POST['relleno_id'];
-    $madera_id = $_POST['madera_id'];
-    $patas_id = $_POST['patas_id'];
-    $telas_id = $_POST['telas_id'];
-    $precio = $_POST['precio'];
-    $precioVenta = $_POST['precioVenta'];
-    $proveedor_id = $_POST['proveedor_id'];
-    $fechaCompra = $_POST['fechaCompra'];
-    $garantia = $_POST['garantia'];
-
-    // Preparar la consulta SQL para insertar el nuevo producto
-    $sql = "INSERT INTO productos (nombre, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-    // Preparar la declaración
-    if ($stmt = $con->prepare($sql)) {
-        // Vincular los parámetros
-        $stmt->bind_param("siissiiiiidissi", $nombre, $categoria_id, $existencia, $descripcion, $tipoProducto_id, $color_id, $stuffed, $wood, $legs, $fabrics, $precio, $precioVenta, $proveedor, $fechaCompra, $garantia);
-
-        // Ejecutar la declaración
-        if ($stmt->execute()) {
-            echo "Producto agregado exitosamente.";
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-
-        // Cerrar la declaración
-        $stmt->close();
-    } else {
-        echo "Error: " . $con->error;
-    }
-
-    // Cerrar la conexión
-    $con->close();
-}
-
-
-
-  
-?>
-
 <link rel="stylesheet" href="../inputs-files.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!-- <link rel="stylesheet" href="./agregarProducto.css"> -->
@@ -103,7 +10,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Agregar producto</h1>
+          <h1>Editando producto N</h1>
         </div>
       </div>
     </div><!-- /.container-fluid -->
@@ -118,9 +25,7 @@
           <div class="card">
             <!-- /.card-header -->
             <div class="card-body">
-
-              <form id="formValidated" action="panel.php?modulo=agregarProductos" method="POST">
-
+              <form id="formValidated" action="panel.php?modulo=crearUsuario" method="post">
                 <div class="row ">
                   <div class="col-md-4">
                     <div class="form-group">
@@ -131,30 +36,22 @@
                       <div class="container" id="upload-product-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Producto" data-border-radius="5px"></div>
                     </div>
 
-                    <div class="form-group active-full">
-                          <label for="nombre">Nombre del Producto</label>
-                          <input type="text" name="nombre" id="nombre" class="form-control" required>
+                    <div class="form-group">
+                      <label>Nombre del producto</label>
+                      <input type="text" name="nombre" class="form-control" required="required">
                     </div>
 
 
-                    <div class="form-group active-full">
+                    <div class="form-group">
                       <div id="category-input-main">
-                        <label for="categoria_id">Categoría</label>
-                        <select name="categoria_id" id="categoria_id" class="form-control" required>
-                        <option value="" selected disabled>Selecciona el tipo de producto</option>
-                        <?php
-                        if ($showCategory->num_rows > 0) {
-                            // Salida de datos de cada fila
-                            while($row = $showCategory->fetch_assoc()) {
-                                echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                            }
-                        } else {
-                            echo "<option value='' disabled>No hay categorías disponibles</option>";
-                        }
-                        ?>
+                        <label>Categoria</label>
+                        <select name="cargo_id" class="form-control" required>
+                          <option value="" selected disabled>Selecciona el tipo de producto</option>
+                          <option value="1">Opción 1</option>
+                          <option value="2">Opción 2</option>
+                          <option value="3">Opción 3</option>
                         </select>
-                      
-                    </div>
+                      </div>
 
                       <div class="form-group d-flex align-items-center">
                         <small class="toggle-color">¿Desea añadir otra categoria?</small>
@@ -164,7 +61,7 @@
                       <div id="category-container">
                         <div class="form-group">
                           <label>Nombre de la categoria</label>
-                          <input type="text" name="nameNewCategory" class="form-control">
+                          <input type="text" name="nombre" class="form-control">
                         </div>
                       </div>
                     </div>
@@ -179,35 +76,18 @@
                       <div><input type="checkbox" name="my-checkbox" unchecked data-bootstrap-switch></div>
                     </div>
 
-                    <div class="form-group active-full">
-                    <label for="existencia">Stock</label>
-                    <input type="number" name="existencia" id="existencia" class="form-control" required>
-                      
+                    <div class="form-group">
+                      <label>Descripción</label>
+                      <textarea name="descripcion" class="form-control" required="required"></textarea>
                     </div>
 
-                    <div class="form-group active-full">
-                    <label for="descripcion">Descripción</label>
-                    <textarea name="descripcion" id="descripcion" class="form-control" required></textarea>
-                    </div>
-
-                    <div class="form-group active-full">
+                    <div class="form-group">
                       <div id="type-input-main">
-                      <label for="tipoProducto_id">Tipo de Producto</label>
-                      <select name="tipoProducto_id" id="tipoProducto_id" class="form-control" required>
+                        <label>Tipo de producto</label>
+                        <select class="form-control">
                           <option value="" selected disabled>Selecciona el tipo de producto</option>
-                          <!-- aqui  -->
-                          <?php
-                          if ($showTypeProduct->num_rows > 0) {
-                              // Salida de datos de cada fila
-                              while($row = $showTypeProduct->fetch_assoc()) {
-                                  echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                              }
-                          } else {
-                              echo "<option value='' disabled>No hay tipos de productos disponibles</option>";
-                          }
-                          ?>
-                           
-                          
+                          <option value="1">v1</option>
+                          <option value="2">v2</option>
                         </select>
                       </div>
 
@@ -219,7 +99,7 @@
                       <div id="type-product-container" style="display: none;">
                         <div class="form-group">
                           <label>Nombre del tipo de producto</label>
-                          <input type="text" name="nameNewProduct" class="form-control">
+                          <input type="text" name="nombre" class="form-control">
                         </div>
                       </div>
                     </div>
@@ -230,25 +110,16 @@
 
                   <div class="col-md-4">
                   <div class="form-group">
-                      <label for="color_id">Color</label>
-                      
+                      <label>Color</label>
                       <div id="color-select-main">
                         <div class="input-group">
-                        <select name="color_id" id="color_id" class="form-control" required>
+                          <select class="form-control">
                             <option value="" selected disabled>Selecciona el tipo de medida</option>
-                            <?php
-                            if ($showColors->num_rows > 0) {
-                                // Salida de datos de cada fila
-                                while($row = $showColors->fetch_assoc()) {
-                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                }
-                            } else {
-                                echo "<option value='' disabled>No hay colores disponibles</option>";
-                            }
-                            ?>
+                            <option value="1">v1</option>
+                            <option value="2">v2</option>
                           </select>
                           <div class="input-group-append">
-                            <span class="input-group-text"><i class="fas fa-circle"></i></span>
+                            <span class="input-group-text"><i class="fas fa-square"></i></span>
                           </div>
                         </div>
 
@@ -273,25 +144,16 @@
                             <div class="form-group"> <!-- Relleno -->
                                 <div class="row align-items-center">
                                     <div class="col-md-2 col-6">
-                                        <p class="mb-0" for="relleno_id">Relleno</p>
+                                        <p class="mb-0">Relleno</p>
                                     </div>
                                     <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
                                         <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra relleno?</small>
                                         <input type="checkbox" id="material-relleno-input" name="material-relleno-input" class="form-control ml-2" style="height: auto; width: auto;">
                                     </div>
                                     <div class="col-md-6 col-12">
-                                        <select name="relleno_id" id="relleno_id" class="form-control select2bs4 w-100" required>
+                                        <select id="relleno-selector" class="form-control select2bs4 w-100">
                                             <option value="" selected disabled>Busca el relleno</option>
-                                            <?php
-                                            if ($showStuffed->num_rows > 0) {
-                                                // Salida de datos de cada fila
-                                                while($row = $showStuffed->fetch_assoc()) {
-                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                }
-                                            } else {
-                                                echo "<option value='' disabled>No hay rellenos disponibles</option>";
-                                            }
-                                            ?>
+                                            <option>V1</option>
                                         </select>
                                     </div>
                                 </div>
@@ -306,29 +168,17 @@
                         
                             <div class="form-group"> <!-- Madera -->
                                 <div class="row align-items-center">
-                                    <div class="col-md-2 col-6">                                        
-                                        <p class="mb-0" for="madera_id">Madera</p>
+                                    <div class="col-md-2 col-6">
+                                        <p class="mb-0">Madera</p>
                                     </div>
                                     <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
                                         <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra madera?</small>
-                                        <input type="checkbox" id="material-madera-input" name="showWood-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                        <input type="checkbox" id="material-madera-input" name="material-madera-input" class="form-control ml-2" style="height: auto; width: auto;">
                                     </div>
                                     <div class="col-md-6 col-12">
-                                        <select name="madera_id" id="madera_id" class="form-control select2bs4 w-100" required>
-                                        
-
+                                        <select id="madera-selector" class="form-control select2bs4 w-100">
                                             <option value="" selected disabled>Busca la madera</option>
-                                            <?php
-
-                                            if ($showWood->num_rows > 0) {
-                                                // Salida de datos de cada fila
-                                                while($row = $showWood->fetch_assoc()) {
-                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                }
-                                            } else {
-                                                echo "<option value='' disabled>No hay maderas disponibles</option>";
-                                            }
-                                            ?>
+                                            <option>V1</option>
                                         </select>
                                     </div>
                                 </div>
@@ -344,27 +194,16 @@
                             <div class="form-group"> <!-- Patas -->
                                 <div class="row align-items-center">
                                     <div class="col-md-2 col-6">
-                                        <p class="mb-0" for="patas_id">Patas</p>                                        
+                                        <p class="mb-0">Patas</p>
                                     </div>
                                     <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
                                         <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra pata?</small>
-                                        <input type="checkbox" id="material-patas-input" name="legs-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                        <input type="checkbox" id="material-patas-input" name="material-patas-input" class="form-control ml-2" style="height: auto; width: auto;">
                                     </div>
                                     <div class="col-md-6 col-12">
-                                        <select name="patas_id" id="patas_id" class="form-control select2bs4 w-100" required>
-                                        
-
+                                        <select id="patas-selector" class="form-control select2bs4 w-100">
                                             <option value="" selected disabled>Busca la pata</option>
-                                            <?php
-                                            if ($showLegs->num_rows > 0) {
-                                                // Salida de datos de cada fila
-                                                while($row = $showLegs->fetch_assoc()) {
-                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                }
-                                            } else {
-                                                echo "<option value='' disabled>No hay patas disponibles</option>";
-                                            }
-                                            ?>
+                                            <option>V1</option>
                                         </select>
                                     </div>
                                 </div>
@@ -380,31 +219,17 @@
                             <div class="form-group"> <!-- Telas -->
                                 <div class="row align-items-center">
                                     <div class="col-md-2 col-6">
-                                        <p class="mb-0" for="telas_id">Telas</p>
-                                        
-                                        
+                                        <p class="mb-0">Telas</p>
                                     </div>
                                     <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
                                         <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra tela?</small>
-                                        <input type="checkbox" id="material-telas-input" name="fabrics-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                        <input type="checkbox" id="material-telas-input" name="material-telas-input" class="form-control ml-2" style="height: auto; width: auto;">
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="input-group">
-                                            <select name="telas_id" id="telas_id" class="form-control select2bs4" required>
-                                            
-                                                
+                                            <select id="telas-selector" class="form-control select2bs4">
                                                 <option value="" selected disabled>Busca la tela</option>
-                                                <?php
-                                                if ($showFabrics->num_rows > 0) {
-                                                    // Salida de datos de cada fila
-                                                    while($row = $showFabrics->fetch_assoc()) {
-                                                        echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value='' disabled>No hay telas disponibles</option>";
-                                                }
-
-                                                ?>
+                                                <option>V1</option>
                                             </select>
                                             <div class="input-group-append">
                                                 <span class="input-group-text p-0">
@@ -616,22 +441,12 @@
                     <div id="plugins-inputs-container">
                       <div class="form-group">
                         <label>Tipo de accesorio</label>
-                        <select id="" name="accesories" class="form-control select2bs4 ml-3" style="width: 100%;">
+                        <select id="tela" class="form-control select2bs4 ml-3" style="width: 100%;">
                           <option value="" selected disabled>Seleccion el accesorio</option>
-                          <?php
-                          if ($showAccesories->num_rows > 0) {
-                              // Salida de datos de cada fila
-                              while($row = $showAccesories->fetch_assoc()) {
-                                  echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                              }
-                          } else {
-                              echo "<option value='' disabled>No hay accesorios disponibles</option>";
-                          }
-                          ?>
-                          
+                          <option>V1</option>
                         </select>
                       </div>
-
+t
                       <div class="form-group">
                         <label>¿Cuantos accesorios serán?</label>
                         <input type="number" name="accesorios" class="form-control">
@@ -639,9 +454,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="precio">Precio Compra</label>
+                      <label>Precio compra</label>
                       <div class="input-group">
-                      <input type="number" name="precio" id="precio" class="form-control" required>
+                        <input type="number" name="precio" class="form-control">
                         <div class="input-group-append">
                           <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                         </div>
@@ -649,9 +464,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="precioVenta">Precio Venta</label>
+                      <label>Precio Venta</label>
                       <div class="input-group">
-                      <input type="number" name="precioVenta" id="precioVenta" class="form-control" required>
+                        <input type="number" name="precio" class="form-control">
                         <div class="input-group-append">
                           <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
                         </div>
@@ -659,33 +474,22 @@
                     </div>
 
                     <div class="form-group">
-                    <label for="proveedor_id">Proveedor</label>
-                      
-                      <select name="proveedor_id" id="proveedor_id" class="form-control select2bs4" style="width: 100%;" required>
+                      <label>Proveedor</label>
+                      <select id="provedor" class="form-control select2bs4" style="width: 100%;">
                         <option value="" selected disabled>Selecciona el proveedor</option>
-                        <?php
-                        if ($showProviders->num_rows > 0) {
-                            // Salida de datos de cada fila
-                            while($row = $showProviders->fetch_assoc()) {
-                                echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                            }
-                        } else {
-                            echo "<option value='' disabled>No hay proveedores disponibles</option>";
-                        }
-
-
-                        ?>
+                        <option value="1">V1</option>
+                        <option value="2">V2</option>
                       </select>
                     </div>
 
                     <div class="form-group">
-                      <label for="fechaCompra">Fecha de Compra</label>                    
-                      <input type="date" name="fechaCompra" id="fechaCompra" class="form-control" required>
+                      <label>Fecha de compra</label>
+                      <input type="date" name="fecha_compra" class="form-control">
                     </div>
 
                     <div class="form-group">
                       <label>Garantía</label>
-                      <input type="text" name="garantia" id="garantia" class="form-control" required>
+                      <input type="text" name="garantia" class="form-control">
                     </div>
 
                     <div class="form-group">
@@ -700,8 +504,7 @@
                         <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 1em;">
                       <!-- Contenido del div -->
                       <div id="phone-view-1" data-src="http://localhost/sensi/view.e.html" class="d-none d-md-block" style="width: 70%; height: 100%;"></div>
-                      <!-- <button type="submit" class="btn btn-primary btn-smg mt-0 mt-md-3" name="guardar">Agregar producto</button> -->
-                      <button type="submit" name="guardar" class="btn btn-primary">Guardar</button>
+                      <button type="submit" class="btn btn-primary btn-smg mt-0 mt-md-3" name="guardar">Agregar producto</button>
                       <!-- C:\xampp\htdocs\sensi\view.e.html -->
                     </div>
 
@@ -754,9 +557,8 @@
   <script src="./middleware/hidden.select.color.js"></script>
   <script src="./middleware/hidden.measures.js"></script>
   <script src="../inputs-files.js"></script>
-  <script src="./middleware/status.input.js"></script>
   
-  
+  <!-- <script src="./middleware/repeat.text.js"></script> -->
   <script src="./middleware/strong.view.pwd.js"></script>
   <script src="./middleware/change.Icons.colors.js"></script>
   <script src="./middleware/hidden.plugins.js"></script>

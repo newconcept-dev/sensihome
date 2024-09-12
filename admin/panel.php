@@ -198,7 +198,7 @@
             </ul>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./panel.php?modulo=productos" class="nav-link <?php echo ($modulo=="productos")?"active":"inactive"; ?>">
+                <a href="./panel.php?modulo=productos" class="nav-link <?php echo ($modulo=="productos" ||$modulo=="editarProducto")?"active":"inactive"; ?>">
                   <i class="fas fa-shopping-cart nav-icon"></i>
                   <p>Productos</p>
                 </a>
@@ -306,6 +306,9 @@
     }
     elseif ($modulo == 'test') {
        include_once 'test.php';
+    }
+    elseif ($modulo == 'editarProducto') {
+       include_once 'editarProducto.php';
     }
 
       else {
