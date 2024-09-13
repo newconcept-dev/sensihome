@@ -171,7 +171,7 @@
                                        <div class="product-preview" id="drop-area-product" style="width: 100%; height: 36vh; border-radius: 5px;">
                                           <div id="imagePreview-product" class="dropzone-desc" style="border-radius: 5px;">
                                              <i class="fa fa-image"></i>
-                                             <p>Producto</p>
+                                             <p>Imagen Principal</p>
                                           </div>
                                           <div class="loading-container" id="loadingContainer-product" style="display: none;">
                                              <div></div>
@@ -191,6 +191,9 @@
                                           </div>
                                        </div>
                                     </div>
+                                    
+
+                                    <!-- fin de input de imagen -->
 
                                  
                               

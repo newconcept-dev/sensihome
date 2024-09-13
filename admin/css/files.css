@@ -8,7 +8,6 @@
     position: relative;
     border-radius: 100%;
     border: 4px dashed #cccccc5b;
-    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.075);
     overflow: hidden;
 }
 
@@ -72,7 +71,6 @@
 
 #drop-area-product.loaded {
     border: 4px dashed #ccc;
-    box-shadow: 0px 0px 10px 2px rgba(7, 7, 7, 0.482);
 }
 
 #drop-area-product.loaded.non-image {
@@ -144,14 +142,8 @@
 
 /* Estilos para el estado de imagen subida */
 #drop-area-product.image-uploaded {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     border: none;
 }
 
-.container {
-    transition: filter 0.3s;
-}
+/* Pop Pup */
 
-.container.image-uploaded {
-    filter: drop-shadow(0px 0px 10px 2px rgba(7, 7, 7, 0.482));
-}
