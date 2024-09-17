@@ -1,135 +1,122 @@
 <?php 
-   include_once 'db.php';
-   
-   /* Obteniendo las categorias */
-   $getCategory = "SELECT id, nombre FROM categorias";
-   $showCategory = $con->query($getCategory);
-   if (!$showCategory) {
-       die("Error al obtener categorías: " . $con->error);
-   }
-   
-   /* Obtiendo tipoProducto */
-   $getTypeProduct = "SELECT id, nombre FROM tipoProducto";
-   $showTypeProduct = $con->query($getTypeProduct);
-   if (!$showTypeProduct) {
-       die("Error al obtener tipo de producto: " . $con->error);
-   }
-   
-   /* Obtener colores */
-   $getColors = "SELECT id, nombre FROM color";
-   $showColors = $con->query($getColors);
-   if (!$showColors) {
-       die("Error al obtener colores: " . $con->error);
-   }
-   
-   /* Conjunto de valores de Materiales, para cada select */
-   
-   /* Obteniendo relleno */
-   $getStuffed = "SELECT id, nombre FROM materiales WHERE tipo = 'relleno'";
-   $showStuffed = $con->query($getStuffed);
-   if (!$showStuffed) {
-       die("Error al obtener relleno: " . $con->error);
-   }
-   
-   /* Obteniendo madera */
-   $getWood = "SELECT id, nombre FROM materiales WHERE tipo = 'madera'";
-   $showWood = $con->query($getWood);
-   if (!$showWood) {
-       die("Error al obtener madera: " . $con->error);
-   }
-   
-   /* Obteniendo patas */
-   $getLegs = "SELECT id, nombre FROM materiales WHERE tipo = 'patas'";
-   $showLegs = $con->query($getLegs);
-   if (!$showLegs) {
-       die("Error al obtener patas: " . $con->error);
-   }
-   
-   /* Obteniendo telas */
-   $getFabrics = "SELECT id, nombre FROM materiales WHERE tipo = 'telas'";
-   $showFabrics = $con->query($getFabrics);
-   if (!$showFabrics) {
-       die("Error al obtener telas: " . $con->error);
-   }
-   
-   /* ----> Aqui termino materiales */
-   
-   /* Obteniendo de accesorios el nombre */
-   $getAccesories = "SELECT id, nombre FROM accesorios";
-   $showAccesories = $con->query($getAccesories);
-   if (!$showAccesories) {
-       die("Error al obtener accesorios: " . $con->error);
-   }
-   
-   /* Obtieniendo proveedores el nombre */
-   $getProviders = "SELECT id, nombre FROM proveedores";
-   $showProviders = $con->query($getProviders);
-   if (!$showProviders) {
-       die("Error al obtener proveedores: " . $con->error);
-   }
-   
-   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-       // Obtener los valores del formulario
-       $nombre_producto = $_POST['nombre_producto'];
-       $categoria_id = $_POST['categoria_id'];
-       $existencia = $_POST['existencia'];
-       $descripcion = $_POST['descripcion'];
-       $tipoProducto_id = $_POST['tipoProducto_id'];
-       $color_id = $_POST['color_id'];
-       $relleno_id = $_POST['relleno_id'];
-       $madera_id = $_POST['madera_id'];
-       $patas_id = $_POST['patas_id'];
-       $telas_id = $_POST['telas_id'];
-       $precio = $_POST['precio'];
-       $precioVenta = $_POST['precioVenta'];
-       $proveedor_id = $_POST['proveedor_id'];
-       $fechaCompra = $_POST['fechaCompra'];
-       $garantia = $_POST['garantia'];
-   
-       // Preparar la consulta SQL para insertar el nuevo producto
-       $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-   
-       // Preparar la declaración
-       if ($stmt = $con->prepare($sql)) {
-           // Vincular los parámetros
-           $stmt->bind_param("siissiiiiidissi", $nombre_producto, $categoria_id, $existencia, $descripcion, $tipoProducto_id, $color_id, $relleno_id, $madera_id, $patas_id, $telas_id, $precio, $precioVenta, $proveedor_id, $fechaCompra, $garantia);
-   
-           // Ejecutar la declaración
-           if ($stmt->execute()) {
-               // Generar el script de JavaScript para mostrar los datos insertados
-               echo "<script>
-                   alert('Producto agregado exitosamente.\\n\\n" .
-                   "Nombre del Producto: $nombre_producto\\n" .
-                   "Categoría ID: $categoria_id\\n" .
-                   "Existencia: $existencia\\n" .
-                   "Descripción: $descripcion\\n" .
-                   "Tipo Producto ID: $tipoProducto_id\\n" .
-                   "Color ID: $color_id\\n" .
-                   "Relleno ID: $relleno_id\\n" .
-                   "Madera ID: $madera_id\\n" .
-                   "Patas ID: $patas_id\\n" .
-                   "Telas ID: $telas_id\\n" .
-                   "Precio: $precio\\n" .
-                   "Precio Venta: $precioVenta\\n" .
-                   "Proveedor ID: $proveedor_id\\n" .
-                   "Fecha de Compra: $fechaCompra\\n" .
-                   "Garantía: $garantia');
-                   window.location.href = 'panel.php?modulo=agregarProductos';
-               </script>";
-           } else {
-               echo "Error en la ejecución: " . $stmt->error;
-           }
-   
-           // Cerrar la declaración
-           $stmt->close();
-       } else {
-           echo "Error en la preparación: " . $con->error;
-       }
-   
-       // Cerrar la conexión
-       $con->close();
-   }
-   ?>
+include_once 'db.php';
+
+// Función para obtener datos de una tabla
+function obtenerDatos($con, $tabla) {
+    $sql = "SELECT id, nombre FROM $tabla";
+    $result = $con->query($sql);
+    if (!$result) {
+        throw new Exception("Error al obtener datos de $tabla: " . $con->error);
+    }
+    return $result;
+}
+
+// Función para insertar un producto
+function insertarProducto($con, $datos) {
+    $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("siissiiiiidissi", ...array_values($datos));
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $producto_id = $stmt->insert_id;
+    $stmt->close();
+    return $producto_id;
+}
+
+// Función para insertar una imagen
+function insertarImagen($con, $ruta, $producto_id, $frontend_id) {
+    $sql_image = "INSERT INTO imagenes_productos (ruta, producto_id, frontend_id) VALUES (?, ?, ?)";
+    $stmt_image = $con->prepare($sql_image);
+    if (!$stmt_image) {
+        throw new Exception("Error en la preparación de la imagen: " . $con->error);
+    }
+    $stmt_image->bind_param("sis", $ruta, $producto_id, $frontend_id);
+    if (!$stmt_image->execute()) {
+        throw new Exception("Error en la ejecución de la imagen: " . $stmt_image->error);
+    }
+    $stmt_image->close();
+}
+
+// Obtener datos de las tablas necesarias
+try {
+    $showCategory = obtenerDatos($con, 'categorias');
+    $showTypeProduct = obtenerDatos($con, 'tipoProducto');
+    $showColors = obtenerDatos($con, 'color');
+    $showStuffed = obtenerDatos($con, "materiales WHERE tipo = 'relleno'");
+    $showWood = obtenerDatos($con, "materiales WHERE tipo = 'madera'");
+    $showLegs = obtenerDatos($con, "materiales WHERE tipo = 'patas'");
+    $showFabrics = obtenerDatos($con, "materiales WHERE tipo = 'telas'");
+    $showAccesories = obtenerDatos($con, 'accesorios');
+    $showProviders = obtenerDatos($con, 'proveedores');
+} catch (Exception $e) {
+    die($e->getMessage());
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        // Obtener y sanitizar los valores del formulario
+        $datos = [
+            'nombre_producto' => htmlspecialchars($_POST['nombre_producto']),
+            'categoria_id' => filter_var($_POST['categoria_id'], FILTER_VALIDATE_INT),
+            'existencia' => filter_var($_POST['existencia'], FILTER_VALIDATE_INT),
+            'descripcion' => htmlspecialchars($_POST['descripcion']),
+            'tipoProducto_id' => filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT),
+            'color_id' => filter_var($_POST['color_id'], FILTER_VALIDATE_INT),
+            'relleno_id' => filter_var($_POST['relleno_id'], FILTER_VALIDATE_INT),
+            'madera_id' => filter_var($_POST['madera_id'], FILTER_VALIDATE_INT),
+            'patas_id' => filter_var($_POST['patas_id'], FILTER_VALIDATE_INT),
+            'telas_id' => filter_var($_POST['telas_id'], FILTER_VALIDATE_INT),
+            'precio' => filter_var($_POST['precio'], FILTER_VALIDATE_FLOAT),
+            'precioVenta' => filter_var($_POST['precioVenta'], FILTER_VALIDATE_FLOAT),
+            'proveedor_id' => filter_var($_POST['proveedor_id'], FILTER_VALIDATE_INT),
+            'fechaCompra' => htmlspecialchars($_POST['fechaCompra']),
+            'garantia' => htmlspecialchars($_POST['garantia'])
+        ];
+
+        // Insertar el producto
+        $producto_id = insertarProducto($con, $datos);
+
+        // Manejar la subida de la imagen
+        if (isset($_FILES['imageUpload-product']) && $_FILES['imageUpload-product']['error'] == UPLOAD_ERR_OK) {
+            $imagen = $_FILES['imageUpload-product'];
+            $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
+            $nombre_imagen = uniqid() . '.' . $extension;
+            $ruta_carpeta = "../backend/media/admin/product/linea/" . $datos['nombre_producto'];
+            $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
+            $ruta_imagen_bd = "backend/media/admin/product/linea/" . $datos['nombre_producto'] . "/" . $nombre_imagen;
+
+            // Verificar si la carpeta existe, si no, crearla
+            if (!is_dir($ruta_carpeta)) {
+                mkdir($ruta_carpeta, 0777, true);
+            }
+
+            if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
+                throw new Exception("Error al mover la imagen subida.");
+            }
+
+            // Insertar la imagen en la tabla imagenes_productos
+            insertarImagen($con, $ruta_imagen_bd, $producto_id, $nombre_imagen);
+        } else {
+            throw new Exception("Error en la subida de la imagen.");
+        }
+
+        // Redirigir a una página de confirmación
+        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=agregarProductos&mensaje=Producto agregado exitosamente">';
+
+    } catch (Exception $e) {
+        die($e->getMessage());
+    } 
+
+    // Cerrar la conexión
+    $con->close();
+}
+?>
+
+
 <!-- Estilos para los inputs tipo imagenes --> 
 <link rel="stylesheet" href="./css/files.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -137,6 +124,12 @@
 <div class="content-wrapper">
    <!-- Content Header (Page header) -->
    <section class="content-header">
+   
+
+   <!-- <div class="alert alert-danger" role="alert">
+      Procesando.. 
+    </div> -->
+
       <div class="container-fluid">
          <div class="row mb-2">
             <div class="col-sm-6">
@@ -154,24 +147,26 @@
                <div class="card">
                   <!-- /.card-header -->
                   <div class="card-body">
-                     <form id="formValidated" action="panel.php?modulo=agregarProductos" method="POST">
+                     <form id="formValidated" action="panel.php?modulo=agregarProductos" method="POST" enctype="multipart/form-data">
                         <div class="row ">
                            <div class="col-md-4">
                               <div class="form-group">
                                  <div class="">
                                     <h2>Información del producto</h2>
+
+
                                  </div>
                                  
                                  <!-- contenedor con bordes tipo punteado -->
                                  <div class="product-upload" style="max-width: 100%;">
                                        <div class="product-edit">
-                                          <input type="file" id="imageUpload-product" accept=".png, .jpg, .jpeg" required>
+                                          <input type="file" name="imageUpload-product" id="imageUpload-product" accept=".png, .jpg, .jpeg" required>
                                           <label for="imageUpload-product"></label>
                                        </div>
                                        <div class="product-preview" id="drop-area-product" style="width: 100%; height: 36vh; border-radius: 5px;">
                                           <div id="imagePreview-product" class="dropzone-desc" style="border-radius: 5px;">
                                              <i class="fa fa-image"></i>
-                                             <p>Imagen Principal</p>
+                                             <p>Frontal</p>
                                           </div>
                                           <div class="loading-container" id="loadingContainer-product" style="display: none;">
                                              <div></div>
@@ -190,20 +185,49 @@
                                              </div>
                                           </div>
                                        </div>
-                                    </div>
+                                    </div> <!-- Fin del contendor puntedo -->
                                     
 
-                                    <!-- fin de input de imagen -->
+                                       <div class="row justify-content-around" style="margin-top: -3vh;"><!-- Aqui agregar un div, que es dentro de este que divida en 5 columnas -->
+                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
+                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
+                                                   <span class="fa fa-image"></span> F
+                                               </button>
+                                           </div>
+                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
+                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
+                                                   <span class="fa fa-image"></span> LI
+                                               </button>
+                                           </div>
+                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
+                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
+                                                   <span class="fa fa-image"></span> R
+                                               </button>
+                                           </div>
+                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
+                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
+                                                   <span class="fa fa-image"></span> LD
+                                               </button>
+                                           </div>
+                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
+                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
+                                                   <span class="fa fa-image"></span> T
+                                               </button>
+                                           </div>
+                                       </div><!-- Aqui termina la row de 5 col -->
+
+                                 
 
                                  
                               
-                                  </div>
+                              </div> <!-- Fin del grupo form -->
 
                               
                               <div class="form-group active-full">
                                  <label for="nombre_producto">Nombre del Producto</label>
                                  <input type="text" name="nombre_producto" id="nombre_producto" class="form-control" required>
                               </div>
+
                               <div class="form-group active-full">
                                  <div id="category-input-main">
                                     <label for="categoria_id">Categoría</label>
@@ -723,7 +747,7 @@
                                  <!-- Contenido del div -->
                                  <div id="phone-view-1" data-src="http://localhost/sensi/view.e.html" class="d-none d-md-block" style="width: 70%; height: 100%;"></div>
                                  <!-- <button type="submit" class="btn btn-primary btn-smg mt-0 mt-md-3" name="guardar">Agregar producto</button> -->
-                                 <button type="submit" name="guardar" class="btn btn-primary">Guardar</button>
+                                 <button type="submit" name="guardar" class="btn btn-secondary mt-2">Guardar</button>
                                  <!-- C:\xampp\htdocs\sensi\view.e.html -->
                               </div>
                            </div>
@@ -765,6 +789,7 @@
    </section>
 
    <script src="./middleware/inputs.products.js"></script>
+   
    <script src="./middleware/hidden.material.form.js"></script>
    <script src="./middleware/hidden.select.color.js"></script>
    <script src="./middleware/hidden.measures.js"></script>

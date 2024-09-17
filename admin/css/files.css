@@ -28,7 +28,7 @@
 }
 
 .product-upload .product-edit input {
-    display: none;
+    opacity: 0;
 }
 
 .product-upload .product-edit input + label {

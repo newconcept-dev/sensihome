@@ -1,109 +1,60 @@
 <?php
-    /* Conexion */
-    include_once 'db.php';
-    $con = mysqli_connect($host, $user, $password, $db);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        // Obtener y sanitizar los valores del formulario
+        $nombre_producto = htmlspecialchars($_POST['nombre_producto']);
 
-    if (isset($_REQUEST['idBorrar'])){
-        $id = mysqli_real_escape_string($con, $_REQUEST['idBorrar']??'');
-        /* Elimar usuario del id = id */
-        $query = "DELETE FROM usuarios WHERE id = '$id'";
-        $res = mysqli_query($con, $query);
+        // Manejar la subida de la imagen
+        if (isset($_FILES['imageUpload-product']) && $_FILES['imageUpload-product']['error'] == UPLOAD_ERR_OK) {
+            $imagen = $_FILES['imageUpload-product'];
+            $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
+            $nombre_imagen = uniqid() . '.' . $extension;
+            $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
+            $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
 
-        if ($res){
-            ?>
-            <div class="alert alert-warning float-right" role="alert">
-                Usuario eliminado exitosamente
+            // Verificar si la carpeta existe, si no, crearla
+            if (!is_dir($ruta_carpeta)) {
+                mkdir($ruta_carpeta, 0777, true);
+            }
 
-            </div>
-            <?php
+            if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
+                throw new Exception("Error al mover la imagen subida.");
+            }
+
+            // Redirigir a una página de confirmación o mostrar un mensaje de éxito
+            echo "<script>
+                alert('Imagen subida exitosamente.');
+                window.location.href = 'panel.php?modulo=test';
+            </script>";
+        } else {
+            throw new Exception("Error en la subida de la imagen.");
         }
-        else {
-            ?>
-            <div class="alert alert-danger float-right" role="alert">
-                Error al eliminar el usuario <?php echo mysqli_error($con)?>
-            </div>
-            <?php
-        } 
+    } catch (Exception $e) {
+        die($e->getMessage());
     }
+}
 ?>
 
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Usuarios</h1>
-          </div>
-          
-        </div>
-      </div><!-- /.container-fluid -->
-    </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Prueba de inserción</title>
+</head>
+<body>
+   
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
+   <form action="panel.php?modulo=test" method="POST" enctype="multipart/form-data">
+      <img src="../backend/media/admin/product/linea/acercad.jpg" alt="">
 
-              <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Email</th>
-                    <th>Acciones
-                        <a href="panel.php?modulo=crearUsuario"><i class="fa fa-plus" aria-hidden="true"></i></a>
-                    </th>                    
-                  </tr>
-                  </thead>
+      <label for="nombre_producto">Nombre del Producto</label>
+      <input type="text" name="nombre_producto" id="nombre_producto" class="form-control" required>
+                                 
+      <label for="imagen">Sube aquí</label>
+      <input type="file" name="imageUpload-product" id="imageUpload-product" required>
 
-                  <tbody>
-                    <?php
-                        include_once 'db.php';
-
-                        $con = mysqli_connect($host, $user, $password, $db);
-                
-                    
-                        /* Consulta */
-                        $query = "SELECT id, email, nombre FROM usuarios ";
-                        $res = mysqli_query($con, $query);
-                    
-                        $row = mysqli_fetch_assoc($res);
-
-                        while ($row = mysqli_fetch_assoc($res)) {
-                            ?>
-                  <tr>
-                    <td><?php echo $row['nombre']?></td>
-                    <td><?php echo $row['email']?></td>
-                    <td>       
-                        <a href="panel.php?modulo=editarUsuario&id=<?php echo $row['id']?>" style="margin-right: 2em;"> <li class="fas fa-edit"></li></a>
-                        <a href="panel.php?modulo=usuarios&idBorrar=<?php echo $row['id']?>" class="text-danger borrar"> <li class="fas fa-trash"></li></a>
-                        
-
-                    </td>
-
-                  </tr>
-                  <?php
-                        }
-                        ?>
-                  </tbody>
-                </table>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-
-
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-        </div>
-        <!-- /.row -->
-      </div>
-      <!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
+      <input type="submit" value="Subir">
+   </form>
+</body>
+</html>

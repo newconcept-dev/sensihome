@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         preview.classList.add('drop-zone--over');
         dropzoneDesc.innerHTML = `
             <i class="fa fa-check"></i>
-            <p>Subido con exito</p>
+            <p>Subido con éxito</p>
         `;
     }
 
@@ -90,6 +90,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     previewFile(file);
                 }, 500); // Añadir un retraso de 1 segundo antes de previsualizar la imagen
+
+                // Asignar el archivo al input de archivo
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(file);
+                input.files = dataTransfer.files;
             } else {
                 showError();
             }
