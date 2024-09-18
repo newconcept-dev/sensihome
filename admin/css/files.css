@@ -7,7 +7,7 @@
 .product-upload .product-preview {
     position: relative;
     border-radius: 100%;
-    border: 4px dashed #cccccc5b;
+    border: 4px dashed #cccccc81;
     overflow: hidden;
 }
 
@@ -61,7 +61,7 @@
     top: 5px;
 }
 
-#drop-area-product {
+.drop-area {
     border: 4px dashed #ccc;
     border-radius: 100%;
     padding: 0px;
@@ -69,15 +69,15 @@
     transition: border-color 0.3s, background-color 0.3s;
 }
 
-#drop-area-product.loaded {
+.drop-area.loaded {
     border: 4px dashed #ccc;
 }
 
-#drop-area-product.loaded.non-image {
+.drop-area.loaded.non-image {
     background-color: rgba(67, 255, 10, 0.2);
 }
 
-#drop-area-product.error {
+.drop-area.error {
     border-color: red;
     background-color: rgba(255, 0, 0, 0.2);
 }
@@ -102,7 +102,7 @@
 }
 
 /* Estilos para el estado de arrastre */
-#drop-area-product.drop-zone--over {
+.drop-area.drop-zone--over {
     border-color: #40f00bf1;
 }
 
@@ -115,7 +115,7 @@
 }
 
 /* Estilos para el estado de archivo posicionado */
-#drop-area-product.drop-zone--positioning {
+.drop-area.drop-zone--positioning {
     border-color: #007bff;
 }
 
@@ -128,7 +128,7 @@
 }
 
 /* Estilos para el estado de error */
-#drop-area-product.drop-zone--error {
+.drop-area.drop-zone--error {
     border-color: red;
 }
 
@@ -141,9 +141,6 @@
 }
 
 /* Estilos para el estado de imagen subida */
-#drop-area-product.image-uploaded {
+.drop-area.image-uploaded {
     border: none;
 }
-
-/* Pop Pup */
-

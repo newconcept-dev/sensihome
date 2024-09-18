@@ -81,8 +81,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $producto_id = insertarProducto($con, $datos);
 
         // Manejar la subida de la imagen
-        if (isset($_FILES['imageUpload-product']) && $_FILES['imageUpload-product']['error'] == UPLOAD_ERR_OK) {
-            $imagen = $_FILES['imageUpload-product'];
+        if (isset($_FILES['imageUpload-front']) && $_FILES['imageUpload-front']['error'] == UPLOAD_ERR_OK) {
+            $imagen = $_FILES['imageUpload-front'];
             $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
             $nombre_imagen = uniqid() . '.' . $extension;
             $ruta_carpeta = "../backend/media/admin/product/linea/" . $datos['nombre_producto'];
@@ -117,10 +117,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 
+
 <!-- Estilos para los inputs tipo imagenes --> 
 <link rel="stylesheet" href="./css/files.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!-- <link rel="stylesheet" href="./agregarProducto.css"> -->
+
+<!-- Bootstrap Switch -->
+
 <div class="content-wrapper">
    <!-- Content Header (Page header) -->
    <section class="content-header">
@@ -157,70 +161,228 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                  </div>
                                  
-                                 <!-- contenedor con bordes tipo punteado -->
-                                 <div class="product-upload" style="max-width: 100%;">
-                                       <div class="product-edit">
-                                          <input type="file" name="imageUpload-product" id="imageUpload-product" accept=".png, .jpg, .jpeg" required>
-                                          <label for="imageUpload-product"></label>
+                                 <!-- Añadir más instancias aquí -->
+                                 <div class="product-upload" style="max-width: 100%;" id="container-imageUpload-front">
+                                    <div class="product-edit">
+                                       <input type="file" name="imageUpload-front" id="imageUpload-front" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <label for="imageUpload-front"></label>
+                                    </div>
+                                    <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                       <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                          <i class="fa fa-image"></i>
+                                          <p>Frontal</p>
                                        </div>
-                                       <div class="product-preview" id="drop-area-product" style="width: 100%; height: 36vh; border-radius: 5px;">
-                                          <div id="imagePreview-product" class="dropzone-desc" style="border-radius: 5px;">
-                                             <i class="fa fa-image"></i>
-                                             <p>Frontal</p>
+                                       <div class="loading-container" style="display: none;">
+                                          <div></div>
+                                          <div class="checkmark-container" style="display: none;">
+                                             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                             </svg>
                                           </div>
-                                          <div class="loading-container" id="loadingContainer-product" style="display: none;">
-                                             <div></div>
-                                             <div class="checkmark-container" id="checkmarkContainer-product" style="display: none;">
-                                                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                                   <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-                                                   <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-                                                </svg>
-                                             </div>
-                                             <div class="error-container" id="errorContainer-product" style="display: none;">
-                                                <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                                   <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
-                                                   <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
-                                                   <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
-                                                </svg>
-                                             </div>
+                                          <div class="error-container" style="display: none;">
+                                             <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                             </svg>
                                           </div>
                                        </div>
-                                    </div> <!-- Fin del contendor puntedo -->
+                                    </div>
+                                 </div> <!-- Fin del contendor puntedo -->
+
+                                 <!-- Añadir más instancias aquí -->
+                                 <div class="product-upload" style="max-width: 100%; display:none;" id="container-left-view-product">
+                                    <div class="product-edit">
+                                       <input type="file" name="left-view-product" id="left-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <label for="left-view-product"></label>
+                                    </div>
+                                    <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                       <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                          <i class="fa fa-image"></i>
+                                          <p>Vista lateral Izquierda</p>
+                                       </div>
+                                       <div class="loading-container" style="display: none;">
+                                          <div></div>
+                                          <div class="checkmark-container" style="display: none;">
+                                             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                             </svg>
+                                          </div>
+                                          <div class="error-container" style="display: none;">
+                                             <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                             </svg>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div> <!-- Fin del contendor puntedo -->
+
+
+                              <!-- Añadir más instancias aquí -->
+                                 <div class="product-upload" style="max-width: 100%; display:none;" id="container-straight-view-product">
+                                    <div class="product-edit">
+                                       <input type="file" name="straight-view-product" id="straight-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <label for="straight-view-product"></label>
+                                    </div>
+                                    <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                       <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                          <i class="fa fa-image"></i>
+                                          <p>Vista recta</p>
+                                       </div>
+                                       <div class="loading-container" style="display: none;">
+                                          <div></div>
+                                          <div class="checkmark-container" style="display: none;">
+                                             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                             </svg>
+                                          </div>
+                                          <div class="error-container" style="display: none;">
+                                             <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                             </svg>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div> <!-- Fin del contendor puntedo -->
+
+                                 <!-- Añadir más instancias aquí -->
+                                 <div class="product-upload" style="max-width: 100%; display:none;" id="container-right-view-product">
+                                    <div class="product-edit">
+                                       <input type="file" name="right-view-product" id="right-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <label for="right-view-product"></label>
+                                    </div>
+                                    <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                       <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                          <i class="fa fa-image"></i>
+                                          <p>Vista lateral derecha</p>
+                                       </div>
+                                       <div class="loading-container" style="display: none;">
+                                          <div></div>
+                                          <div class="checkmark-container" style="display: none;">
+                                             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                             </svg>
+                                          </div>
+                                          <div class="error-container" style="display: none;">
+                                             <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                             </svg>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div> <!-- Fin del contendor puntedo -->
+
+                                 <!-- Añadir más instancias aquí -->
+                                    <div class="product-upload" style="max-width: 100%; display:none;" id="container-back-view-product">
+                                    <div class="product-edit">
+                                       <input type="file" name="back-view-product" id="back-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <label for="back-view-product"></label>
+                                    </div>
+                                    <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                       <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                          <i class="fa fa-image"></i>
+                                          <p>Vista trasera</p>
+                                       </div>
+                                       <div class="loading-container" style="display: none;">
+                                          <div></div>
+                                          <div class="checkmark-container" style="display: none;">
+                                             <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                             </svg>
+                                          </div>
+                                          <div class="error-container" style="display: none;">
+                                             <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                             </svg>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div> <!-- Fin del contendor puntedo -->
+
                                     
 
-                                       <div class="row justify-content-around" style="margin-top: -3vh;"><!-- Aqui agregar un div, que es dentro de este que divida en 5 columnas -->
-                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
-                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
-                                                   <span class="fa fa-image"></span> F
-                                               </button>
-                                           </div>
-                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
-                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
-                                                   <span class="fa fa-image"></span> LI
-                                               </button>
-                                           </div>
-                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
-                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
-                                                   <span class="fa fa-image"></span> R
-                                               </button>
-                                           </div>
-                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
-                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
-                                                   <span class="fa fa-image"></span> LD
-                                               </button>
-                                           </div>
-                                           <div class="col-lg-2 col-md-4 col-sm-6 mb-3 d-flex justify-content-center">
-                                               <button class="btn btn-secondary w-100 text-truncate" style="height: 5vh;">
-                                                   <span class="fa fa-image"></span> T
-                                               </button>
-                                           </div>
-                                       </div><!-- Aqui termina la row de 5 col -->
+                                    
 
-                                 
+                              <div class="row justify-content-around" style="margin-top: -3vh;">
+                                  <div class="col-2 mb-3 d-flex justify-content-center">
+                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-imageUpload-front">
+                                          <div class="d-flex flex-md-row flex-column align-items-center">
+                                              <span class="fa fa-image"></span>
+                                              <span class="d-md-inline d-none ml-1">F</span>
+                                              <span class="d-md-none d-inline">F</span>
+                                          </div>
+                                      </button>
+                                  </div>
+                                  <div class="col-2 mb-3 d-flex justify-content-center">
+                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-left-view-product">
+                                          <div class="d-flex flex-md-row flex-column align-items-center">
+                                              <span class="fa fa-image"></span>
+                                              <span class="d-md-inline d-none ml-1">LI</span>
+                                              <span class="d-md-none d-inline">LI</span>
+                                          </div>
+                                      </button>
+                                  </div>
+                                  <div class="col-2 mb-3 d-flex justify-content-center">
+                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-straight-view-product">
+                                          <div class="d-flex flex-md-row flex-column align-items-center">
+                                              <span class="fa fa-image"></span>
+                                              <span class="d-md-inline d-none ml-1">R</span>
+                                              <span class="d-md-none d-inline">R</span>
+                                          </div>
+                                      </button>
+                                  </div>
+                                  <div class="col-2 mb-3 d-flex justify-content-center">
+                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-right-view-product">
+                                          <div class="d-flex flex-md-row flex-column align-items-center">
+                                              <span class="fa fa-image"></span>
+                                              <span class="d-md-inline d-none ml-1">LD</span>
+                                              <span class="d-md-none d-inline">LD</span>
+                                          </div>
+                                      </button>
+                                  </div>
+                                  <div class="col-2 mb-3 d-flex justify-content-center">
+                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-back-view-product">
+                                          <div class="d-flex flex-md-row flex-column align-items-center">
+                                              <span class="fa fa-image"></span>
+                                              <span class="d-md-inline d-none ml-1">T</span>
+                                              <span class="d-md-none d-inline">T</span>
+                                          </div>
+                                      </button>
+                                  </div>
+                              </div>
+                                                               
 
                                  
                               
-                              </div> <!-- Fin del grupo form -->
+                             
+                                    </div> <!-- Fin del grupo form -->
+
+                                      <div class="form-group d-flex justify-content-between">
+                                        <div class="form-check form-switch ml-2 d-inline-block">
+                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault1">
+                                          <label class="form-check-label" for="flexSwitchCheckDefault1">¿Es una sala completa?</label>
+                                        </div>
+
+                                        <div class="form-check form-switch mr-3 d-inline-block">
+                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
+                                          <label class="form-check-label" for="flexSwitchCheckDefault2">¿Tiene detalle en la tela?</label>
+                                        </div>
+                                      </div>
+
+                              
 
                               
                               <div class="form-group active-full">
@@ -256,17 +418,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                  </div>
                               </div>
+
                               <div class="form-group">
-                                 <label>Darle promoción a este producto</label>
-                                 <div><input type="checkbox" name="my-checkbox" unchecked data-bootstrap-switch></div>
+                                       <label>Estado del producto</label>
+                                      <div class="form-group d-flex justify-content-between">
+                                        <div class="form-check form-switch ml-2 d-inline-block">
+                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault1">
+                                          <label class="form-check-label" for="flexSwitchCheckDefault1">Activar venta del producto</label>
+                                        </div>
+
+                                        <div class="form-check form-switch mr-3 d-inline-block">
+                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
+                                          <label class="form-check-label" for="flexSwitchCheckDefault2">Promocionar</label>
+                                        </div>
+                                      </div>
                               </div>
-                              <div class="form-group">
-                                 <label>En venta</label>
-                                 <div><input type="checkbox" name="my-checkbox" unchecked data-bootstrap-switch></div>
-                              </div>
+
                               <div class="form-group active-full">
-                                 <label for="existencia">Stock</label>
-                                 <input type="number" name="existencia" id="existencia" class="form-control" required>
+                                 <label for="existencia">Cantidad de piezas/Conjunto</label>
+                                 <input type="number" name="existencia" id="existencia" class="form-control" min="1" required>
                               </div>
                               <div class="form-group active-full">
                                  <label for="descripcion">Descripción</label>
@@ -498,7 +668,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               </div>
                               <!-- Fin de formulario de materiales -->     
                               <div class="form-group">
-                                 <label>Medidas</label>
+                                 <label>M+++++edidas</label>
                                  <input type="checkbox" id="measures-inputs" name="measures-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
                                  <!-- Contenedor para los inputs -->
                                  <div id="medidas-container">
@@ -515,6 +685,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                        <label>Largo asiento</label>
                                        <div class="input-group">
@@ -527,6 +698,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                        <label>Fondo</label>
                                        <div class="input-group">
@@ -539,6 +711,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                        <label>Fondo del asiento</label>
                                        <div class="input-group">
@@ -551,6 +724,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                        <label>Ancho del Brazo</label>
                                        <div class="input-group">
@@ -563,6 +737,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                        <label>Ancho del respaldo</label>
                                        <div class="input-group">
@@ -575,6 +750,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+
                                     <div class="form-group">
                                        <label>Altura</label>
                                        <div class="input-group">
@@ -649,10 +825,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                  </div>
                               </div>
+
                               <div class="form-group active-full">
                                  <label>Peso</label>
                                  <div class="input-group">
-                                    <input type="number" name="peso" class="form-control input-change">
+                                    <input type="number" name="peso" class="form-control input-change" min="0">
                                     <div class="input-group-append">
                                        <span class="input-group-text">
                                        <small class="mr-2">Kg</small>
@@ -691,7 +868,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="form-group active-full">
                                  <label>Precio Compra</label>
                                  <div class="input-group">
-                                    <input type="number" name="precio" id="precio" class="form-control input-change">
+                                    <input type="number" name="precio" id="precio" class="form-control input-change" min="100">
                                     <div class="input-group-append">
                                        <span class="input-group-text">
                                        <i class="fas fa-dollar-sign icon-color-change"></i>
@@ -702,7 +879,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="form-group active-full">
                                  <label>Precio de venta</label>
                                  <div class="input-group">
-                                    <input type="number" name="precioVenta" id="precioVenta" class="form-control input-change">
+                                    <input type="number" name="precioVenta" id="precioVenta" class="form-control input-change" min="4000">
                                     <div class="input-group-append">
                                        <span class="input-group-text">
                                        <i class="fas fa-dollar-sign icon-color-change"></i>
@@ -801,4 +978,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    <script src="./middleware/hidden.type.product.js"></script>
    <!-- modal de la camara -->
    <script src="./middleware/modal.cam.js"></script>
+
+   <script src="./middleware/hidden.inputs.images.js"></script>
+   
+   <!-- RDLS -->
+
+
+   
 </div>

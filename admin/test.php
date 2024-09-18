@@ -1,60 +1,67 @@
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    try {
-        // Obtener y sanitizar los valores del formulario
-        $nombre_producto = htmlspecialchars($_POST['nombre_producto']);
+<!-- Estilos propios -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 
-        // Manejar la subida de la imagen
-        if (isset($_FILES['imageUpload-product']) && $_FILES['imageUpload-product']['error'] == UPLOAD_ERR_OK) {
-            $imagen = $_FILES['imageUpload-product'];
-            $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
-            $nombre_imagen = uniqid() . '.' . $extension;
-            $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
-            $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
 
-            // Verificar si la carpeta existe, si no, crearla
-            if (!is_dir($ruta_carpeta)) {
-                mkdir($ruta_carpeta, 0777, true);
-            }
 
-            if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
-                throw new Exception("Error al mover la imagen subida.");
-            }
 
-            // Redirigir a una página de confirmación o mostrar un mensaje de éxito
-            echo "<script>
-                alert('Imagen subida exitosamente.');
-                window.location.href = 'panel.php?modulo=test';
-            </script>";
-        } else {
-            throw new Exception("Error en la subida de la imagen.");
-        }
-    } catch (Exception $e) {
-        die($e->getMessage());
-    }
-}
-?>
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Productos</h1>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </section>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Prueba de inserción</title>
-</head>
-<body>
-   
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <!-- /.card-header -->
+                        <div class="card-body">
 
-   <form action="panel.php?modulo=test" method="POST" enctype="multipart/form-data">
-      <img src="../backend/media/admin/product/linea/acercad.jpg" alt="">
+                            <div class="app-container">
 
-      <label for="nombre_producto">Nombre del Producto</label>
-      <input type="text" name="nombre_producto" id="nombre_producto" class="form-control" required>
-                                 
-      <label for="imagen">Sube aquí</label>
-      <input type="file" name="imageUpload-product" id="imageUpload-product" required>
+                                <div>
+                                    <h1>Medidor automata</h1>
+                                    <hr style="width: 3px; height: 50vh; background-color: #000; margin: 0 auto; position:absolute; margin-top: 40vh; margin-left: 8vh;">
+                                    <div class="medidor-container border" style="height: 80%;">
+                                        <img src="../backend/media/admin/product/linea/Andes/66e9be1977a29.png" alt="" style="width: 100%;">                                                            
+                                        
+                                    </div>
 
-      <input type="submit" value="Subir">
-   </form>
-</body>
-</html>
+                                    <div><hr style="width: 90%;  border: 1px solid #000; margin-top: -15vh;">alto</div>
+
+                                    
+                                    
+                                </div>
+
+                                
+
+
+                                
+                            </div>
+
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </section>
+
+    <!-- Scripts -->
+    <script src="./middleware/list.products.js"></script>
+    <!-- category-hiden -->
+</div>
