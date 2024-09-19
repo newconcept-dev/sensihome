@@ -563,6 +563,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  <label for="descripcion">Descripción</label>
                                  <textarea name="descripcion" id="descripcion" class="form-control" required></textarea>
                               </div>
+
                               <div class="form-group active-full">
                                  <div id="type-input-main">
                                     <label for="tipoProducto_id">Tipo de Producto</label>
@@ -588,11 +589,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  <div id="type-product-container" style="display: none;">
                                     <div class="form-group" style="margin-top: -1vh;">
                                        <label>Nombre del tipo de producto</label>
-                                       <input type="text" name="nameNewProduct" class="form-control">
+                                       <input type="text" name="name_new_type" class="form-control">
                                     </div>
                                  </div>
                               </div>
                            </div>
+
                            <div class="col-md-4 ml-md-3 ml-0">
                               <div class="form-group active-full">
                                  <label for="color_id">Color</label>
