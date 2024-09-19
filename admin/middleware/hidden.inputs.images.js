@@ -1,12 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const buttons = document.querySelectorAll('.btn.btn-secondary, .btn.btn-primary');
+    const imageButtons = document.querySelectorAll('.image-btn'); // Cambia la clase de los botones de imagen a 'image-btn'
 
-    buttons.forEach(button => {
+    imageButtons.forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.getAttribute('data-target');
             const targetContainer = document.getElementById(targetId);
 
-            // Ocultar todos los contenedores
+            // Ocultar todos los contenedores de imágenes
             document.querySelectorAll('.product-upload').forEach(container => {
                 container.style.display = 'none';
             });
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Cambiar la clase del botón seleccionado
-            buttons.forEach(btn => {
+            imageButtons.forEach(btn => {
                 btn.classList.remove('btn-primary');
                 btn.classList.add('btn-secondary');
             });
@@ -32,7 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
         'left-view-product',
         'straight-view-product',
         'right-view-product',
-        'back-view-product'
+        'back-view-product',
+        'complete-product', // Nuevo input
+        'detail-product'    // Nuevo input
     ];
 
     fileInputs.forEach(inputId => {

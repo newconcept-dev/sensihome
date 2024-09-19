@@ -18,13 +18,29 @@ function insertarProducto($con, $datos) {
     if (!$stmt) {
         throw new Exception("Error en la preparación: " . $con->error);
     }
-    $stmt->bind_param("siissiiiiidissi", ...array_values($datos));
+    $stmt->bind_param("siissiiiiidisss", ...array_values($datos));
     if (!$stmt->execute()) {
         throw new Exception("Error en la ejecución: " . $stmt->error);
     }
     $producto_id = $stmt->insert_id;
     $stmt->close();
     return $producto_id;
+}
+
+// Función para insertar una categoría
+function insertarCategoria($con, $nombre, $n_modulos) {
+    $sql = "INSERT INTO categorias (nombre, n_modulos) VALUES (?, ?)";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("si", $nombre, $n_modulos);
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $categoria_id = $stmt->insert_id;
+    $stmt->close();
+    return $categoria_id;
 }
 
 // Función para insertar una imagen
@@ -58,10 +74,19 @@ try {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
+        // Verificar si se debe agregar una nueva categoría
+        if (isset($_POST['hidden-category']) && $_POST['hidden-category'] == 'on') {
+            $nombreCategoria = htmlspecialchars($_POST['nombreCategoria']);
+            $n_modulos = filter_var($_POST['n_modulos'], FILTER_VALIDATE_INT);
+            $categoria_id = insertarCategoria($con, $nombreCategoria, $n_modulos);
+        } else {
+            $categoria_id = filter_var($_POST['categoria_id'], FILTER_VALIDATE_INT);
+        }
+
         // Obtener y sanitizar los valores del formulario
         $datos = [
             'nombre_producto' => htmlspecialchars($_POST['nombre_producto']),
-            'categoria_id' => filter_var($_POST['categoria_id'], FILTER_VALIDATE_INT),
+            'categoria_id' => $categoria_id,
             'existencia' => filter_var($_POST['existencia'], FILTER_VALIDATE_INT),
             'descripcion' => htmlspecialchars($_POST['descripcion']),
             'tipoProducto_id' => filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT),
@@ -80,32 +105,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insertar el producto
         $producto_id = insertarProducto($con, $datos);
 
-        // Manejar la subida de la imagen
-        if (isset($_FILES['imageUpload-front']) && $_FILES['imageUpload-front']['error'] == UPLOAD_ERR_OK) {
-            $imagen = $_FILES['imageUpload-front'];
-            $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
-            $nombre_imagen = uniqid() . '.' . $extension;
-            $ruta_carpeta = "../backend/media/admin/product/linea/" . $datos['nombre_producto'];
-            $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
-            $ruta_imagen_bd = "backend/media/admin/product/linea/" . $datos['nombre_producto'] . "/" . $nombre_imagen;
+        // Función para manejar la subida de imágenes con prefijo
+        function manejarSubidaImagen($con, $input_name, $producto_id, $nombre_producto, $prefijo) {
+            if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
+                $imagen = $_FILES[$input_name];
+                $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
+                $nombre_imagen = $prefijo . '_' . uniqid() . '.' . $extension;
+                $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
+                $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
+                $ruta_imagen_bd = "backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
 
-            // Verificar si la carpeta existe, si no, crearla
-            if (!is_dir($ruta_carpeta)) {
-                mkdir($ruta_carpeta, 0777, true);
+                // Verificar si la carpeta existe, si no, crearla
+                if (!is_dir($ruta_carpeta)) {
+                    mkdir($ruta_carpeta, 0777, true);
+                }
+
+                if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
+                    throw new Exception("Error al mover la imagen subida.");
+                }
+
+                // Insertar la imagen en la tabla imagenes_productos
+                insertarImagen($con, $ruta_imagen_bd, $producto_id, $nombre_imagen);
             }
+        }
 
-            if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
-                throw new Exception("Error al mover la imagen subida.");
-            }
-
-            // Insertar la imagen en la tabla imagenes_productos
-            insertarImagen($con, $ruta_imagen_bd, $producto_id, $nombre_imagen);
-        } else {
-            throw new Exception("Error en la subida de la imagen.");
+        // Manejar la subida de las imágenes con prefijos
+        manejarSubidaImagen($con, 'imageUpload-front', $producto_id, $datos['nombre_producto'], 'front');
+        manejarSubidaImagen($con, 'left-view-product', $producto_id, $datos['nombre_producto'], 'left');
+        manejarSubidaImagen($con, 'straight-view-product', $producto_id, $datos['nombre_producto'], 'straight');
+        manejarSubidaImagen($con, 'right-view-product', $producto_id, $datos['nombre_producto'], 'right');
+        manejarSubidaImagen($con, 'back-view-product', $producto_id, $datos['nombre_producto'], 'back');
+        /* Opcionales  */
+        if (isset($_FILES['detail-product']) && $_FILES['detail-product']['error'] == UPLOAD_ERR_OK) {
+            manejarSubidaImagen($con, 'detail-product', $producto_id, $datos['nombre_producto'], 'dt');
+        }
+        if (isset($_FILES['complete-product']) && $_FILES['complete-product']['error'] == UPLOAD_ERR_OK) {
+            manejarSubidaImagen($con, 'complete-product', $producto_id, $datos['nombre_producto'], 'cmp');
         }
 
         // Redirigir a una página de confirmación
-        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=agregarProductos&mensaje=Producto agregado exitosamente">';
+        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto agregado exitosamente">';
 
     } catch (Exception $e) {
         die($e->getMessage());
@@ -115,7 +154,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $con->close();
 }
 ?>
-
 
 
 <!-- Estilos para los inputs tipo imagenes --> 
@@ -157,12 +195,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="form-group">
                                  <div class="">
                                     <h2>Información del producto</h2>
-
-
                                  </div>
                                  
+                                 <div class="form-group active-full">
+                                    <label for="nombre_producto">Nombre del Producto</label>
+                                    <input type="text" name="nombre_producto" id="nombre_producto" class="form-control" required>
+                                 </div>
+
+                                 <div class="form-group active-full" style="margin-top: -1vh;">
+                                 <div id="category-input-main">
+                                    <label for="categoria_id">Categoría</label>
+                                    <select name="categoria_id" id="categoria_id" class="form-control" required>
+                                       <option value="" selected disabled>Selecciona el tipo de producto</option>
+                                       <?php
+                                          if ($showCategory->num_rows > 0) {
+                                              // Salida de datos de cada fila
+                                              while($row = $showCategory->fetch_assoc()) {
+                                                  echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                              }
+                                          } else {
+                                              echo "<option value='' disabled>No hay categorías disponibles</option>";
+                                          }
+                                          ?>
+                                    </select>
+                                 </div>
+
+                                 <div class="form-group d-flex align-items-center">
+                                     <small class="toggle-color">¿Desea añadir otra categoria?</small>
+                                     <input type="checkbox" id="hidden-category" name="hidden-category" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+                                 </div>
+                                 
+                                 <div id="category-container" class="w-100">
+                                     <div class="form-group d-flex justify-content-between w-100">
+                                         <div class="form-group w-50" style="margin-top: -1vh;">
+                                             <label class="category-iluminate">Nombre de la categoria</label>
+                                             <input type="text" name="nombreCategoria" class="form-control">
+                                         </div>
+                                         <div class="form-group w-10" style="margin-top: -1vh;">
+                                             <label class="category-iluminate">Cantidad de modulos</label>
+                                             <input type="number" name="n_modulos" class="form-control" min="1">
+                                         </div>
+                                     </div>
+                                 </div>
+
+                                 
+
+                              </div>
+                              
+                                 
                                  <!-- Añadir más instancias aquí -->
-                                 <div class="product-upload" style="max-width: 100%;" id="container-imageUpload-front">
+                                 <div class="product-upload" style="max-width: 100%;  margin-top: -1vh;" id="container-imageUpload-front">
                                     <div class="product-edit">
                                        <input type="file" name="imageUpload-front" id="imageUpload-front" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
                                        <label for="imageUpload-front"></label>
@@ -192,7 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  </div> <!-- Fin del contendor puntedo -->
 
                                  <!-- Añadir más instancias aquí -->
-                                 <div class="product-upload" style="max-width: 100%; display:none;" id="container-left-view-product">
+                                 <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-left-view-product">
                                     <div class="product-edit">
                                        <input type="file" name="left-view-product" id="left-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
                                        <label for="left-view-product"></label>
@@ -223,7 +305,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                               <!-- Añadir más instancias aquí -->
-                                 <div class="product-upload" style="max-width: 100%; display:none;" id="container-straight-view-product">
+                                 <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-straight-view-product">
                                     <div class="product-edit">
                                        <input type="file" name="straight-view-product" id="straight-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
                                        <label for="straight-view-product"></label>
@@ -253,7 +335,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  </div> <!-- Fin del contendor puntedo -->
 
                                  <!-- Añadir más instancias aquí -->
-                                 <div class="product-upload" style="max-width: 100%; display:none;" id="container-right-view-product">
+                                 <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-right-view-product">
                                     <div class="product-edit">
                                        <input type="file" name="right-view-product" id="right-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
                                        <label for="right-view-product"></label>
@@ -283,7 +365,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  </div> <!-- Fin del contendor puntedo -->
 
                                  <!-- Añadir más instancias aquí -->
-                                    <div class="product-upload" style="max-width: 100%; display:none;" id="container-back-view-product">
+                                    <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-back-view-product">
                                     <div class="product-edit">
                                        <input type="file" name="back-view-product" id="back-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
                                        <label for="back-view-product"></label>
@@ -312,130 +394,169 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                  </div> <!-- Fin del contendor puntedo -->
 
-                                    
+                                    <!-- Añadir más instancias aquí -->
+                                          <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-complete-product">
+                                             <div class="product-edit">
+                                                <input type="file" name="complete-product" id="complete-product" class="image-upload-input" accept=".png, .jpg, .jpeg" >
+                                                <label for="complete-product"></label>
+                                             </div>
+                                             <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                                <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                                   <i class="fa fa-image"></i>
+                                                   <p>Sala completa</p>
+                                                </div>
+                                                <div class="loading-container" style="display: none;">
+                                                   <div></div>
+                                                   <div class="checkmark-container" style="display: none;">
+                                                      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                      </svg>
+                                                   </div>
+                                                   <div class="error-container" style="display: none;">
+                                                      <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                         <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                                      </svg>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div> <!-- Fin del contendor puntedo -->
+                                          
+                                          <!-- Añadir más instancias aquí -->
+                                          <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-detail-product">
+                                             <div class="product-edit">
+                                                <input type="file" name="detail-product" id="detail-product" class="image-upload-input" accept=".png, .jpg, .jpeg" >
+                                                <label for="detail-product"></label>
+                                             </div>
+                                             <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                                <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                                   <i class="fa fa-image"></i>
+                                                   <p>Foto detalle</p>
+                                                </div>
+                                                <div class="loading-container" style="display: none;">
+                                                   <div></div>
+                                                   <div class="checkmark-container" style="display: none;">
+                                                      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                      </svg>
+                                                   </div>
+                                                   <div class="error-container" style="display: none;">
+                                                      <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                         <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                                      </svg>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div> <!-- Fin del contendor puntedo -->  
 
-                                    
-
-                              <div class="row justify-content-around" style="margin-top: -3vh;">
-                                  <div class="col-2 mb-3 d-flex justify-content-center">
-                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-imageUpload-front">
-                                          <div class="d-flex flex-md-row flex-column align-items-center">
-                                              <span class="fa fa-image"></span>
-                                              <span class="d-md-inline d-none ml-1">F</span>
-                                              <span class="d-md-none d-inline">F</span>
-                                          </div>
-                                      </button>
-                                  </div>
-                                  <div class="col-2 mb-3 d-flex justify-content-center">
-                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-left-view-product">
-                                          <div class="d-flex flex-md-row flex-column align-items-center">
-                                              <span class="fa fa-image"></span>
-                                              <span class="d-md-inline d-none ml-1">LI</span>
-                                              <span class="d-md-none d-inline">LI</span>
-                                          </div>
-                                      </button>
-                                  </div>
-                                  <div class="col-2 mb-3 d-flex justify-content-center">
-                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-straight-view-product">
-                                          <div class="d-flex flex-md-row flex-column align-items-center">
-                                              <span class="fa fa-image"></span>
-                                              <span class="d-md-inline d-none ml-1">R</span>
-                                              <span class="d-md-none d-inline">R</span>
-                                          </div>
-                                      </button>
-                                  </div>
-                                  <div class="col-2 mb-3 d-flex justify-content-center">
-                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-right-view-product">
-                                          <div class="d-flex flex-md-row flex-column align-items-center">
-                                              <span class="fa fa-image"></span>
-                                              <span class="d-md-inline d-none ml-1">LD</span>
-                                              <span class="d-md-none d-inline">LD</span>
-                                          </div>
-                                      </button>
-                                  </div>
-                                  <div class="col-2 mb-3 d-flex justify-content-center">
-                                      <button type="button" class="btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-back-view-product">
-                                          <div class="d-flex flex-md-row flex-column align-items-center">
-                                              <span class="fa fa-image"></span>
-                                              <span class="d-md-inline d-none ml-1">T</span>
-                                              <span class="d-md-none d-inline">T</span>
-                                          </div>
-                                      </button>
-                                  </div>
-                              </div>
+                                                                        
+                                       <div class="row justify-content-around" style="margin-top: -3vh;">
+                                           <div class="col mb-3 d-flex justify-content-center">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-imageUpload-front">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">F</span>
+                                                       <span class="d-md-none d-inline">F</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                           <div class="col mb-3 d-flex justify-content-center">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-left-view-product">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">LI</span>
+                                                       <span class="d-md-none d-inline">LI</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                           <div class="col mb-3 d-flex justify-content-center">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-straight-view-product">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">R</span>
+                                                       <span class="d-md-none d-inline">R</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                           <div class="col mb-3 d-flex justify-content-center">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-right-view-product">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">LD</span>
+                                                       <span class="d-md-none d-inline">LD</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                           <div class="col mb-3 d-flex justify-content-center">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-back-view-product">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">T</span>
+                                                       <span class="d-md-none d-inline">T</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                           <div class="col mb-3 d-flex justify-content-center d-none" id="button-complete-product-container">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-complete-product">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">C</span>
+                                                       <span class="d-md-none d-inline">CMP</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                           <div class="col mb-3 d-flex justify-content-center d-none" id="button-detail-product-container">
+                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-detail-product">
+                                                   <div class="d-flex flex-md-row flex-column align-items-center">
+                                                       <span class="fa fa-image"></span>
+                                                       <span class="d-md-inline d-none ml-1">DT</span>
+                                                       <span class="d-md-none d-inline">DT</span>
+                                                   </div>
+                                               </button>
+                                           </div>
+                                       </div>
                                                                
-
                                  
                               
                              
                                     </div> <!-- Fin del grupo form -->
 
-                                      <div class="form-group d-flex justify-content-between">
-                                        <div class="form-check form-switch ml-2 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault1">
-                                          <label class="form-check-label" for="flexSwitchCheckDefault1">¿Es una sala completa?</label>
-                                        </div>
 
-                                        <div class="form-check form-switch mr-3 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
-                                          <label class="form-check-label" for="flexSwitchCheckDefault2">¿Tiene detalle en la tela?</label>
-                                        </div>
-                                      </div>
+                                    <div class="form-group d-flex justify-content-between" style="margin-top: -2vh;">
+                                       <div class="form-check form-switch ml-2 d-inline-block">
+                                          <input class="form-check-input" type="checkbox" role="switch" id="check-complete-product" name="check-complete-product">
+                                          <label class="form-check-label" for="check-complete-product">¿Es una sala completa?</label>
+                                       </div>
 
-                              
+                                       <div class="form-check form-switch mr-3 d-inline-block">
+                                          <input class="form-check-input" type="checkbox" role="switch" id="check-detail-product" name="check-detail-product">
+                                          <label class="form-check-label" for="check-detail-product">¿Tiene detalle en la tela?</label>
+                                       </div>
+                                    </div>                                                
 
-                              
-                              <div class="form-group active-full">
-                                 <label for="nombre_producto">Nombre del Producto</label>
-                                 <input type="text" name="nombre_producto" id="nombre_producto" class="form-control" required>
-                              </div>
-
-                              <div class="form-group active-full">
-                                 <div id="category-input-main">
-                                    <label for="categoria_id">Categoría</label>
-                                    <select name="categoria_id" id="categoria_id" class="form-control" required>
-                                       <option value="" selected disabled>Selecciona el tipo de producto</option>
-                                       <?php
-                                          if ($showCategory->num_rows > 0) {
-                                              // Salida de datos de cada fila
-                                              while($row = $showCategory->fetch_assoc()) {
-                                                  echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                              }
-                                          } else {
-                                              echo "<option value='' disabled>No hay categorías disponibles</option>";
-                                          }
-                                          ?>
-                                    </select>
-                                 </div>
-                                 <div class="form-group d-flex align-items-center">
-                                    <small class="toggle-color">¿Desea añadir otra categoria?</small>
-                                    <input type="checkbox" id="hidden-category" name="hidden-category" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
-                                 </div>
-                                 <div id="category-container">
-                                    <div class="form-group">
-                                       <label>Nombre de la categoria</label>
-                                       <input type="text" name="nameNewCategory" class="form-control">
-                                    </div>
-                                 </div>
-                              </div>
 
                               <div class="form-group">
                                        <label>Estado del producto</label>
                                       <div class="form-group d-flex justify-content-between">
                                         <div class="form-check form-switch ml-2 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault1">
-                                          <label class="form-check-label" for="flexSwitchCheckDefault1">Activar venta del producto</label>
+                                          <input class="form-check-input" type="checkbox" role="switch" id="active_venta" name="active_venta">
+                                          <label class="form-check-label" for="active_venta">Activar venta del producto</label>
                                         </div>
 
                                         <div class="form-check form-switch mr-3 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault2">
-                                          <label class="form-check-label" for="flexSwitchCheckDefault2">Promocionar</label>
+                                          <input class="form-check-input" type="checkbox" role="switch" id="marketadd_product" name="marketadd_product">
+                                          <label class="form-check-label" for="marketadd_product">Promocionar</label>
                                         </div>
                                       </div>
                               </div>
 
                               <div class="form-group active-full">
-                                 <label for="existencia">Cantidad de piezas/Conjunto</label>
+                                 <label for="existencia">Existencias</label>
                                  <input type="number" name="existencia" id="existencia" class="form-control" min="1" required>
                               </div>
                               <div class="form-group active-full">
@@ -465,14 +586,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="checkbox" id="hidden-type-product" name="hidden-type-product" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
                                  </div>
                                  <div id="type-product-container" style="display: none;">
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-top: -1vh;">
                                        <label>Nombre del tipo de producto</label>
                                        <input type="text" name="nameNewProduct" class="form-control">
                                     </div>
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-4 ml-md-3 ml-0">
                               <div class="form-group active-full">
                                  <label for="color_id">Color</label>
                                  <div id="color-select-main">
@@ -499,7 +620,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        <input type="checkbox" id="hidden-color-select" name="hidden-color-select" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
                                     </div>
                                     <div id="color-container">
-                                       <div class="form-group">
+                                       <div class="form-group" style="margin-top: -1vh;">
                                           <label>Color nuevo</label>
                                           <input type="text" name="nombre" class="form-control">
                                        </div>
@@ -667,16 +788,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  <!-- Fin de telas -->
                               </div>
                               <!-- Fin de formulario de materiales -->     
+
                               <div class="form-group">
-                                 <label>M+++++edidas</label>
+                                 <label>Medidas</label>
                                  <input type="checkbox" id="measures-inputs" name="measures-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
                                  <!-- Contenedor para los inputs -->
                                  <div id="medidas-container">
                                     <!-- Largos -->
-                                    <div class="form-group">
+                                    <div class="form-group d-flex justify-content-between">
+
+                                       <div class="form-group mr-4">
                                        <label>Largo</label>
                                        <div class="input-group">
-                                          <input type="number" name="largo" class="form-control input-change">
+                                          <input type="number" name="largo" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -684,12 +808,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                              </span>
                                           </div>
                                        </div>
-                                    </div>
+                                       </div>
 
-                                    <div class="form-group">
+                                       <div class="form-group">
                                        <label>Largo asiento</label>
                                        <div class="input-group">
-                                          <input type="number" name="largo-asiento" class="form-control input-change">
+                                          <input type="number" name="largo-asiento" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -697,12 +821,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                              </span>
                                           </div>
                                        </div>
+                                       </div>
+
                                     </div>
 
-                                    <div class="form-group">
+
+                                    <div class="form-group d-flex justify-content-between">
+                                    <div class="form-group mr-4">
                                        <label>Fondo</label>
                                        <div class="input-group">
-                                          <input type="number" name="fondo" class="form-control input-change">
+                                          <input type="number" name="fondo" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -715,7 +843,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-group">
                                        <label>Fondo del asiento</label>
                                        <div class="input-group">
-                                          <input type="number" name="fondo-asiento" class="form-control input-change">
+                                          <input type="number" name="fondo-asiento" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -724,11 +852,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+                                    </div>
 
-                                    <div class="form-group">
+
+                                    <div class="form-group d-flex justify-content-between">
+                                    <div class="form-group mr-4">
                                        <label>Ancho del Brazo</label>
                                        <div class="input-group">
-                                          <input type="number" name="ancho-brazo" class="form-control input-change">
+                                          <input type="number" name="ancho-brazo" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -741,7 +872,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-group">
                                        <label>Ancho del respaldo</label>
                                        <div class="input-group">
-                                          <input type="number" name="ancho-respaldo" class="form-control input-change">
+                                          <input type="number" name="ancho-respaldo" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -750,11 +881,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+                                    </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group d-flex justify-content-between">
+                                    <div class="form-group mr-4">
                                        <label>Altura</label>
                                        <div class="input-group">
-                                          <input type="number" name="altura" class="form-control input-change">
+                                          <input type="number" name="altura" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -766,7 +899,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-group">
                                        <label>Altura al casco</label>
                                        <div class="input-group">
-                                          <input type="number" name="altura-casco" class="form-control input-change">
+                                          <input type="number" name="altura-casco" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -775,10 +908,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="form-group">
+                                    </div>
+
+                                    <div class="form-group d-flex justify-between">
+                                    <div class="form-group mr-4">
                                        <label>Altura al brazo</label>
                                        <div class="input-group">
-                                          <input type="number" name="altura-brazo" class="form-control input-change">
+                                          <input type="number" name="altura-brazo" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -790,7 +926,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-group">
                                        <label>Altura al asiento</label>
                                        <div class="input-group">
-                                          <input type="number" name="altura-asiento" class="form-control input-change">
+                                          <input type="number" name="altura-asiento" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -799,10 +935,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
-                                    <div class="form-group">
+                                    </div>
+
+                                    <div class="form-group d-flex justify-content-between">
+                                    <div class="form-group mr-4">
                                        <label>Altura a la pata</label>
                                        <div class="input-group">
-                                          <input type="number" name="altura-casco" class="form-control input-change">
+                                          <input type="number" name="altura-casco" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -814,7 +953,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-group">
                                        <label>Altura al respaldo</label>
                                        <div class="input-group">
-                                          <input type="number" name="altura-respaldo" class="form-control input-change">
+                                          <input type="number" name="altura-respaldo" class="form-control input-change" min="0">
                                           <div class="input-group-append">
                                              <span class="input-group-text">
                                              <small class="mr-2">Cm</small>
@@ -823,8 +962,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           </div>
                                        </div>
                                     </div>
+                                    </div>
+
                                  </div>
-                              </div>
+
+                              </div> <!-- Fin medidas -->
 
                               <div class="form-group active-full">
                                  <label>Peso</label>
@@ -865,6 +1007,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  </div>
                               </div>
                               <!-- Aqui precio compra y venta -->
+                              <div class="form-group d-flex justify-content-between">
                               <div class="form-group active-full">
                                  <label>Precio Compra</label>
                                  <div class="input-group">
@@ -887,6 +1030,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                  </div>
                               </div>
+                              </div>
+
                               <div class="form-group">
                                  <label for="proveedor_id">Proveedor</label>
                                  <select name="proveedor_id" id="proveedor_id" class="form-control select2bs4" style="width: 100%;" required>
@@ -918,7 +1063,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  <p><?php echo date('Y-m-d H:i:s'); ?></p>
                               </div>
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-4" style="margin-left: -1.5vw;">
                               <!-- Div con bordes 100% del ancho y 60vh de alto -->
                               <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 1em;">
                                  <!-- Contenido del div -->
@@ -966,6 +1111,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    </section>
 
    <script src="./middleware/inputs.products.js"></script>
+   <script src="./middleware/show.complete.product.js"></script>
    
    <script src="./middleware/hidden.material.form.js"></script>
    <script src="./middleware/hidden.select.color.js"></script>
