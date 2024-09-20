@@ -3,7 +3,6 @@ include_once 'db.php';
 
 // Función para obtener datos de una tabla
 function obtenerDatos($con, $tabla) {
-    // Verificar si la tabla es 'color' para incluir el campo 'hex_color'
     $campos = ($tabla === 'color') ? 'id, nombre, hex_color' : 'id, nombre';
     $sql = "SELECT $campos FROM $tabla";
     $result = $con->query($sql);
@@ -11,6 +10,22 @@ function obtenerDatos($con, $tabla) {
         throw new Exception("Error al obtener datos de $tabla: " . $con->error);
     }
     return $result;
+}
+
+// Función genérica para insertar materiales
+function insertarMaterial($con, $nombre, $tipo) {
+    $sql = "INSERT INTO materiales (nombre, tipo) VALUES (?, ?)";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("ss", $nombre, $tipo);
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $material_id = $stmt->insert_id;
+    $stmt->close();
+    return $material_id;
 }
 
 // Función para insertar un producto
@@ -29,70 +44,6 @@ function insertarProducto($con, $datos) {
     return $producto_id;
 }
 
-// Función para insertar una categoría
-function insertarCategoria($con, $nombre, $n_modulos) {
-    $sql = "INSERT INTO categorias (nombre, n_modulos) VALUES (?, ?)";
-    $stmt = $con->prepare($sql);
-    if (!$stmt) {
-        throw new Exception("Error en la preparación: " . $con->error);
-    }
-    $stmt->bind_param("si", $nombre, $n_modulos);
-    if (!$stmt->execute()) {
-        throw new Exception("Error en la ejecución: " . $stmt->error);
-    }
-    $categoria_id = $stmt->insert_id;
-    $stmt->close();
-    return $categoria_id;
-}
-
-// Función para insertar un tipo de producto
-function insertarTipoProducto($con, $nombre) {
-    $sql = "INSERT INTO tipoproducto (nombre) VALUES (?)";
-    $stmt = $con->prepare($sql);
-    if (!$stmt) {
-        throw new Exception("Error en la preparación: " . $con->error);
-    }
-    $stmt->bind_param("s", $nombre);
-    if (!$stmt->execute()) {
-        throw new Exception("Error en la ejecución: " . $stmt->error);
-    }
-    $tipoProducto_id = $stmt->insert_id;
-    $stmt->close();
-    return $tipoProducto_id;
-}
-
-// Función para insertar un color
-function insertarColor($con, $nombre, $hex_color) {
-    $sql = "INSERT INTO color (nombre, hex_color) VALUES (?, ?)";
-    $stmt = $con->prepare($sql);
-    if (!$stmt) {
-        throw new Exception("Error en la preparación: " . $con->error);
-    }
-    $stmt->bind_param("ss", $nombre, $hex_color);
-    if (!$stmt->execute()) {
-        throw new Exception("Error en la ejecución: " . $stmt->error);
-    }
-    $color_id = $stmt->insert_id;
-    $stmt->close();
-    return $color_id;
-}
-
-// Función para insertar un relleno
-function insertarRelleno($con, $nombre) {
-    $sql = "INSERT INTO materiales (nombre, tipo) VALUES (?, 'relleno')";
-    $stmt = $con->prepare($sql);
-    if (!$stmt) {
-        throw new Exception("Error en la preparación: " . $con->error);
-    }
-    $stmt->bind_param("s", $nombre);
-    if (!$stmt->execute()) {
-        throw new Exception("Error en la ejecución: " . $stmt->error);
-    }
-    $relleno_id = $stmt->insert_id;
-    $stmt->close();
-    return $relleno_id;
-}
-
 // Función para insertar una imagen
 function insertarImagen($con, $ruta, $producto_id, $frontend_id) {
     $sql_image = "INSERT INTO imagenes_productos (ruta, producto_id, frontend_id) VALUES (?, ?, ?)";
@@ -105,6 +56,20 @@ function insertarImagen($con, $ruta, $producto_id, $frontend_id) {
         throw new Exception("Error en la ejecución de la imagen: " . $stmt_image->error);
     }
     $stmt_image->close();
+}
+
+// Función para insertar un accesorio
+function insertarAccesorio($con, $producto_id, $accesorio_id, $cantidad) {
+   $sql = "INSERT INTO productos_accesorios (producto_id, accesorio_id, cantidad) VALUES (?, ?, ?)";
+   $stmt = $con->prepare($sql);
+   if (!$stmt) {
+       throw new Exception("Error en la preparación: " . $con->error);
+   }
+   $stmt->bind_param("iii", $producto_id, $accesorio_id, $cantidad);
+   if (!$stmt->execute()) {
+       throw new Exception("Error en la ejecución: " . $stmt->error);
+   }
+   $stmt->close();
 }
 
 // Obtener datos de las tablas necesarias
@@ -124,39 +89,26 @@ try {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
-        // Verificar si se debe agregar una nueva categoría
-        if (isset($_POST['hidden-category']) && $_POST['hidden-category'] == 'on') {
-            $nombreCategoria = htmlspecialchars($_POST['nombreCategoria']);
-            $n_modulos = filter_var($_POST['n_modulos'], FILTER_VALIDATE_INT);
-            $categoria_id = insertarCategoria($con, $nombreCategoria, $n_modulos);
-        } else {
-            $categoria_id = filter_var($_POST['categoria_id'], FILTER_VALIDATE_INT);
+        // Función para verificar y agregar nuevos materiales
+        function verificarYAgregarMaterial($con, $input_name, $nuevo_nombre, $tipo) {
+            if (isset($_POST[$input_name]) && $_POST[$input_name] == 'on') {
+                $nombre = htmlspecialchars($_POST[$nuevo_nombre]);
+                return insertarMaterial($con, $nombre, $tipo);
+            } else {
+                return filter_var($_POST["{$tipo}_id"], FILTER_VALIDATE_INT);
+            }
         }
 
-        // Verificar si se debe agregar un nuevo tipo de producto
-        if (isset($_POST['hidden-type-product']) && $_POST['hidden-type-product'] == 'on') {
-            $nombreTipoProducto = htmlspecialchars($_POST['name_new_type']);
-            $tipoProducto_id = insertarTipoProducto($con, $nombreTipoProducto);
-        } else {
-            $tipoProducto_id = filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT);
-        }
+        // Verificar y agregar nuevos materiales
+        $relleno_id = verificarYAgregarMaterial($con, 'material-relleno-input', 'nuevo_relleno', 'relleno');
+        $madera_id = verificarYAgregarMaterial($con, 'material-madera-input', 'nueva_madera', 'madera');
+        $patas_id = verificarYAgregarMaterial($con, 'material-patas-input', 'nueva_pata', 'patas');
+        $telas_id = verificarYAgregarMaterial($con, 'material-telas-input', 'nueva_tela', 'telas');
 
-        // Verificar si se debe agregar un nuevo color
-        if (isset($_POST['hidden-color-select']) && $_POST['hidden-color-select'] == 'on') {
-            $nombreColor = htmlspecialchars($_POST['nombre_color']);
-            $hex_color = htmlspecialchars($_POST['hex_color']);
-            $color_id = insertarColor($con, $nombreColor, $hex_color);
-        } else {
-            $color_id = filter_var($_POST['color_id'], FILTER_VALIDATE_INT);
-        }
-
-        // Verificar si se debe agregar un nuevo relleno
-        if (isset($_POST['material-relleno-input']) && $_POST['material-relleno-input'] == 'on') {
-            $nombreRelleno = htmlspecialchars($_POST['nuevo_relleno']);
-            $relleno_id = insertarRelleno($con, $nombreRelleno);
-        } else {
-            $relleno_id = filter_var($_POST['relleno_id'], FILTER_VALIDATE_INT);
-        }
+        // Verificar y agregar otros datos
+        $categoria_id = isset($_POST['hidden-category']) && $_POST['hidden-category'] == 'on' ? insertarCategoria($con, htmlspecialchars($_POST['nombreCategoria']), filter_var($_POST['n_modulos'], FILTER_VALIDATE_INT)) : filter_var($_POST['categoria_id'], FILTER_VALIDATE_INT);
+        $tipoProducto_id = isset($_POST['hidden-type-product']) && $_POST['hidden-type-product'] == 'on' ? insertarTipoProducto($con, htmlspecialchars($_POST['name_new_type'])) : filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT);
+        $color_id = isset($_POST['hidden-color-select']) && $_POST['hidden-color-select'] == 'on' ? insertarColor($con, htmlspecialchars($_POST['nombre_color']), htmlspecialchars($_POST['hex_color'])) : filter_var($_POST['color_id'], FILTER_VALIDATE_INT);
 
         // Obtener y sanitizar los valores del formulario
         $datos = [
@@ -167,9 +119,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'tipoProducto_id' => $tipoProducto_id,
             'color_id' => $color_id,
             'relleno_id' => $relleno_id,
-            'madera_id' => filter_var($_POST['madera_id'], FILTER_VALIDATE_INT),
-            'patas_id' => filter_var($_POST['patas_id'], FILTER_VALIDATE_INT),
-            'telas_id' => filter_var($_POST['telas_id'], FILTER_VALIDATE_INT),
+            'madera_id' => $madera_id,
+            'patas_id' => $patas_id,
+            'telas_id' => $telas_id,
             'precio' => filter_var($_POST['precio'], FILTER_VALIDATE_FLOAT),
             'precioVenta' => filter_var($_POST['precioVenta'], FILTER_VALIDATE_FLOAT),
             'proveedor_id' => filter_var($_POST['proveedor_id'], FILTER_VALIDATE_INT),
@@ -179,6 +131,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insertar el producto
         $producto_id = insertarProducto($con, $datos);
+
+        // Verificar y agregar accesorios
+        if (isset($_POST['plugins-inputs']) && $_POST['plugins-inputs'] == 'on') {
+            $accesorio_id = filter_var($_POST['accesorios_select'], FILTER_VALIDATE_INT);
+            $cantidad = filter_var($_POST['accesorios_cantidad'], FILTER_VALIDATE_INT);
+            if ($accesorio_id && $cantidad) {
+                insertarAccesorio($con, $producto_id, $accesorio_id, $cantidad);
+            }
+        }
 
         // Función para manejar la subida de imágenes con prefijo
         function manejarSubidaImagen($con, $input_name, $producto_id, $nombre_producto, $prefijo) {
@@ -205,21 +166,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Manejar la subida de las imágenes con prefijos
-        manejarSubidaImagen($con, 'imageUpload-front', $producto_id, $datos['nombre_producto'], 'front');
-        manejarSubidaImagen($con, 'left-view-product', $producto_id, $datos['nombre_producto'], 'left');
-        manejarSubidaImagen($con, 'straight-view-product', $producto_id, $datos['nombre_producto'], 'straight');
-        manejarSubidaImagen($con, 'right-view-product', $producto_id, $datos['nombre_producto'], 'right');
-        manejarSubidaImagen($con, 'back-view-product', $producto_id, $datos['nombre_producto'], 'back');
-        /* Opcionales  */
-        if (isset($_FILES['detail-product']) && $_FILES['detail-product']['error'] == UPLOAD_ERR_OK) {
-            manejarSubidaImagen($con, 'detail-product', $producto_id, $datos['nombre_producto'], 'dt');
-        }
-        if (isset($_FILES['complete-product']) && $_FILES['complete-product']['error'] == UPLOAD_ERR_OK) {
-            manejarSubidaImagen($con, 'complete-product', $producto_id, $datos['nombre_producto'], 'cmp');
+        $imagenes = [
+            'imageUpload-front' => 'front',
+            'left-view-product' => 'left',
+            'straight-view-product' => 'straight',
+            'right-view-product' => 'right',
+            'back-view-product' => 'back',
+            'detail-product' => 'dt',
+            'complete-product' => 'cmp'
+        ];
+        foreach ($imagenes as $input_name => $prefijo) {
+            if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
+                manejarSubidaImagen($con, $input_name, $producto_id, $datos['nombre_producto'], $prefijo);
+            }
         }
 
         // Redirigir a una página de confirmación
-        /* echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto agregado exitosamente">'; */
+        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto agregado exitosamente">';
 
     } catch (Exception $e) {
         die($e->getMessage());
@@ -229,7 +192,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $con->close();
 }
 ?>
-
 
 <!-- Estilos para los inputs tipo imagenes --> 
 <link rel="stylesheet" href="./css/files.css">
@@ -725,165 +687,144 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                               <div class="form-group">
-                                 <label>Materiales</label>
-                                 <div class="form-group">
-                                    <!-- Relleno -->
-                                    <div class="row align-items-center">
-                                       <div class="col-md-2 col-6">
-                                          <p class="mb-0" for="relleno_id">Relleno</p>
-                                       </div>
-                                       <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
-                                          <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra relleno?</small>
-                                          <input type="checkbox" id="material-relleno-input" name="material-relleno-input" class="form-control ml-2" style="height: auto; width: auto;">
-                                       </div>
-                                       <div class="col-md-6 col-12">
-                                          <select name="relleno_id" id="relleno_id" class="form-control select2bs4 w-100">
-                                             <option value="" selected disabled>Busca el relleno</option>
-                                             <?php
-                                                if ($showStuffed->num_rows > 0) {
-                                                    // Salida de datos de cada fila
-                                                    while($row = $showStuffed->fetch_assoc()) {
-                                                        echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value='' disabled>No hay rellenos disponibles</option>";
-                                                }
-                                                ?>
-                                          </select>
-                                       </div>
-                                    </div>
-                                    <div id="relleno-container" class="mt-2" style="display: none;">
-                                       <!-- Aqui lo que se oculta -->
-                                       <div class="form-group d-flex align-items-center">
-                                          <p id="text-nuevo-relleno" class="mb-0 mr-2" style="white-space: nowrap;">Nuevo relleno:</p>
-                                          <input id="nuevo-relleno" type="text" name="nuevo_relleno" class="form-control flex-grow-1">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <!-- Fin de relleno -->
-                                 <div class="form-group">
-                                    <!-- Madera -->
-                                    <div class="row align-items-center">
-                                       <div class="col-md-2 col-6">
-                                          <p class="mb-0" for="madera_id">Madera</p>
-                                       </div>
-                                       <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
-                                          <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra madera?</small>
-                                          <input type="checkbox" id="material-madera-input" name="showWood-input" class="form-control ml-2" style="height: auto; width: auto;">
-                                       </div>
-                                       <div class="col-md-6 col-12">
-                                          <select name="madera_id" id="madera_id" class="form-control select2bs4 w-100" >
-                                             <option value="" selected disabled>Busca la madera</option>
-                                             <?php
-                                                if ($showWood->num_rows > 0) {
-                                                    // Salida de datos de cada fila
-                                                    while($row = $showWood->fetch_assoc()) {
-                                                        echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value='' disabled>No hay maderas disponibles</option>";
-                                                }
-                                                ?>
-                                          </select>
-                                       </div>
-                                    </div>
-                                    <div id="madera-container" class="mt-2" style="display: none;">
-                                       <!-- Aqui lo que se oculta -->
-                                       <div class="form-group d-flex align-items-center">
-                                          <p id="text-nueva-madera" class="mb-0 mr-2" style="white-space: nowrap;">Nueva madera:</p>
-                                          <input id="nueva-madera" type="text" name="nueva_madera_input" class="form-control flex-grow-1">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <!-- Fin de madera -->
-                                 <div class="form-group">
-                                    <!-- Patas -->
-                                    <div class="row align-items-center">
-                                       <div class="col-md-2 col-6">
-                                          <p class="mb-0" for="patas_id">Patas</p>
-                                       </div>
-                                       <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
-                                          <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra pata?</small>
-                                          <input type="checkbox" id="material-patas-input" name="legs-input" class="form-control ml-2" style="height: auto; width: auto;">
-                                       </div>
-                                       <div class="col-md-6 col-12">
-                                          <select name="patas_id" id="patas_id" class="form-control select2bs4 w-100" >
-                                             <option value="" selected disabled>Busca la pata</option>
-                                             <?php
-                                                if ($showLegs->num_rows > 0) {
-                                                    // Salida de datos de cada fila
-                                                    while($row = $showLegs->fetch_assoc()) {
-                                                        echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value='' disabled>No hay patas disponibles</option>";
-                                                }
-                                                ?>
-                                          </select>
-                                       </div>
-                                    </div>
-                                    <div id="patas-container" class="mt-2" style="display: none;">
-                                       <!-- Aqui lo que se oculta -->
-                                       <div class="form-group d-flex align-items-center">
-                                          <p id="text-nueva-pata" class="mb-0 mr-2" style="white-space: nowrap;">Nueva pata:</p>
-                                          <input id="nueva-pata" type="text" name="nueva_pata_input" class="form-control flex-grow-1">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <!-- Fin de patas -->
-                                 <div class="form-group">
-                                    <!-- Telas -->
-                                    <div class="row align-items-center">
-                                       <div class="col-md-2 col-6">
-                                          <p class="mb-0" for="telas_id">Telas</p>
-                                       </div>
-                                       <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
-                                          <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra tela?</small>
-                                          <input type="checkbox" id="material-telas-input" name="fabrics-input" class="form-control ml-2" style="height: auto; width: auto;">
-                                       </div>
-                                       <div class="col-md-6 col-12">
-                                          <div class="input-group">
-                                             <select name="telas_id" id="telas_id" class="form-control select2bs4" >
-                                                <option value="" selected disabled>Busca la tela</option>
-                                                <?php
-                                                   if ($showFabrics->num_rows > 0) {
-                                                       // Salida de datos de cada fila
-                                                       while($row = $showFabrics->fetch_assoc()) {
-                                                           echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                       }
-                                                   } else {
-                                                       echo "<option value='' disabled>No hay telas disponibles</option>";
-                                                   }
-                                                   
-                                                   ?>
-                                             </select>
-                                             <div class="input-group-append">
-                                                <span class="input-group-text p-0">
-                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK_i51UEwk-sYPTgLpK4Ok87gZTUrhqTrtxQ&s" alt="" class="img-fluid zoom" style="height: 38px; border-radius: 0 5px 5px 0;">
-                                                </span>
-                                             </div>
+                                  <label>Materiales</label>
+                                  <div class="form-group">
+                                      <!-- Relleno -->
+                                      <div class="row align-items-center">
+                                          <div class="col-md-2 col-6">
+                                              <p class="mb-0" for="relleno_id">Relleno</p>
                                           </div>
-                                       </div>
-                                    </div>
-                                    <div id="telas-container" class="mt-2" style="display: none;">
-                                       <!-- Aqui lo que se oculta -->
-                                       <div class="form-group d-flex align-items-center">
-                                          <p id="text-nueva-tela" class="mb-0 mr-2" style="white-space: nowrap;">Nueva tela:</p>
-                                          <input id="nueva-tela" type="text" name="nueva_tela_input" class="form-control flex-grow-1">
-                                       </div>
-                                       <div class="form-group">
-                                          <div class="container mt-0" id="upload-tela-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Añadir imagen de la tela" data-border-radius="5px"></div>
-                                       </div>
-                                       <div class="form-group text-center">
-                                          <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#cameraModal">
-                                             <!-- icono de camara -->
-                                             Tomar foto <i class="fas fa-camera"></i>
-                                          </button>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <!-- Fin de telas -->
+                                          <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                              <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otro relleno?</small>
+                                              <input type="checkbox" id="material-relleno-input" name="material-relleno-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                          </div>
+                                          <div class="col-md-6 col-12">
+                                              <select name="relleno_id" id="relleno_id" class="form-control select2bs4 w-100">
+                                                  <option value="" selected disabled>Busca el relleno</option>
+                                                  <?php
+                                                  if ($showStuffed->num_rows > 0) {
+                                                      while($row = $showStuffed->fetch_assoc()) {
+                                                          echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                      }
+                                                  } else {
+                                                      echo "<option value='' disabled>No hay rellenos disponibles</option>";
+                                                  }
+                                                  ?>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div id="relleno-container" class="mt-2" style="display: none;">
+                                          <div class="form-group d-flex align-items-center">
+                                              <p id="text-nuevo-relleno" class="mb-0 mr-2" style="white-space: nowrap;">Nuevo relleno:</p>
+                                              <input id="nuevo_relleno" type="text" name="nuevo_relleno" class="form-control flex-grow-1">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Fin de relleno -->
+                              
+                                  <!-- Madera -->
+                                  <div class="form-group">
+                                      <div class="row align-items-center">
+                                          <div class="col-md-2 col-6">
+                                              <p class="mb-0" for="madera_id">Madera</p>
+                                          </div>
+                                          <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                              <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra madera?</small>
+                                              <input type="checkbox" id="material-madera-input" name="material-madera-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                          </div>
+                                          <div class="col-md-6 col-12">
+                                              <select name="madera_id" id="madera_id" class="form-control select2bs4 w-100">
+                                                  <option value="" selected disabled>Busca la madera</option>
+                                                  <?php
+                                                  if ($showWood->num_rows > 0) {
+                                                      while($row = $showWood->fetch_assoc()) {
+                                                          echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                      }
+                                                  } else {
+                                                      echo "<option value='' disabled>No hay maderas disponibles</option>";
+                                                  }
+                                                  ?>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div id="madera-container" class="mt-2" style="display: none;">
+                                          <div class="form-group d-flex align-items-center">
+                                              <p id="text-nueva-madera" class="mb-0 mr-2" style="white-space: nowrap;">Nueva madera:</p>
+                                              <input id="nueva_madera" type="text" name="nueva_madera" class="form-control flex-grow-1">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Fin de madera -->
+                              
+                                  <!-- Patas -->
+                                  <div class="form-group">
+                                      <div class="row align-items-center">
+                                          <div class="col-md-2 col-6">
+                                              <p class="mb-0" for="patas_id">Patas</p>
+                                          </div>
+                                          <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                              <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra pata?</small>
+                                              <input type="checkbox" id="material-patas-input" name="material-patas-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                          </div>
+                                          <div class="col-md-6 col-12">
+                                              <select name="patas_id" id="patas_id" class="form-control select2bs4 w-100">
+                                                  <option value="" selected disabled>Busca la pata</option>
+                                                  <?php
+                                                  if ($showLegs->num_rows > 0) {
+                                                      while($row = $showLegs->fetch_assoc()) {
+                                                          echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                      }
+                                                  } else {
+                                                      echo "<option value='' disabled>No hay patas disponibles</option>";
+                                                  }
+                                                  ?>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div id="patas-container" class="mt-2" style="display: none;">
+                                          <div class="form-group d-flex align-items-center">
+                                              <p id="text-nueva-pata" class="mb-0 mr-2" style="white-space: nowrap;">Nueva pata:</p>
+                                              <input id="nueva_pata" type="text" name="nueva_pata" class="form-control flex-grow-1">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Fin de patas -->
+                              
+                                  <!-- Telas -->
+                                  <div class="form-group">
+                                      <div class="row align-items-center">
+                                          <div class="col-md-2 col-6">
+                                              <p class="mb-0" for="telas_id">Telas</p>
+                                          </div>
+                                          <div class="col-md-4 col-6 text-md-right d-flex align-items-center justify-content-between">
+                                              <small class="d-inline-block text-truncate" style="max-width: 100%;">¿Desea añadir otra tela?</small>
+                                              <input type="checkbox" id="material-telas-input" name="material-telas-input" class="form-control ml-2" style="height: auto; width: auto;">
+                                          </div>
+                                          <div class="col-md-6 col-12">
+                                              <select name="telas_id" id="telas_id" class="form-control select2bs4 w-100">
+                                                  <option value="" selected disabled>Busca la tela</option>
+                                                  <?php
+                                                  if ($showFabrics->num_rows > 0) {
+                                                      while($row = $showFabrics->fetch_assoc()) {
+                                                          echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                      }
+                                                  } else {
+                                                      echo "<option value='' disabled>No hay telas disponibles</option>";
+                                                  }
+                                                  ?>
+                                              </select>
+                                          </div>
+                                      </div>
+                                      <div id="telas-container" class="mt-2" style="display: none;">
+                                          <div class="form-group d-flex align-items-center">
+                                              <p id="text-nueva-tela" class="mb-0 mr-2" style="white-space: nowrap;">Nueva tela:</p>
+                                              <input id="nueva_tela" type="text" name="nueva_tela" class="form-control flex-grow-1">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <!-- Fin de telas -->
                               </div>
+                              <!-- Fin de formulario de materiales -->
                               <!-- Fin de formulario de materiales -->     
 
 
@@ -899,32 +840,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                  </div>
                               </div>
+
                               <div class="form-group">
-                                 <label>¿Tiene accesorios?</label>
-                                 <input type="checkbox" id="plugins-inputs" name="plugins-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
+                                  <label>¿Tiene accesorios?</label>
+                                  <input type="checkbox" id="plugins-inputs" name="plugins-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
                               </div>
                               <div id="plugins-inputs-container">
-                                 <div class="form-group">
-                                    <label>Tipo de accesorio</label>
-                                    <select id="" name="accesories" class="form-control select2bs4 ml-3" style="width: 100%;">
-                                       <option value="" selected disabled>Seleccion el accesorio</option>
-                                       <?php
-                                          if ($showAccesories->num_rows > 0) {
-                                              // Salida de datos de cada fila
-                                              while($row = $showAccesories->fetch_assoc()) {
-                                                  echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                  <div class="form-group">
+                                      <label>Tipo de accesorio</label>
+                                      <select id="accesorios_select" name="accesorios_select" class="form-control select2bs4 ml-3" style="width: 100%;">
+                                          <option value="" selected disabled>Seleccion el accesorio</option>
+                                          <?php
+                                              if ($showAccesories->num_rows > 0) {
+                                                  while($row = $showAccesories->fetch_assoc()) {
+                                                      echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                  }
+                                              } else {
+                                                  echo "<option value='' disabled>No hay accesorios disponibles</option>";
                                               }
-                                          } else {
-                                              echo "<option value='' disabled>No hay accesorios disponibles</option>";
-                                          }
                                           ?>
-                                    </select>
-                                 </div>
-                                 <div class="form-group">
-                                    <label>¿Cuantos accesorios serán?</label>
-                                    <input type="number" name="accesorios" class="form-control">
-                                 </div>
+                                      </select>
+                                  </div>
+                                  <div class="form-group">
+                                      <label>¿Cuantos accesorios serán?</label>
+                                      <input type="number" name="accesorios_cantidad" id="accesorios_cantidad" class="form-control">
+                                  </div>
                               </div>
+
                               <!-- Aqui precio compra y venta -->
                               <div class="form-group d-flex justify-content-between">
                               <div class="form-group active-full">

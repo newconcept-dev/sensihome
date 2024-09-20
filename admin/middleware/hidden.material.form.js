@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const textNew = document.getElementById('text-nuevo-relleno');
 
     /* Iluminar el input nuevo */
-    const activeInput = document.getElementById('nuevo-relleno'); // Seleccionar el input directamente por su ID
+    const activeInput = document.getElementById('nuevo_relleno'); // Seleccionar el input directamente por su ID
 
     
 
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const textNew = document.getElementById('text-nueva-madera');
 
     /* Iluminar el input nuevo */
-    const activeInput = document.getElementById('nueva-madera'); // Seleccionar el input directamente por su ID
+    const activeInput = document.getElementById('nueva_madera'); // Seleccionar el input directamente por su ID
 
     
 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const textNew = document.getElementById('text-nueva-pata');
 
     /* Iluminar el input nuevo */
-    const activeInput = document.getElementById('nueva-pata'); // Seleccionar el input directamente por su ID
+    const activeInput = document.getElementById('nueva_pata'); // Seleccionar el input directamente por su ID
 
     
 
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const textNew = document.getElementById('text-nueva-tela');
 
     /* Iluminar el input nuevo */
-    const activeInput = document.getElementById('nueva-tela'); // Seleccionar el input directamente por su ID
+    const activeInput = document.getElementById('nueva_tela'); // Seleccionar el input directamente por su ID
 
     
 
