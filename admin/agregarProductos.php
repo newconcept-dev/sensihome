@@ -3,7 +3,9 @@ include_once 'db.php';
 
 // Función para obtener datos de una tabla
 function obtenerDatos($con, $tabla) {
-    $sql = "SELECT id, nombre FROM $tabla";
+    // Verificar si la tabla es 'color' para incluir el campo 'hex_color'
+    $campos = ($tabla === 'color') ? 'id, nombre, hex_color' : 'id, nombre';
+    $sql = "SELECT $campos FROM $tabla";
     $result = $con->query($sql);
     if (!$result) {
         throw new Exception("Error al obtener datos de $tabla: " . $con->error);
@@ -43,6 +45,54 @@ function insertarCategoria($con, $nombre, $n_modulos) {
     return $categoria_id;
 }
 
+// Función para insertar un tipo de producto
+function insertarTipoProducto($con, $nombre) {
+    $sql = "INSERT INTO tipoproducto (nombre) VALUES (?)";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("s", $nombre);
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $tipoProducto_id = $stmt->insert_id;
+    $stmt->close();
+    return $tipoProducto_id;
+}
+
+// Función para insertar un color
+function insertarColor($con, $nombre, $hex_color) {
+    $sql = "INSERT INTO color (nombre, hex_color) VALUES (?, ?)";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("ss", $nombre, $hex_color);
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $color_id = $stmt->insert_id;
+    $stmt->close();
+    return $color_id;
+}
+
+// Función para insertar un relleno
+function insertarRelleno($con, $nombre) {
+    $sql = "INSERT INTO materiales (nombre, tipo) VALUES (?, 'relleno')";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("s", $nombre);
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $relleno_id = $stmt->insert_id;
+    $stmt->close();
+    return $relleno_id;
+}
+
 // Función para insertar una imagen
 function insertarImagen($con, $ruta, $producto_id, $frontend_id) {
     $sql_image = "INSERT INTO imagenes_productos (ruta, producto_id, frontend_id) VALUES (?, ?, ?)";
@@ -60,7 +110,7 @@ function insertarImagen($con, $ruta, $producto_id, $frontend_id) {
 // Obtener datos de las tablas necesarias
 try {
     $showCategory = obtenerDatos($con, 'categorias');
-    $showTypeProduct = obtenerDatos($con, 'tipoProducto');
+    $showTypeProduct = obtenerDatos($con, 'tipoproducto');
     $showColors = obtenerDatos($con, 'color');
     $showStuffed = obtenerDatos($con, "materiales WHERE tipo = 'relleno'");
     $showWood = obtenerDatos($con, "materiales WHERE tipo = 'madera'");
@@ -83,15 +133,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $categoria_id = filter_var($_POST['categoria_id'], FILTER_VALIDATE_INT);
         }
 
+        // Verificar si se debe agregar un nuevo tipo de producto
+        if (isset($_POST['hidden-type-product']) && $_POST['hidden-type-product'] == 'on') {
+            $nombreTipoProducto = htmlspecialchars($_POST['name_new_type']);
+            $tipoProducto_id = insertarTipoProducto($con, $nombreTipoProducto);
+        } else {
+            $tipoProducto_id = filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT);
+        }
+
+        // Verificar si se debe agregar un nuevo color
+        if (isset($_POST['hidden-color-select']) && $_POST['hidden-color-select'] == 'on') {
+            $nombreColor = htmlspecialchars($_POST['nombre_color']);
+            $hex_color = htmlspecialchars($_POST['hex_color']);
+            $color_id = insertarColor($con, $nombreColor, $hex_color);
+        } else {
+            $color_id = filter_var($_POST['color_id'], FILTER_VALIDATE_INT);
+        }
+
+        // Verificar si se debe agregar un nuevo relleno
+        if (isset($_POST['material-relleno-input']) && $_POST['material-relleno-input'] == 'on') {
+            $nombreRelleno = htmlspecialchars($_POST['nuevo_relleno']);
+            $relleno_id = insertarRelleno($con, $nombreRelleno);
+        } else {
+            $relleno_id = filter_var($_POST['relleno_id'], FILTER_VALIDATE_INT);
+        }
+
         // Obtener y sanitizar los valores del formulario
         $datos = [
             'nombre_producto' => htmlspecialchars($_POST['nombre_producto']),
             'categoria_id' => $categoria_id,
             'existencia' => filter_var($_POST['existencia'], FILTER_VALIDATE_INT),
             'descripcion' => htmlspecialchars($_POST['descripcion']),
-            'tipoProducto_id' => filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT),
-            'color_id' => filter_var($_POST['color_id'], FILTER_VALIDATE_INT),
-            'relleno_id' => filter_var($_POST['relleno_id'], FILTER_VALIDATE_INT),
+            'tipoProducto_id' => $tipoProducto_id,
+            'color_id' => $color_id,
+            'relleno_id' => $relleno_id,
             'madera_id' => filter_var($_POST['madera_id'], FILTER_VALIDATE_INT),
             'patas_id' => filter_var($_POST['patas_id'], FILTER_VALIDATE_INT),
             'telas_id' => filter_var($_POST['telas_id'], FILTER_VALIDATE_INT),
@@ -144,7 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         // Redirigir a una página de confirmación
-        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto agregado exitosamente">';
+        /* echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto agregado exitosamente">'; */
 
     } catch (Exception $e) {
         die($e->getMessage());
@@ -597,38 +672,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                            <div class="col-md-4 ml-md-3 ml-0">
                               <div class="form-group active-full">
-                                 <label for="color_id">Color</label>
-                                 <div id="color-select-main">
-                                    <div class="input-group">
-                                       <select name="color_id" id="color_id" class="form-control" required>
-                                          <option value="" selected disabled>Selecciona el tipo de medida</option>
-                                          <?php
-                                             if ($showColors->num_rows > 0) {
-                                                 // Salida de datos de cada fila
-                                                 while($row = $showColors->fetch_assoc()) {
-                                                     echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                 }
-                                             } else {
-                                                 echo "<option value='' disabled>No hay colores disponibles</option>";
-                                             }
-                                             ?>
-                                       </select>
-                                       <div class="input-group-append">
-                                          <span class="input-group-text"><i class="fas fa-circle"></i></span>
-                                       </div>
+                                  <label for="color_id">Color</label>
+                                  <div id="color-select-main">
+                                      <div class="input-group">
+                                          <select name="color_id" id="color_id" class="form-control" required>
+                                              <option value="" selected disabled>Selecciona el color</option>
+            
+                                                   <?php
+                                                   if ($showColors->num_rows > 0) {
+                                                      // Salida de datos de cada fila
+                                                      while($row = $showColors->fetch_assoc()) {
+                                                         echo "<option value='" . $row["id"] . "' data-hex='" . $row["hex_color"] . "'>" . $row["nombre"] . "</option>";
+                                                      }
+                                                   } else {
+                                                      echo "<option value='' disabled>No hay colores disponibles</option>";
+                                                   }
+                                                   ?>
+                                          </select>
+                                          <div class="input-group-append">
+                                              <span class="input-group-text"><i class="selectColor" style="font-size: 80px; margin-top:-13px; line-height: 0;">&#8226;</i></span>
+                                          </div>
+ 
                                     </div>
                                     <div class="form-group d-flex align-items-center">
                                        <small class="label-color-select">¿Desea añadir otra color?</small>
                                        <input type="checkbox" id="hidden-color-select" name="hidden-color-select" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
                                     </div>
+
                                     <div id="color-container">
+                                       <div class="d-flex justify-content-between">
+                                       <div class="form-group" style="margin-top: -1vh;">  
+                                         <label>Color nuevo</label>
+                                         <input type="text" name="nombre_color" class="form-control">
+                                       </div>
+
                                        <div class="form-group" style="margin-top: -1vh;">
-                                          <label>Color nuevo</label>
-                                          <input type="text" name="nombre" class="form-control">
+                                         <label>Aproxima el tono de color</label>
+                                         <div class="input-group my-colorpicker2">
+                                           <input type="text" class="form-control" name="hex_color">
+                                           <div class="input-group-append">
+                                             <span class="input-group-text"><i class="fas fa-square"></i></span>
+                                           </div>
+                                         </div>
+                                         <!-- /.input group -->
+                                       </div>
                                        </div>
                                     </div>
+
                                  </div>
                               </div>
+
+
+
                               <div class="form-group">
                                  <label>Materiales</label>
                                  <div class="form-group">
@@ -642,7 +737,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           <input type="checkbox" id="material-relleno-input" name="material-relleno-input" class="form-control ml-2" style="height: auto; width: auto;">
                                        </div>
                                        <div class="col-md-6 col-12">
-                                          <select name="relleno_id" id="relleno_id" class="form-control select2bs4 w-100" required>
+                                          <select name="relleno_id" id="relleno_id" class="form-control select2bs4 w-100">
                                              <option value="" selected disabled>Busca el relleno</option>
                                              <?php
                                                 if ($showStuffed->num_rows > 0) {
@@ -661,7 +756,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        <!-- Aqui lo que se oculta -->
                                        <div class="form-group d-flex align-items-center">
                                           <p id="text-nuevo-relleno" class="mb-0 mr-2" style="white-space: nowrap;">Nuevo relleno:</p>
-                                          <input id="nuevo-relleno" type="text" name="nuevo-relleno-input" class="form-control flex-grow-1">
+                                          <input id="nuevo-relleno" type="text" name="nuevo_relleno" class="form-control flex-grow-1">
                                        </div>
                                     </div>
                                  </div>
@@ -677,7 +772,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           <input type="checkbox" id="material-madera-input" name="showWood-input" class="form-control ml-2" style="height: auto; width: auto;">
                                        </div>
                                        <div class="col-md-6 col-12">
-                                          <select name="madera_id" id="madera_id" class="form-control select2bs4 w-100" required>
+                                          <select name="madera_id" id="madera_id" class="form-control select2bs4 w-100" >
                                              <option value="" selected disabled>Busca la madera</option>
                                              <?php
                                                 if ($showWood->num_rows > 0) {
@@ -696,7 +791,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        <!-- Aqui lo que se oculta -->
                                        <div class="form-group d-flex align-items-center">
                                           <p id="text-nueva-madera" class="mb-0 mr-2" style="white-space: nowrap;">Nueva madera:</p>
-                                          <input id="nueva-madera" type="text" name="nueva-madera-input" class="form-control flex-grow-1">
+                                          <input id="nueva-madera" type="text" name="nueva_madera_input" class="form-control flex-grow-1">
                                        </div>
                                     </div>
                                  </div>
@@ -712,7 +807,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                           <input type="checkbox" id="material-patas-input" name="legs-input" class="form-control ml-2" style="height: auto; width: auto;">
                                        </div>
                                        <div class="col-md-6 col-12">
-                                          <select name="patas_id" id="patas_id" class="form-control select2bs4 w-100" required>
+                                          <select name="patas_id" id="patas_id" class="form-control select2bs4 w-100" >
                                              <option value="" selected disabled>Busca la pata</option>
                                              <?php
                                                 if ($showLegs->num_rows > 0) {
@@ -731,7 +826,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        <!-- Aqui lo que se oculta -->
                                        <div class="form-group d-flex align-items-center">
                                           <p id="text-nueva-pata" class="mb-0 mr-2" style="white-space: nowrap;">Nueva pata:</p>
-                                          <input id="nueva-pata" type="text" name="nueva-pata-input" class="form-control flex-grow-1">
+                                          <input id="nueva-pata" type="text" name="nueva_pata_input" class="form-control flex-grow-1">
                                        </div>
                                     </div>
                                  </div>
@@ -748,7 +843,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        </div>
                                        <div class="col-md-6 col-12">
                                           <div class="input-group">
-                                             <select name="telas_id" id="telas_id" class="form-control select2bs4" required>
+                                             <select name="telas_id" id="telas_id" class="form-control select2bs4" >
                                                 <option value="" selected disabled>Busca la tela</option>
                                                 <?php
                                                    if ($showFabrics->num_rows > 0) {
@@ -774,7 +869,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        <!-- Aqui lo que se oculta -->
                                        <div class="form-group d-flex align-items-center">
                                           <p id="text-nueva-tela" class="mb-0 mr-2" style="white-space: nowrap;">Nueva tela:</p>
-                                          <input id="nueva-tela" type="text" name="nueva-tela-input" class="form-control flex-grow-1">
+                                          <input id="nueva-tela" type="text" name="nueva_tela_input" class="form-control flex-grow-1">
                                        </div>
                                        <div class="form-group">
                                           <div class="container mt-0" id="upload-tela-img-sg-1" data-width="100%" data-height="300" data-icon="fa-image" data-accept=".png, .jpg, .jpeg" data-valid-types="image/jpeg, image/png, image/jpg" data-text="Añadir imagen de la tela" data-border-radius="5px"></div>
@@ -791,184 +886,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               </div>
                               <!-- Fin de formulario de materiales -->     
 
-                              <div class="form-group">
-                                 <label>Medidas</label>
-                                 <input type="checkbox" id="measures-inputs" name="measures-inputs" class="form-control" style="height: auto; width: auto; display: inline-block; margin-left: 10px;">
-                                 <!-- Contenedor para los inputs -->
-                                 <div id="medidas-container">
-                                    <!-- Largos -->
-                                    <div class="form-group d-flex justify-content-between">
-
-                                       <div class="form-group mr-4">
-                                       <label>Largo</label>
-                                       <div class="input-group">
-                                          <input type="number" name="largo" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                       </div>
-
-                                       <div class="form-group">
-                                       <label>Largo asiento</label>
-                                       <div class="input-group">
-                                          <input type="number" name="largo-asiento" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                       </div>
-
-                                    </div>
-
-
-                                    <div class="form-group d-flex justify-content-between">
-                                    <div class="form-group mr-4">
-                                       <label>Fondo</label>
-                                       <div class="input-group">
-                                          <input type="number" name="fondo" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                       <label>Fondo del asiento</label>
-                                       <div class="input-group">
-                                          <input type="number" name="fondo-asiento" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    </div>
-
-
-                                    <div class="form-group d-flex justify-content-between">
-                                    <div class="form-group mr-4">
-                                       <label>Ancho del Brazo</label>
-                                       <div class="input-group">
-                                          <input type="number" name="ancho-brazo" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                       <label>Ancho del respaldo</label>
-                                       <div class="input-group">
-                                          <input type="number" name="ancho-respaldo" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    </div>
-
-                                    <div class="form-group d-flex justify-content-between">
-                                    <div class="form-group mr-4">
-                                       <label>Altura</label>
-                                       <div class="input-group">
-                                          <input type="number" name="altura" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="form-group">
-                                       <label>Altura al casco</label>
-                                       <div class="input-group">
-                                          <input type="number" name="altura-casco" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    </div>
-
-                                    <div class="form-group d-flex justify-between">
-                                    <div class="form-group mr-4">
-                                       <label>Altura al brazo</label>
-                                       <div class="input-group">
-                                          <input type="number" name="altura-brazo" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="form-group">
-                                       <label>Altura al asiento</label>
-                                       <div class="input-group">
-                                          <input type="number" name="altura-asiento" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    </div>
-
-                                    <div class="form-group d-flex justify-content-between">
-                                    <div class="form-group mr-4">
-                                       <label>Altura a la pata</label>
-                                       <div class="input-group">
-                                          <input type="number" name="altura-casco" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="form-group">
-                                       <label>Altura al respaldo</label>
-                                       <div class="input-group">
-                                          <input type="number" name="altura-respaldo" class="form-control input-change" min="0">
-                                          <div class="input-group-append">
-                                             <span class="input-group-text">
-                                             <small class="mr-2">Cm</small>
-                                             <i class="fas fa-ruler icon-color-change"></i>
-                                             </span>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    </div>
-
-                                 </div>
-
-                              </div> <!-- Fin medidas -->
 
                               <div class="form-group active-full">
                                  <label>Peso</label>
@@ -1128,8 +1045,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
    <script src="./middleware/modal.cam.js"></script>
 
    <script src="./middleware/hidden.inputs.images.js"></script>
+
+   <script>
+        // Función para cambiar el color de la clase .selectColor
+        function changeColor(hexColor) {
+            const elements = document.querySelectorAll('.selectColor');
+            elements.forEach(element => {
+                element.style.color = hexColor;
+            });
+        }
+
+        // Cambiar el color del icono basado en la selección del usuario
+        document.getElementById('color_id').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const hexColor = selectedOption.getAttribute('data-hex');
+            changeColor(hexColor);
+        });
+    </script>
    
    <!-- RDLS -->
+    
 
 
    
