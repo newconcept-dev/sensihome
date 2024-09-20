@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once 'db.php';
 
 // Función para obtener datos de una tabla
@@ -30,12 +30,12 @@ function insertarMaterial($con, $nombre, $tipo) {
 
 // Función para insertar un producto
 function insertarProducto($con, $datos) {
-    $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $con->prepare($sql);
     if (!$stmt) {
         throw new Exception("Error en la preparación: " . $con->error);
     }
-    $stmt->bind_param("siissiiiiidisss", ...array_values($datos));
+    $stmt->bind_param("siissiiiiidissss", ...array_values($datos));
     if (!$stmt->execute()) {
         throw new Exception("Error en la ejecución: " . $stmt->error);
     }
@@ -110,6 +110,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tipoProducto_id = isset($_POST['hidden-type-product']) && $_POST['hidden-type-product'] == 'on' ? insertarTipoProducto($con, htmlspecialchars($_POST['name_new_type'])) : filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT);
         $color_id = isset($_POST['hidden-color-select']) && $_POST['hidden-color-select'] == 'on' ? insertarColor($con, htmlspecialchars($_POST['nombre_color']), htmlspecialchars($_POST['hex_color'])) : filter_var($_POST['color_id'], FILTER_VALIDATE_INT);
 
+        // Determinar el valor del campo status
+        $status = 'INA'; // Valor predeterminado
+        if (isset($_POST['active_venta']) && $_POST['active_venta'] == 'on') {
+            $status = 'ENV';
+        }
+        if (isset($_POST['marketadd_product']) && $_POST['marketadd_product'] == 'on') {
+            $status = 'PRO';
+        }
+
         // Obtener y sanitizar los valores del formulario
         $datos = [
             'nombre_producto' => htmlspecialchars($_POST['nombre_producto']),
@@ -126,7 +135,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'precioVenta' => filter_var($_POST['precioVenta'], FILTER_VALIDATE_FLOAT),
             'proveedor_id' => filter_var($_POST['proveedor_id'], FILTER_VALIDATE_INT),
             'fechaCompra' => htmlspecialchars($_POST['fechaCompra']),
-            'garantia' => htmlspecialchars($_POST['garantia'])
+            'garantia' => htmlspecialchars($_POST['garantia']),
+            'status' => $status
         ];
 
         // Insertar el producto
@@ -577,20 +587,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>                                                
 
 
-                              <div class="form-group">
-                                       <label>Estado del producto</label>
-                                      <div class="form-group d-flex justify-content-between">
-                                        <div class="form-check form-switch ml-2 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="active_venta" name="active_venta">
-                                          <label class="form-check-label" for="active_venta">Activar venta del producto</label>
-                                        </div>
-
-                                        <div class="form-check form-switch mr-3 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="marketadd_product" name="marketadd_product">
-                                          <label class="form-check-label" for="marketadd_product">Promocionar</label>
-                                        </div>
-                                      </div>
+                           <div class="form-group">
+                              <label>Estado del producto</label>
+                              <div class="form-group d-flex justify-content-between">
+                                 <div class="form-check form-switch ml-2 d-inline-block">
+                                       <input class="form-check-input" type="checkbox" role="switch" id="active_venta" name="active_venta">
+                                       <label class="form-check-label" for="active_venta">Activar venta del producto</label>
+                                 </div>
+                                 <div class="form-check form-switch mr-3 d-inline-block">
+                                       <input class="form-check-input" type="checkbox" role="switch" id="marketadd_product" name="marketadd_product">
+                                       <label class="form-check-label" for="marketadd_product">Promocionar</label>
+                                 </div>
                               </div>
+                           </div>
 
                               <div class="form-group active-full">
                                  <label for="existencia">Existencias</label>
