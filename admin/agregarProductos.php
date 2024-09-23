@@ -30,12 +30,12 @@ function insertarMaterial($con, $nombre, $tipo) {
 
 // Función para insertar un producto
 function insertarProducto($con, $datos) {
-    $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia, status, promocionar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = $con->prepare($sql);
     if (!$stmt) {
         throw new Exception("Error en la preparación: " . $con->error);
     }
-    $stmt->bind_param("siissiiiiidissss", ...array_values($datos));
+    $stmt->bind_param("siissiiiiidisssss", ...array_values($datos));
     if (!$stmt->execute()) {
         throw new Exception("Error en la ejecución: " . $stmt->error);
     }
@@ -70,6 +70,22 @@ function insertarAccesorio($con, $producto_id, $accesorio_id, $cantidad) {
        throw new Exception("Error en la ejecución: " . $stmt->error);
    }
    $stmt->close();
+}
+
+// Función para insertar un color
+function insertarColor($con, $nombre, $hex_color) {
+    $sql = "INSERT INTO color (nombre, hex_color) VALUES (?, ?)";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        throw new Exception("Error en la preparación: " . $con->error);
+    }
+    $stmt->bind_param("ss", $nombre, $hex_color);
+    if (!$stmt->execute()) {
+        throw new Exception("Error en la ejecución: " . $stmt->error);
+    }
+    $color_id = $stmt->insert_id;
+    $stmt->close();
+    return $color_id;
 }
 
 // Obtener datos de las tablas necesarias
@@ -110,13 +126,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tipoProducto_id = isset($_POST['hidden-type-product']) && $_POST['hidden-type-product'] == 'on' ? insertarTipoProducto($con, htmlspecialchars($_POST['name_new_type'])) : filter_var($_POST['tipoProducto_id'], FILTER_VALIDATE_INT);
         $color_id = isset($_POST['hidden-color-select']) && $_POST['hidden-color-select'] == 'on' ? insertarColor($con, htmlspecialchars($_POST['nombre_color']), htmlspecialchars($_POST['hex_color'])) : filter_var($_POST['color_id'], FILTER_VALIDATE_INT);
 
-        // Determinar el valor del campo status
+        // Determinar el valor de los campos status y promocionar
         $status = 'INA'; // Valor predeterminado
+        $promocionar = 'NO'; // Valor predeterminado
         if (isset($_POST['active_venta']) && $_POST['active_venta'] == 'on') {
             $status = 'ENV';
         }
         if (isset($_POST['marketadd_product']) && $_POST['marketadd_product'] == 'on') {
-            $status = 'PRO';
+            $promocionar = 'PRO';
         }
 
         // Obtener y sanitizar los valores del formulario
@@ -136,7 +153,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'proveedor_id' => filter_var($_POST['proveedor_id'], FILTER_VALIDATE_INT),
             'fechaCompra' => htmlspecialchars($_POST['fechaCompra']),
             'garantia' => htmlspecialchars($_POST['garantia']),
-            'status' => $status
+            'status' => $status,
+            'promocionar' => $promocionar
         ];
 
         // Insertar el producto
@@ -179,11 +197,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imagenes = [
             'imageUpload-front' => 'front',
             'left-view-product' => 'left',
-            'straight-view-product' => 'straight',
+            'module-intermediate-li' => 'mili',
             'right-view-product' => 'right',
-            'back-view-product' => 'back',
+            'module-intermediate-ld' => 'mild',
             'detail-product' => 'dt',
-            'complete-product' => 'cmp'
+            'back-view-product' => 'back',
+            'complete-product' => 'cmp',
+            'box-view-product' => 'box',
+            'backrest-view-product' => 'backrest',
+            'furnitureset-view-product' => 'furnitureset'
         ];
         foreach ($imagenes as $input_name => $prefijo) {
             if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
@@ -208,16 +230,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!-- <link rel="stylesheet" href="./agregarProducto.css"> -->
 
+<style>
+    .button-status{
+        display: none;
+    }
+
+    .container-info{
+        display: none;
+    }
+
+    .container-info p{
+        color: orange;
+    }
+
+    .container-info i{
+        color: orange;
+    }
+
+    #btn-imagesUploads {
+        position: relative;
+        left: 0;
+    }
+
+    #adds-imgs-especifics {
+        position: relative;
+        justify-content: space-between;
+    }
+
+
+</style>
+
 <!-- Bootstrap Switch -->
 
 <div class="content-wrapper">
+
    <!-- Content Header (Page header) -->
    <section class="content-header">
+
    
 
-   <!-- <div class="alert alert-danger" role="alert">
+   <div class="alert alert-warning" role="alert">
       Procesando.. 
-    </div> -->
+    </div> 
 
       <div class="container-fluid">
          <div class="row mb-2">
@@ -288,12 +342,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  
 
                               </div>
-                              
+                                
+
+                                <!-- Añadir más instancias aquí -->
+                                 <div class="hidden-container-info" id="hidden-container-info">
+                                 <div class="container-info" style="max-width: 100%;  margin-top: -1vh; " id="container-info">
+                                    <div class="product-edit">
+                                       
+                                       <label for="imageUpload-front"></label>
+                                    </div>
+                                    <div class="" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                       <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                          
+                                          <p>Seleccione una seccion para subir imagen</p>
+                                          <i class="fa fa-arrow-down"></i>
+                                       </div>
+
+                                    </div>
+                                 </div> <!-- Fin del contendor puntedo -->
+                                 </div>
                                  
                                  <!-- Añadir más instancias aquí -->
-                                 <div class="product-upload" style="max-width: 100%;  margin-top: -1vh;" id="container-imageUpload-front">
+                                 <div class="product-upload" style="max-width: 100%;  margin-top: -1vh; display:none;" id="container-imageUpload-front">
                                     <div class="product-edit">
-                                       <input type="file" name="imageUpload-front" id="imageUpload-front" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <input type="file" name="imageUpload-front" id="imageUpload-front" class="image-upload-input" accept=".png, .jpg, .jpeg">
                                        <label for="imageUpload-front"></label>
                                     </div>
                                     <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
@@ -319,17 +391,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                        </div>
                                     </div>
                                  </div> <!-- Fin del contendor puntedo -->
+                                
 
                                  <!-- Añadir más instancias aquí -->
                                  <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-left-view-product">
                                     <div class="product-edit">
-                                       <input type="file" name="left-view-product" id="left-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <input type="file" name="left-view-product" id="left-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg">
                                        <label for="left-view-product"></label>
                                     </div>
                                     <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
                                        <div class="image-preview dropzone-desc" style="border-radius: 5px;">
                                           <i class="fa fa-image"></i>
-                                          <p>Vista lateral Izquierda</p>
+                                          <p>Modulo lateral Izquierdo</p>
                                        </div>
                                        <div class="loading-container" style="display: none;">
                                           <div></div>
@@ -352,15 +425,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
                               <!-- Añadir más instancias aquí -->
-                                 <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-straight-view-product">
+                                 <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-module-intermediate-li">
                                     <div class="product-edit">
-                                       <input type="file" name="straight-view-product" id="straight-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
-                                       <label for="straight-view-product"></label>
+                                       <input type="file" name="module-intermediate-li" id="module-intermediate-li" class="image-upload-input" accept=".png, .jpg, .jpeg">
+                                       <label for="module-intermediate-li"></label>
                                     </div>
                                     <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
                                        <div class="image-preview dropzone-desc" style="border-radius: 5px;">
                                           <i class="fa fa-image"></i>
-                                          <p>Vista recta</p>
+                                          <p>Modulo Intermedio</p>
                                        </div>
                                        <div class="loading-container" style="display: none;">
                                           <div></div>
@@ -384,13 +457,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  <!-- Añadir más instancias aquí -->
                                  <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-right-view-product">
                                     <div class="product-edit">
-                                       <input type="file" name="right-view-product" id="right-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
+                                       <input type="file" name="right-view-product" id="right-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg">
                                        <label for="right-view-product"></label>
                                     </div>
                                     <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
                                        <div class="image-preview dropzone-desc" style="border-radius: 5px;">
                                           <i class="fa fa-image"></i>
-                                          <p>Vista lateral derecha</p>
+                                          <p>Modulo lateral derecho</p>
                                        </div>
                                        <div class="loading-container" style="display: none;">
                                           <div></div>
@@ -412,15 +485,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                  </div> <!-- Fin del contendor puntedo -->
 
                                  <!-- Añadir más instancias aquí -->
-                                    <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-back-view-product">
+                                    <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-module-intermediate-ld">
                                     <div class="product-edit">
-                                       <input type="file" name="back-view-product" id="back-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" required>
-                                       <label for="back-view-product"></label>
+                                       <input type="file" name="module-intermediate-ld" id="module-intermediate-ld" class="image-upload-input" accept=".png, .jpg, .jpeg">
+                                       <label for="module-intermediate-ld"></label>
                                     </div>
                                     <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
                                        <div class="image-preview dropzone-desc" style="border-radius: 5px;">
                                           <i class="fa fa-image"></i>
-                                          <p>Vista trasera</p>
+                                          <p>Modulo intermedio</p>
                                        </div>
                                        <div class="loading-container" style="display: none;">
                                           <div></div>
@@ -501,72 +574,264 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                              </div>
                                           </div> <!-- Fin del contendor puntedo -->  
 
-                                                                        
-                                       <div class="row justify-content-around" style="margin-top: -3vh;">
-                                           <div class="col mb-3 d-flex justify-content-center">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-imageUpload-front">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">F</span>
-                                                       <span class="d-md-none d-inline">F</span>
+                                             <!-- Añadir más instancias aquí -->
+                                          <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-back-view-product">
+                                             <div class="product-edit">
+                                                <input type="file" name="back-view-product" id="back-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" >
+                                                <label for="back-view-product"></label>
+                                             </div>
+                                             <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                                <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                                   <i class="fa fa-image"></i>
+                                                   <p>Vista trasera</p>
+                                                </div>
+                                                <div class="loading-container" style="display: none;">
+                                                   <div></div>
+                                                   <div class="checkmark-container" style="display: none;">
+                                                      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                           <div class="col mb-3 d-flex justify-content-center">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-left-view-product">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">LI</span>
-                                                       <span class="d-md-none d-inline">LI</span>
+                                                   <div class="error-container" style="display: none;">
+                                                      <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                         <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                           <div class="col mb-3 d-flex justify-content-center">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-straight-view-product">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">R</span>
-                                                       <span class="d-md-none d-inline">R</span>
+                                                </div>
+                                             </div>
+                                          </div> <!-- Fin del contendor puntedo --> 
+
+
+                                             <!-- Añadir más instancias aquí -->
+                                             <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-box-view-product">
+                                             <div class="product-edit">
+                                                <input type="file" name="back-view-product" id="back-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" >
+                                                <label for="back-view-product"></label>
+                                             </div>
+                                             <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                                <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                                   <i class="fa fa-image"></i>
+                                                   <p>Box</p>
+                                                </div>
+                                                <div class="loading-container" style="display: none;">
+                                                   <div></div>
+                                                   <div class="checkmark-container" style="display: none;">
+                                                      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                           <div class="col mb-3 d-flex justify-content-center">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-right-view-product">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">LD</span>
-                                                       <span class="d-md-none d-inline">LD</span>
+                                                   <div class="error-container" style="display: none;">
+                                                      <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                         <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                           <div class="col mb-3 d-flex justify-content-center">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-back-view-product">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">T</span>
-                                                       <span class="d-md-none d-inline">T</span>
+                                                </div>
+                                             </div>
+                                          </div> <!-- Fin del contendor puntedo --> 
+
+                                            <!-- Añadir más instancias aquí -->
+                                             <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-backrest-view-product">
+                                             <div class="product-edit">
+                                                <input type="file" name="backrest-view-product" id="backrest-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" >
+                                                <label for="backrest-view-product"></label>
+                                             </div>
+                                             <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                                <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                                   <i class="fa fa-image"></i>
+                                                   <p>Respaldo</p>
+                                                </div>
+                                                <div class="loading-container" style="display: none;">
+                                                   <div></div>
+                                                   <div class="checkmark-container" style="display: none;">
+                                                      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                           <div class="col mb-3 d-flex justify-content-center d-none" id="button-complete-product-container">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-complete-product">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">C</span>
-                                                       <span class="d-md-none d-inline">CMP</span>
+                                                   <div class="error-container" style="display: none;">
+                                                      <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                         <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                           <div class="col mb-3 d-flex justify-content-center d-none" id="button-detail-product-container">
-                                               <button type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-detail-product">
-                                                   <div class="d-flex flex-md-row flex-column align-items-center">
-                                                       <span class="fa fa-image"></span>
-                                                       <span class="d-md-inline d-none ml-1">DT</span>
-                                                       <span class="d-md-none d-inline">DT</span>
+                                                </div>
+                                             </div>
+                                          </div> <!-- Fin del contendor puntedo -->
+                                          
+                                          
+                                        <!-- Añadir más instancias aquí -->
+                                        <div class="product-upload" style="max-width: 100%; display: none; margin-top: -1vh;" id="container-furnitureset-view-product">
+                                             <div class="product-edit">
+                                                <input type="file" name="furnitureset-view-product" id="furnitureset-view-product" class="image-upload-input" accept=".png, .jpg, .jpeg" >
+                                                <label for="furnitureset-view-product"></label>
+                                             </div>
+                                             <div class="product-preview drop-area" style="width: 100%; height: 36vh; border-radius: 5px;">
+                                                <div class="image-preview dropzone-desc" style="border-radius: 5px;">
+                                                   <i class="fa fa-image"></i>
+                                                   <p>Mueble en conjunto</p>
+                                                </div>
+                                                <div class="loading-container" style="display: none;">
+                                                   <div></div>
+                                                   <div class="checkmark-container" style="display: none;">
+                                                      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                                                      </svg>
                                                    </div>
-                                               </button>
-                                           </div>
-                                       </div>
+                                                   <div class="error-container" style="display: none;">
+                                                      <svg class="error-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                                         <circle class="error-mark__circle" cx="26" cy="26" r="25" fill="none"/>
+                                                         <line class="error-mark__line" x1="16" y1="16" x2="36" y2="36"/>
+                                                         <line class="error-mark__line" x1="36" y1="16" x2="16" y2="36"/>
+                                                      </svg>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div> <!-- Fin del contendor puntedo -->   
+
+                                       <div class="row justify-content-around" style="margin-top: -3vh; " id="btn-imagesUploads">
+                                        
+                                            <div class="button-status" id="btn-left-view-product">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnLeftViewProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-left-view-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">LI</span>
+                                                            <span class="d-md-none d-inline">LI</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-module-intermediate-li">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnModuleIntermediateLiToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-module-intermediate-li">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">M+</span>
+                                                            <span class="d-md-none d-inline">M+</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-imageUpload-front">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnImageUploadFrontToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-imageUpload-front">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">F</span>
+                                                            <span class="d-md-none d-inline">F</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-module-intermediate-ri">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnModuleIntermediateRiToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-module-intermediate-ri">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">M+</span>
+                                                            <span class="d-md-none d-inline">M+</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-right-view-product">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnRightViewProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-right-view-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">LD</span>
+                                                            <span class="d-md-none d-inline">LD</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-back-view-product">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnBackViewProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-back-view-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">T</span>
+                                                            <span class="d-md-none d-inline">T</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-box-view-product">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnBoxViewProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-box-view-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">VC</span>
+                                                            <span class="d-md-none d-inline">VC</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-backrest-view-product">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnBackrestViewProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-backrest-view-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">VR</span>
+                                                            <span class="d-md-none d-inline">VR</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-furnitureset-view-product">
+                                                <div class="col mb-3 d-flex justify-content-center">
+                                                    <button id="btnFurnituresetViewProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-furnitureset-view-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">MC</span>
+                                                            <span class="d-md-none d-inline">MC</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-complete-product">
+                                                <div class="col mb-3 d-flex justify-content-center d-none">
+                                                    <button id="btnCompleteProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-complete-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">C</span>
+                                                            <span class="d-md-none d-inline">CMP</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="button-status" id="btn-detail-product">
+                                                <div class="col mb-3 d-flex justify-content-center d-none">
+                                                    <button id="btnDetailProductToSuccess" type="button" class="image-btn btn btn-secondary w-100 text-truncate d-flex align-items-center justify-content-center" style="height: auto;" data-target="container-detail-product">
+                                                        <div class="d-flex flex-md-row flex-column align-items-center">
+                                                            <span class="fa fa-image"></span>
+                                                            <span class="d-md-inline d-none ml-1">DT</span>
+                                                            <span class="d-md-none d-inline">DT</span>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                    
+        </div>
                                                                
                                  
                               
@@ -574,17 +839,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div> <!-- Fin del grupo form -->
 
 
-                                    <div class="form-group d-flex justify-content-between" style="margin-top: -2vh;">
-                                       <div class="form-check form-switch ml-2 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="check-complete-product" name="check-complete-product">
-                                          <label class="form-check-label" for="check-complete-product">¿Es una sala completa?</label>
-                                       </div>
+                            <div id="adds-imgs-especifics" style="display: none; padding-bottom: 1em;">
+                                
+                                    <div class="form-check form-switch ml-2 d-inline-block">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="check-complete-product" name="check-complete-product">
+                                        <label class="form-check-label" for="check-complete-product">¿Configuracion completa?</label>
+                                    </div>
 
-                                       <div class="form-check form-switch mr-3 d-inline-block">
-                                          <input class="form-check-input" type="checkbox" role="switch" id="check-detail-product" name="check-detail-product">
-                                          <label class="form-check-label" for="check-detail-product">¿Tiene detalle en la tela?</label>
-                                       </div>
-                                    </div>                                                
+                                    <div class="form-check form-switch mr-3 d-inline-block">
+                                        <input class="form-check-input" type="checkbox" role="switch" id="check-detail-product" name="check-detail-product">
+                                        <label class="form-check-label" for="check-detail-product">¿Detalle en tela?</label>
+                                    </div>
+                                
+                            </div>                                          
 
 
                            <div class="form-group">
@@ -603,7 +870,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                               <div class="form-group active-full">
                                  <label for="existencia">Existencias</label>
-                                 <input type="number" name="existencia" id="existencia" class="form-control" min="1" required>
+                                 <input type="text" name="existencia" id="existencia" class="form-control" min="1" maxlength="5" required>
                               </div>
                               <div class="form-group active-full">
                                  <label for="descripcion">Descripción</label>
@@ -840,7 +1107,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="form-group active-full">
                                  <label>Peso</label>
                                  <div class="input-group">
-                                    <input type="number" name="peso" class="form-control input-change" min="0">
+                                    <input type="text" name="peso" class="form-control input-change" min="0" inputmode="numeric" maxlength="6">
                                     <div class="input-group-append">
                                        <span class="input-group-text">
                                        <small class="mr-2">Kg</small>
@@ -881,7 +1148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="form-group active-full">
                                  <label>Precio Compra</label>
                                  <div class="input-group">
-                                    <input type="number" name="precio" id="precio" class="form-control input-change" min="100">
+                                    <input type="number" name="precio" id="precio" class="form-control input-change" min="100"  maxlength="10">
                                     <div class="input-group-append">
                                        <span class="input-group-text">
                                        <i class="fas fa-dollar-sign icon-color-change"></i>
@@ -892,7 +1159,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <div class="form-group active-full">
                                  <label>Precio de venta</label>
                                  <div class="input-group">
-                                    <input type="number" name="precioVenta" id="precioVenta" class="form-control input-change" min="4000">
+                                    <input type="number" name="precioVenta" id="precioVenta" class="form-control input-change" min="4000" maxlength="10">
                                     <div class="input-group-append">
                                        <span class="input-group-text">
                                        <i class="fas fa-dollar-sign icon-color-change"></i>
@@ -926,7 +1193,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               </div>
                               <div class="form-group active-full">
                                  <label>Garantía</label>
-                                 <input type="text" name="garantia" id="garantia" class="form-control" required>
+                                 <input type="text" name="garantia" id="garantia" class="form-control" required placeholder="1 años, 2 años, etc">
                               </div>
                               <div class="form-group">
                                  <label>Fecha de registro</label>
@@ -1013,10 +1280,86 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             changeColor(hexColor);
         });
     </script>
-   
-   <!-- RDLS -->
-    
 
+
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const precioInput = document.getElementById('precio');
+        const precioVentaInput = document.getElementById('precioVenta');
+
+        function limitInputLength(input, maxLength) {
+            input.addEventListener('input', function() {
+                if (this.value.length > maxLength) {
+                    this.value = this.value.slice(0, maxLength);
+                }
+            });
+        }
+
+        limitInputLength(precioInput, 10);
+        limitInputLength(precioVentaInput, 10);
+    });
+</script>    
+
+<!-- Persistencia de datos -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('formValidated');
+        const formFields = form.elements;
+
+        // Cargar datos del formulario desde localStorage
+        const savedData = localStorage.getItem('formData');
+        if (savedData) {
+            const formData = JSON.parse(savedData);
+            const productName = formData['nombre_producto'] || 'este producto'; // Usar el nombre del producto del campo 'nombre_producto'
+
+            // Mostrar alerta al usuario usando SweetAlert2
+            Swal.fire({
+                title: `Usted estaba editando el producto, nombrado como: "${productName}" antes de desconectarse.`,
+                text: "¿Desea seguir editando este producto?",
+                icon: 'warning', // Cambiar a 'info'
+                showCancelButton: true,
+                confirmButtonText: 'Sí, restaurar datos',
+                cancelButtonText: 'No, borrar datos',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    for (const key in formData) {
+                        if (formData.hasOwnProperty(key) && formFields[key]) {
+                            if (formFields[key].type === 'checkbox') {
+                                formFields[key].checked = formData[key];
+                            } else {
+                                formFields[key].value = formData[key];
+                            }
+                        }
+                    }
+                } else {
+                    localStorage.removeItem('formData');
+                }
+            });
+        }
+
+        // Guardar datos del formulario en localStorage
+        form.addEventListener('input', function() {
+            const formData = {};
+            for (let i = 0; i < formFields.length; i++) {
+                const field = formFields[i];
+                if (field.type !== 'file') {
+                    if (field.type === 'checkbox') {
+                        formData[field.name] = field.checked;
+                    } else {
+                        formData[field.name] = field.value;
+                    }
+                }
+            }
+            localStorage.setItem('formData', JSON.stringify(formData));
+        });
+
+        // Eliminar datos del formulario de localStorage después de una hora
+        setTimeout(function() {
+            localStorage.removeItem('formData');
+        }, 3600000); // 1 hora en milisegundos
+    });
+</script>
 
    
 </div>

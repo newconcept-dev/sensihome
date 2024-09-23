@@ -1,53 +1,73 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const imageButtons = document.querySelectorAll('.image-btn'); // Cambia la clase de los botones de imagen a 'image-btn'
+    const containerInfo = document.getElementById('container-info');
+    const categoriaSelect = document.getElementById('categoria_id');
+    const btnImagesUploads = document.getElementById('btn-imagesUploads');
+    const addsImgsEspecifics = document.getElementById('adds-imgs-especifics');
 
-    imageButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const targetContainer = document.getElementById(targetId);
-
-            // Ocultar todos los contenedores de imágenes
-            document.querySelectorAll('.product-upload').forEach(container => {
-                container.style.display = 'none';
-            });
-
-            // Mostrar el contenedor correspondiente
-            if (targetContainer) {
-                targetContainer.style.display = 'block';
-            }
-
-            // Cambiar la clase del botón seleccionado
-            imageButtons.forEach(btn => {
-                btn.classList.remove('btn-primary');
-                btn.classList.add('btn-secondary');
-            });
-            this.classList.remove('btn-secondary');
-            this.classList.add('btn-primary');
-        });
-    });
-
-    // Detectar si se ha subido un archivo y cambiar la clase del botón correspondiente
     const fileInputs = [
         'imageUpload-front',
         'left-view-product',
-        'straight-view-product',
+        'module-intermediate-li',
         'right-view-product',
+        'module-intermediate-ld',
         'back-view-product',
-        'complete-product', // Nuevo input
-        'detail-product'    // Nuevo input
+        'complete-product',
+        'detail-product',
+        'box-view-product',
+        'backrest-view-product',
+        'furnitureset-view-product'
     ];
 
-    fileInputs.forEach(inputId => {
-        const input = document.getElementById(inputId);
-        input.addEventListener('change', function() {
-            const button = document.querySelector(`button[data-target="container-${this.id}"]`);
-            if (this.files && this.files.length > 0) {
-                button.classList.remove('btn-secondary', 'btn-primary');
-                button.classList.add('btn-success');
-            } else {
-                button.classList.remove('btn-success');
-                button.classList.add('btn-secondary');
-            }
+    const categoryButtons = {
+        2: ['btn-imageUpload-front', 'btn-box-view-product', 'btn-backrest-view-product', 'btn-furnitureset-view-product'],
+        3: ['btn-left-view-product', 'btn-right-view-product', 'btn-imageUpload-front', 'btn-back-view-product'],
+        4: ['btn-left-view-product', 'btn-right-view-product', 'btn-imageUpload-front', 'btn-back-view-product'],
+        5: ['btn-left-view-product', 'btn-right-view-product', 'btn-imageUpload-front'],
+        6: ['btn-left-view-product', 'btn-right-view-product'],
+        7: ['btn-left-view-product', 'btn-right-view-product', 'btn-module-intermediate-li', 'btn-module-intermediate-ri', 'btn-imageUpload-front'],
+        8: ['btn-left-view-product', 'btn-right-view-product', 'btn-module-intermediate-li', 'btn-module-intermediate-ri', 'btn-imageUpload-front'],
+        9: ['btn-left-view-product', 'btn-right-view-product', 'btn-imageUpload-front'],
+        10: ['btn-imageUpload-front'],
+        11: ['btn-imageUpload-front', 'btn-back-view-product']
+    };
+
+    function toggleDisplay(element, show) {
+        element.style.display = show ? 'block' : 'none';
+    }
+
+    function resetButtons() {
+        document.querySelectorAll('.image-btn').forEach(btn => {
+            btn.classList.remove('btn-primary', 'btn-success');
+            btn.classList.add('btn-secondary');
         });
+    }
+
+    function hideAll(elements) {
+        elements.forEach(el => el.style.display = 'none');
+    }
+
+    function showCategoryButtons(categoryId) {
+        const buttons = categoryButtons[categoryId] || [];
+        hideAll(document.querySelectorAll('.button-status, .product-upload'));
+        resetButtons();
+        buttons.forEach(btnId => document.getElementById(btnId).style.display = 'flex');
+        toggleDisplay(btnImagesUploads, buttons.length > 0);
+        toggleDisplay(addsImgsEspecifics, buttons.length > 0);
+        toggleDisplay(containerInfo, buttons.length > 0);
+    }
+
+    categoriaSelect.addEventListener('change', () => showCategoryButtons(categoriaSelect.value));
+
+    document.addEventListener('click', function(event) {
+        if (event.target.matches('.image-btn')) {
+            const targetId = event.target.getAttribute('data-target');
+            hideAll(document.querySelectorAll('.product-upload'));
+            if (targetId) document.getElementById(targetId).style.display = 'block';
+            resetButtons();
+            event.target.classList.add('btn-primary');
+            toggleDisplay(containerInfo, false);
+        }
     });
+
+    showCategoryButtons(categoriaSelect.value);
 });

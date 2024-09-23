@@ -70,6 +70,13 @@
 
   <!-- Modal camara -->
   <link rel="stylesheet" href="./camara.css">
+
+
+  <!-- Alerta del agregar productos -->
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
