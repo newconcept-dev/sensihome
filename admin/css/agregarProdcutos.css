@@ -1,0 +1,246 @@
+
+.button-status{  /* Botones */
+        display: none;
+    }
+
+    .container-info{
+        display: none;
+    }
+
+    .container-info p{
+        color: orange;
+    }
+
+    .container-info i{
+        color: orange;
+    }
+
+    #btn-imagesUploads {
+        position: relative;
+        left: 0;
+    }
+
+    #adds-imgs-especifics {
+        position: relative;
+        justify-content: space-between;       
+    }
+
+    .backup {
+        display: none;
+    }
+
+    .swal2-confirm.btn-custom-confirm {
+        background-color: #28a745 !important; /* Cambiar el color del botón de confirmación */
+        color: white !important;
+    }
+
+    .swal2-cancel.btn-custom-cancel {
+        background-color: #dc3545 !important; /* Cambiar el color del botón de cancelación */
+        color: white !important;
+    }
+
+    
+/* Emulador de telefono vista */
+.phoneView {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrar verticalmente */
+    height: 68vh;
+    width: 17vw;
+    border-radius: 30px;
+    border: 8px solid #0f0f0fda; /* Borde gris */
+    background-color: #ffffffe3; /* Fondo blanco */
+    margin-left: 5vw;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Añadir sombra para profundidad */
+}
+
+.detailPhone {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    border: 4px solid #1a1919bd; /* Borde negro */
+    border-radius: 22px;
+    height: 100%;
+    width: 100%;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra interna para más profundidad */
+}
+
+.markPhone {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    border: 2px solid #5c5c5cda; /* Borde gris */
+    border-radius: 18px;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra interna para más profundidad */
+}
+
+.contentPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Asegurar que el contenido comience desde arriba */
+    align-items: center; /* Centrar horizontalmente */
+    height: 100%;
+    width: 100%;
+    padding-top: 20px; /* Añadir espacio superior */
+}
+
+.title-preview {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 8vh;
+}
+
+.title-preview img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.title-preview h1 {
+    font-size: 2.2rem;
+    color: rgb(0, 0, 0); /* Cambiar el color del título a verde */
+}
+
+.viewProduct {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.product__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product__image img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.product__info {
+    text-align: center;
+}
+
+.product__info--title h2 {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product__info--price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.product__info--price h3 {
+    margin: 0 10px;
+}
+
+.product__icons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.product__icons i {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.cart-edit {
+    color: #78dc35; /* Color verde para el carrito */
+}
+
+.cora-edit {
+    color: #dc3545; /* Color rojo para el corazón */
+}
+
+/* Parte de android */
+.imgAndroid {
+    width: 180px;
+    height: auto;
+    /* Dropshadow blanco */
+    filter: drop-shadow(0 1px 4px rgba(255, 255, 255, 0.978));
+}
+
+.txtAndroid {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    justify-content: center;
+    align-items: center;
+}
+
+.txtAndroid p {
+    justify-self: center;
+}
+
+.previewAndroid {
+    background-color: black;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    height: 100%;
+    width: 100%;
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 1200px) {
+    .cosa{
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .phoneView {
+        width: 25vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .phoneView {
+        width: 35vw;
+    }
+}
+
+@media (max-width: 576px) {
+    .phoneView {
+        width: 80vw;
+        height: 50vh;
+    }
+
+    .title-preview h1 {
+        font-size: 1.8rem;
+    }
+
+    .product__info--title h2 {
+        font-size: 1rem;
+    }
+
+    .product__info--price h3 {
+        font-size: 1rem;
+    }
+
+    .product__icons i {
+        font-size: 20px;
+    }
+}

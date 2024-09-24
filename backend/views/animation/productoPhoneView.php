@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Vista previa del producto</title>
-  <link rel="stylesheet" href="./productoPhoneView.css">
+  <link rel="stylesheet" href="../backend/views/animation/productoPhoneView.css">
 </head>
 <body>
   <header>
@@ -23,7 +23,7 @@
           <span id="name_preview" class="card__preci card__preci--before">Nombre</span>
           <span id="cost_preview" class="card__preci card__preci--now">$0,000</span>
         </div>
-        <a href="" class="card__iconShop"><ion-icon name="cart-outline"></ion-icon></a>
+        
       </div>
     </article>
   </main>
@@ -34,5 +34,15 @@
 
   <!-- ICONS -->
   <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+  <script>
+    window.addEventListener('message', function(event) {
+      if (event.data.type === 'updatePreview') {
+        const { name, price, imageSrc } = event.data;
+        document.getElementById('name_preview').textContent = name;
+        document.getElementById('cost_preview').textContent = price;
+        document.getElementById('imgPreview_phone').src = imageSrc;
+      }
+    });
+  </script>
 </body>
 </html>

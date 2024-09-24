@@ -227,51 +227,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Estilos para los inputs tipo imagenes --> 
 <link rel="stylesheet" href="./css/files.css">
+<link rel="stylesheet" href="./css/agregarProdcutos.css">
+
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 <!-- <link rel="stylesheet" href="./agregarProducto.css"> -->
 
-<style>
-    .button-status{
-        display: none;
-    }
 
-    .container-info{
-        display: none;
-    }
-
-    .container-info p{
-        color: orange;
-    }
-
-    .container-info i{
-        color: orange;
-    }
-
-    #btn-imagesUploads {
-        position: relative;
-        left: 0;
-    }
-
-    #adds-imgs-especifics {
-        position: relative;
-        justify-content: space-between;       
-    }
-
-    .backup {
-        display: none;
-    }
-
-    .swal2-confirm.btn-custom-confirm {
-        background-color: #28a745 !important; /* Cambiar el color del botón de confirmación */
-        color: white !important;
-    }
-
-    .swal2-cancel.btn-custom-cancel {
-        background-color: #dc3545 !important; /* Cambiar el color del botón de cancelación */
-        color: white !important;
-    }
-
-</style>
 
 <!-- Bootstrap Switch -->
 
@@ -1209,24 +1170,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               </div>
                               <div class="form-group active-full">
                                  <label>Garantía</label>
-                                 <input type="text" name="garantia" id="garantia" class="form-control" required placeholder="1 años, 2 años, etc">
+                                 <input type="text" name="garantia" id="garantia" class="form-control" required placeholder="90 dias">
                               </div>
                               <div class="form-group">
                                  <label>Fecha de registro</label>
                                  <p><?php echo date('Y-m-d H:i:s'); ?></p>
                               </div>
                            </div>
-                           <div class="col-md-4" style="margin-left: -1.5vw;">
+                           <div class="col-md-4" style="margin-left: -1vw;">
                               <!-- Div con bordes 100% del ancho y 60vh de alto -->
-                              <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 1em;">
+                              
                                  <!-- Contenido del div -->
-                                 <div id="phone-view-1" data-src="http://localhost/sensi/backend/views/animation/productoPhoneView.php" class="d-none d-md-block" style="width: 70%; height: 100%;"></div>
-                                 <?php include '../backend/views/animation/ProductoPhoneView.php'; ?>
                                  
-                                 <button type="submit" name="guardar" class="btn btn-primary mt-2">Guardar</button>
-                                 <!-- C:\xampp\htdocs\sensi\view.e.html -->
+                                <div class="form-group cosa ml-3 p-2 ">
+                                    <div class="phoneView">
+                                        <div class="detailPhone">
+                                            <div class="markPhone">
+                                                <div class="contentPage">
+                                                    <div class="title-preview">
+                                                        <img src="../backend/media/pages/sensi.png" alt="">
+                                                        <h1>Sensi Home</h1>
+                                                    </div>
+                                    
+                                                    <div class="viewProduct" style="display: h;">
+                                                        <div class="product__container">
+                                                            <div class="product__image">
+                                                                <img id="imgPreviewPhone" src="../backend/media/pages/productDefault.pn" alt="">
+                                                            </div>
+                                                            <div class="product__info">
+                                                                <div class="product__info--title">
+                                                                    <h2 id="name_previewPhone">Esperando datos ⚙️</h2>
+                                                                </div>
+                                                                
+                                                                <div class="product__info--price">
+                                                                    <i class="fas fa-heart cora-edit"></i>
+                                                                    <h3 id="pricePreviewPhone">$</h3>
+                                                                    <i class="fas fa-shopping-cart cart-edit"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" name="guardar" class="btn btn-primary mt-2" style="margin-left: 11vw;">Guardar</button> 
+                                
+                                    
+                                </div>
+                                 
+                                 
+                                 
                               </div>
-                           </div>
+                           
                         </div>
                      </form>
                   </div>
@@ -1387,34 +1383,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Preview -->
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function() {
     const nameInput = document.getElementById('nombre_producto');
     const priceInput = document.getElementById('precioVenta');
     const imageInput = document.getElementById('imageUpload-front');
-    const previewName = document.getElementById('name_preview');
-    const previewPrice = document.getElementById('cost_preview');
-    const previewImage = document.getElementById('imgPreview_phone');
+    const previewName = document.getElementById('name_previewPhone');
+    const previewPrice = document.getElementById('pricePreviewPhone');
+    const previewImage = document.getElementById('imgPreviewPhone');
 
+    // Actualizar el nombre del producto en la vista previa
     nameInput.addEventListener('input', function() {
-      previewName.textContent = nameInput.value;
+        previewName.textContent = nameInput.value;
     });
 
+    // Actualizar el precio del producto en la vista previa
     priceInput.addEventListener('input', function() {
-      previewPrice.textContent = `$${parseFloat(priceInput.value).toFixed(2)}`;
+        const price = parseFloat(priceInput.value).toFixed(2);
+        previewPrice.textContent = `$${price}`;
     });
 
+    // Actualizar la imagen del producto en la vista previa
     imageInput.addEventListener('change', function() {
-      const file = imageInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          previewImage.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      }
+        const file = imageInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     });
-  });
-</script>
+});
+</script> 
+
 
    
 </div>
