@@ -254,9 +254,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     #adds-imgs-especifics {
         position: relative;
-        justify-content: space-between;
+        justify-content: space-between;       
     }
 
+    .backup {
+        display: none;
+    }
+
+    .swal2-confirm.btn-custom-confirm {
+        background-color: #28a745 !important; /* Cambiar el color del botón de confirmación */
+        color: white !important;
+    }
+
+    .swal2-cancel.btn-custom-cancel {
+        background-color: #dc3545 !important; /* Cambiar el color del botón de cancelación */
+        color: white !important;
+    }
 
 </style>
 
@@ -264,14 +277,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <div class="content-wrapper">
 
+<div class="alert alert-warning backup" role="alert">    
+    <i class="fa fa-pencil"></i> 
+    Editando con informacion recuperada
+</div>
+
    <!-- Content Header (Page header) -->
    <section class="content-header">
 
    
 
-   <div class="alert alert-warning" role="alert">
-      Procesando.. 
-    </div> 
+
 
       <div class="container-fluid">
          <div class="row mb-2">
@@ -1204,9 +1220,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <!-- Div con bordes 100% del ancho y 60vh de alto -->
                               <div class="d-flex flex-column justify-content-center align-items-center" style="padding: 1em;">
                                  <!-- Contenido del div -->
-                                 <div id="phone-view-1" data-src="http://localhost/sensi/view.e.html" class="d-none d-md-block" style="width: 70%; height: 100%;"></div>
-                                 <!-- <button type="submit" class="btn btn-primary btn-smg mt-0 mt-md-3" name="guardar">Agregar producto</button> -->
-                                 <button type="submit" name="guardar" class="btn btn-secondary mt-2">Guardar</button>
+                                 <div id="phone-view-1" data-src="http://localhost/sensi/backend/views/animation/productoPhoneView.php" class="d-none d-md-block" style="width: 70%; height: 100%;"></div>
+                                 <?php include '../backend/views/animation/ProductoPhoneView.php'; ?>
+                                 
+                                 <button type="submit" name="guardar" class="btn btn-primary mt-2">Guardar</button>
                                  <!-- C:\xampp\htdocs\sensi\view.e.html -->
                               </div>
                            </div>
@@ -1311,16 +1328,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const savedData = localStorage.getItem('formData');
         if (savedData) {
             const formData = JSON.parse(savedData);
-            const productName = formData['nombre_producto'] || 'este producto'; // Usar el nombre del producto del campo 'nombre_producto'
+            const productName = formData['nombre_producto'] || 'Un producto'; // Usar el nombre del producto del campo 'nombre_producto'
 
             // Mostrar alerta al usuario usando SweetAlert2
             Swal.fire({
-                title: `Usted estaba editando el producto, nombrado como: "${productName}" antes de desconectarse.`,
+                title: `Usted estaba editando el producto: <strong>${productName}</strong> antes de desconectarse.`,
                 text: "¿Desea seguir editando este producto?",
-                icon: 'warning', // Cambiar a 'info'
+                icon: 'warning', // Cambiar a 'info' si lo deseas
                 showCancelButton: true,
                 confirmButtonText: 'Sí, restaurar datos',
                 cancelButtonText: 'No, borrar datos',
+                customClass: {
+                    confirmButton: 'btn-custom-confirm',
+                    cancelButton: 'btn-custom-cancel'
+                },
+                
             }).then((result) => {
                 if (result.isConfirmed) {
                     for (const key in formData) {
@@ -1332,6 +1354,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             }
                         }
                     }
+                    // Hacer visible el div con la clase 'backup'
+                    document.querySelector('.backup').style.display = 'block';
                 } else {
                     localStorage.removeItem('formData');
                 }
@@ -1359,6 +1383,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             localStorage.removeItem('formData');
         }, 3600000); // 1 hora en milisegundos
     });
+</script>
+
+<!-- Preview -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('nombre_producto');
+    const priceInput = document.getElementById('precioVenta');
+    const imageInput = document.getElementById('imageUpload-front');
+    const previewName = document.getElementById('name_preview');
+    const previewPrice = document.getElementById('cost_preview');
+    const previewImage = document.getElementById('imgPreview_phone');
+
+    nameInput.addEventListener('input', function() {
+      previewName.textContent = nameInput.value;
+    });
+
+    priceInput.addEventListener('input', function() {
+      previewPrice.textContent = `$${parseFloat(priceInput.value).toFixed(2)}`;
+    });
+
+    imageInput.addEventListener('change', function() {
+      const file = imageInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          previewImage.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  });
 </script>
 
    
