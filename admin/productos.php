@@ -195,7 +195,7 @@ while($row = $queryResult->fetch_assoc()) {
                                                 </button>
                                             </div>
 
-                                            <div class="product-cell sales">Color
+                                            <div class="product-cell sales">Provedor
                                                 <button class="sort-button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
                                                         <path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
@@ -204,7 +204,7 @@ while($row = $queryResult->fetch_assoc()) {
                                                 </button>
                                             </div>
 
-                                            <div class="product-cell stock">Proovedor
+                                            <div class="product-cell stock">Color
                                                 <button class="sort-button">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
                                                         <path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
@@ -226,13 +226,22 @@ while($row = $queryResult->fetch_assoc()) {
 
                                         <!-- Aqui se llenan los productos -->
                                         
+                                        <?php
+                                        function isWhiteTone($hexColor) {
+                                            // Convert hex color to RGB
+                                            list($r, $g, $b) = sscanf($hexColor, "#%02x%02x%02x");
+                                            // Check if the color is a tone of white
+                                            return ($r > 200 && $g > 200 && $b > 200);
+                                        }
+                                        ?>
+                                        
                                         <?php foreach ($productos as $producto): ?>
                                             <div class="products-row" onclick="window.location.href='panel.php?modulo=editarProducto&id=<?php echo $producto['id']; ?>';">
                                                 <button class="cell-more-button">
                                                     <!-- Aqui va algo ahorita lo pongo -->
                                                 </button>
                                                 <div class="product-cell image">
-                                                    <img src="<?php echo htmlspecialchars($producto['imagen_ruta']); ?>" alt="⚙️">
+                                                    <img src="../<?php echo htmlspecialchars($producto['imagen_ruta']); ?>" alt="⚙️">
                                                     <span><?php echo htmlspecialchars($producto['nombre_producto']); ?></span>
                                                 </div>
                                                 <div class="product-cell category"><span class="cell-label">Categoria:</span><?php echo htmlspecialchars($producto['categoria_nombre']); ?></div>
@@ -246,7 +255,16 @@ while($row = $queryResult->fetch_assoc()) {
                                                 </div>
                                                 <div class="product-cell sales"><span class="cell-label">Promocion:</span><?php echo htmlspecialchars($producto['promocionar']); ?></div>
                                                 <div class="product-cell stock"><span class="cell-label">Proveedor:</span><?php echo htmlspecialchars($producto['proveedor_nombre']); ?></div>
-                                                <div class="product-cell"><span class="cell-label">Color:</span><i class="fa fa-square" style="color: <?php echo htmlspecialchars($producto['color_hex']); ?>; padding-right: 2px"></i><span ><?php echo htmlspecialchars($producto['color_nombre']); ?> </span></div>
+                                                <div class="product-cell color">
+                                                    <span class="cell-label">Color:</span>
+                                                    <span style="
+                                                        background-color: <?php echo htmlspecialchars($producto['color_hex']); ?>;
+                                                        color: <?php echo isWhiteTone($producto['color_hex']) ? '#000' : '#fff'; ?>; justify-content: center;
+                                                        <?php echo isWhiteTone($producto['color_hex']) ? 'border: 1px solid #000;' : ''; ?>
+                                                    ">
+                                                        <?php echo htmlspecialchars($producto['color_nombre']); ?>
+                                                    </span>
+                                                </div>
                                                 <div class="product-cell price"><span class="cell-label">Fecha de compra:</span><?php echo htmlspecialchars($producto['FechaRegistro']); ?></div>
                                             </div>
                                         <?php endforeach; ?>

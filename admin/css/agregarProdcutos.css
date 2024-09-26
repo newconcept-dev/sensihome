@@ -49,9 +49,9 @@
     width: 17vw;
     border-radius: 30px;
     border: 8px solid #0f0f0fda; /* Borde gris */
-    background-color: #ffffffe3; /* Fondo blanco */
-    margin-left: 5vw;
+    background-color: #ffffffe3; /* Fondo blanco */   
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); /* Añadir sombra para profundidad */
+    margin: 0 auto; /* Centrar horizontalmente */
 }
 
 .detailPhone {
@@ -145,12 +145,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     color: #333;
 }
 
 .product__info--price h3 {
     margin: 0 10px;
+    font-size: 1rem;
 }
 
 .product__icons {
@@ -203,6 +204,11 @@
     width: 100%;
 }
 
+.cosa{
+    margin-left: -2vw;
+    border: 2px solid #1a1919bd;
+}
+
 /* Media Queries para Responsividad */
 @media (max-width: 1200px) {
     .cosa{
@@ -237,10 +243,11 @@
     }
 
     .product__info--price h3 {
-        font-size: 1rem;
+        font-size: .3rem;
     }
 
     .product__icons i {
         font-size: 20px;
     }
 }
+

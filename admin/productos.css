@@ -478,14 +478,22 @@
   background-color: rgba(108, 117, 125, 0.2);
 }
 
-.color{
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #000000;    
-    
+.color {
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  
+  font-size: 12px;
+}
+
+.color span {
+  display: inline-flex;
+  align-items: center;
+  
+  width: 60%;
+  height: auto;
+  
+  border-radius: 20px;
 }
 
 
