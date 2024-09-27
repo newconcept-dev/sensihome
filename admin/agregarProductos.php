@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $nombre_imagen = $prefijo . '_' . uniqid() . '.' . $extension;
                 $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
                 $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
-                $ruta_imagen_bd = "backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
+                $ruta_imagen_bd = "../backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
 
                 // Verificar si la carpeta existe, si no, crearla
                 if (!is_dir($ruta_carpeta)) {

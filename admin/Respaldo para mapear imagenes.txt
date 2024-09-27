@@ -1,0 +1,87 @@
+<?php
+
+// Incluye el archivo de conexión a la base de datos
+include 'db.php';
+
+// Define una función para obtener y mostrar una imagen filtrada por el prefijo del frontend_id
+function mostrarImagenPorIdentificador($producto_id, $identificador) {
+    // Usa la variable global $con para la conexión a la base de datos
+    global $con;
+
+    // Mapea los identificadores a los prefijos correspondientes
+    $mapaPrefijos = [
+        'imageUpload-front' => 'front',
+        'left-view-product' => 'left',
+        'module-intermediate-li' => 'mili',
+        'right-view-product' => 'right',
+        'module-intermediate-ld' => 'mild',
+        'detail-product' => 'dt',
+        'back-view-product' => 'back',
+        'complete-product' => 'cmp',
+        'box-view-product' => 'box',
+        'backrest-view-product' => 'backrest',
+        'furnitureset-view-product' => 'furnitureset'
+    ];
+
+    // Obtiene el prefijo correspondiente al identificador
+    $prefijo = isset($mapaPrefijos[$identificador]) ? $mapaPrefijos[$identificador] : '';
+
+    // Si no se encuentra el prefijo, muestra un mensaje de error
+    if (empty($prefijo)) {
+        echo '<p>Identificador no válido.</p>';
+        return;
+    }
+
+    // Prepara la consulta SQL para seleccionar las rutas y frontend_id de las imágenes del producto
+    $sql = "SELECT ruta, frontend_id FROM imagenes_productos WHERE producto_id=?";
+    // Prepara la consulta SQL
+    $stmt = $con->prepare($sql);
+    // Vincula el parámetro $producto_id a la consulta preparada
+    $stmt->bind_param("i", $producto_id);
+    // Ejecuta la consulta
+    $stmt->execute();
+    // Obtiene el resultado de la consulta
+    $result = $stmt->get_result();
+
+    // Inicializa una variable para verificar si se encontró una imagen
+    $imagenEncontrada = false;
+
+    // Verifica si hay resultados
+    if ($result->num_rows > 0) {
+        // Itera sobre los resultados de la consulta
+        while($row = $result->fetch_assoc()) {
+            // Obtiene los primeros caracteres del frontend_id
+            $prefijoImagen = substr($row['frontend_id'], 0, strpos($row['frontend_id'], '_'));
+            
+            // Verifica si el prefijo coincide con el prefijo proporcionado
+            if ($prefijoImagen === $prefijo) {
+                // Muestra la imagen en el navegador
+                echo '<img src="../' . $row["ruta"] . '" alt="Imagen del producto" style="max-width: 100%; height: auto; margin-bottom: 10px;">' . "\n";
+                // Muestra la ruta de la imagen
+                echo '<p>Ruta: ' . $row["ruta"] . '</p>';
+                // Muestra el frontend_id de la imagen
+                echo '<p>Frontend ID: ' . $row["frontend_id"] . '</p>';
+                // Marca que se encontró una imagen
+                $imagenEncontrada = true;
+                break; // Sal del bucle una vez que se encuentra la imagen
+            }
+        }
+    }
+
+    // Si no se encontró ninguna imagen, muestra un mensaje
+    if (!$imagenEncontrada) {
+        echo '<p>No hay imagen con el prefijo "' . $prefijo . '" para el producto con ID ' . $producto_id . '.</p>';
+    }
+
+    // Cierra la consulta preparada
+    $stmt->close();
+}
+
+// Ejemplo de uso de la función
+$producto_id = 101; // ID del producto
+$identificador = 'left-view-product'; // Identificador del frontend_id (por ejemplo, 'imageUpload-front')
+
+mostrarImagenPorIdentificador($producto_id, $identificador);
+
+?>
+

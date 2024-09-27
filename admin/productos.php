@@ -177,14 +177,7 @@ while($row = $queryResult->fetch_assoc()) {
                                                 </button>
                                             </div>
 
-                                            <div class="product-cell status-cell">Status
-                                                <button class="sort-button">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
-                                                        <path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
-                                                        />
-                                                    </svg>
-                                                </button>
-                                            </div>
+
 
                                             <div class="product-cell sales">Promocion
                                                 <button class="sort-button">
@@ -222,6 +215,28 @@ while($row = $queryResult->fetch_assoc()) {
                                                 </button>
                                             </div>
 
+                                            <div class="product-cell status-cell">Status
+                                                <button class="sort-button">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
+                                                        <path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+
+                                            <div class="product-cell price">Acciones ⚙️
+                                                <button class="sort-button">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512">
+                                                        <path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"
+                                                        />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+
+
+
                                         </div>
 
                                         <!-- Aqui se llenan los productos -->
@@ -236,23 +251,17 @@ while($row = $queryResult->fetch_assoc()) {
                                         ?>
                                         
                                         <?php foreach ($productos as $producto): ?>
-                                            <div class="products-row" onclick="window.location.href='panel.php?modulo=editarProducto&id=<?php echo $producto['id']; ?>';">
+                                            <div class="products-row" >
                                                 <button class="cell-more-button">
                                                     <!-- Aqui va algo ahorita lo pongo -->
                                                 </button>
                                                 <div class="product-cell image">
-                                                    <img src="../<?php echo htmlspecialchars($producto['imagen_ruta']); ?>" alt="⚙️">
+                                                    <img src="<?php echo htmlspecialchars($producto['imagen_ruta']); ?>" alt="⚙️">
                                                     <span><?php echo htmlspecialchars($producto['nombre_producto']); ?></span>
                                                 </div>
                                                 <div class="product-cell category"><span class="cell-label">Categoria:</span><?php echo htmlspecialchars($producto['categoria_nombre']); ?></div>
                                                 <div class="product-cell category"><span class="cell-label">Existencia:</span><?php echo htmlspecialchars($producto['existencia']); ?></div>
                                                 <div class="product-cell category"><span class="cell-label">Precio:</span>$<?php echo number_format($producto['precioVenta'], 0, '.', ','); ?></div>
-                                                <div class="product-cell status-cell">
-                                                    <span class="cell-label">Status:</span>
-                                                    <span class="status <?php echo $producto['status'] == 'ENV' ? 'active' : ($producto['status'] == 'INA' ? 'inactive' : ''); ?>">
-                                                        <?php echo htmlspecialchars($producto['status']); ?>
-                                                    </span>
-                                                </div>
                                                 <div class="product-cell sales"><span class="cell-label">Promocion:</span><?php echo htmlspecialchars($producto['promocionar']); ?></div>
                                                 <div class="product-cell stock"><span class="cell-label">Proveedor:</span><?php echo htmlspecialchars($producto['proveedor_nombre']); ?></div>
                                                 <div class="product-cell color">
@@ -266,6 +275,36 @@ while($row = $queryResult->fetch_assoc()) {
                                                     </span>
                                                 </div>
                                                 <div class="product-cell price"><span class="cell-label">Fecha de compra:</span><?php echo htmlspecialchars($producto['FechaRegistro']); ?></div>
+                                                <div class="product-cell status-cell">
+                                                    <span class="cell-label">Status:</span>
+                                                    <span
+                                                        onclick="window.location.href='https://google.com.mx';" 
+                                                        class="status <?php echo $producto['status'] == 'ENV' ? 'active' : ($producto['status'] == 'INA' ? 'inactive' : ''); ?>"
+                                                        style="display: inline-block; transition: transform 0.3s ease;">
+                                                        <?php echo htmlspecialchars($producto['status']); ?>
+                                                    </span>
+                                                </div>
+                                                
+                                                <style>
+                                                    .status:hover {
+                                                        transform: scale(1.2);
+                                                    }
+                                                </style>
+                                                <div class="product-cell sales">
+                                                    <span class="cell-label">Acciones ⚙️</span>
+                                                    <i class="fas fa-edit" style="color: gray; cursor: pointer;" 
+                                                       onmouseover="this.style.color='rgb(49, 176, 176)';" 
+                                                       onmouseout="this.style.color='gray';" 
+                                                       onclick="window.location.href='panel.php?modulo=editarProducto&id=<?php echo $producto['id']; ?>';"></i>
+                                                    <i class="fas fa-trash" style="margin-left: 1em; color: gray;" 
+                                                       onmouseover="this.style.color='rgb(161, 18, 18)';" 
+                                                       onmouseout="this.style.color='gray';"
+                                                       onclick="window.location.href='panel.php?modulo=agregarProductos';"
+                                                       ></i>
+                                                </div>
+
+                                                
+                                                
                                             </div>
                                         <?php endforeach; ?>
 
@@ -289,6 +328,6 @@ while($row = $queryResult->fetch_assoc()) {
     </section>
 
     <!-- Scripts -->
-    <script src="./middleware/list.products.js"></script>
+    <script src="./middleware/Productos.js"></script>
     <!-- category-hiden -->
 </div>

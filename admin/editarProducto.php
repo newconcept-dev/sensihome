@@ -1,6 +1,9 @@
 <?php
 include_once 'db.php';
 
+
+
+
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id > 0) {
@@ -43,6 +46,7 @@ if ($id > 0) {
 } else {
     die("ID de producto no válido.");
 }
+
 
 
 
@@ -230,7 +234,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $nombre_imagen = $prefijo . '_' . uniqid() . '.' . $extension;
                 $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
                 $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
-                $ruta_imagen_bd = "backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
+                $ruta_imagen_bd = "../backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
 
                 // Verificar si la carpeta existe, si no, crearla
                 if (!is_dir($ruta_carpeta)) {
@@ -333,17 +337,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </div>
 
                                             <div class="form-group active-full" style="margin-top: -1vh;">
+                                                
                                                 <div id="category-input-main">
                                                     <label for="categoria_id">Categoría</label>
-                                                    <select name="categoria_id" id="categoria_id" class="form-control" required>
-                                                        <option value="<?php echo htmlspecialchars($producto['categoria_id'])?>">
-                                                            <?php echo htmlspecialchars($categoria['nombre']); ?>
-                                                        </option>
+                                                    <select name="<categoria_id" id="categoria_id" class="form-control" required>
+                                                        <!--  -->
+                                                        <option value="" disabled>Selecciona una categoria</option>
                                                         <?php
                                                         if ($showCategory->num_rows > 0) {
                                                             // Salida de datos de cada fila
                                                             while ($row = $showCategory->fetch_assoc()) {
-                                                                echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                                $selected = ($row["id"] == $producto['categoria_id']) ? 'selected' : '';
+                                                                echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
                                                             }
                                                         } else {
                                                             echo "<option value='' disabled>No hay categorías disponibles</option>";
@@ -913,18 +918,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <div id="type-input-main">
                                                 <label for="tipoProducto_id">Tipo de Producto</label>
                                                 <select name="tipoProducto_id" id="tipoProducto_id" class="form-control" required>
-                                                    <option value="<?php echo htmlspecialchars($producto['tipoProducto_id']); ?>" selected disabled><?php echo htmlspecialchars($producto['tipoProducto_id']); ?></option>
-                                                    <!-- aqui  -->
-                                                    <?php
-                                                    if ($showTypeProduct->num_rows > 0) {
-                                                        // Salida de datos de cada fila
-                                                        while ($row = $showTypeProduct->fetch_assoc()) {
-                                                            echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                <option value="" disabled>Selecciona una categoria</option>
+                                                        <?php
+                                                        if ($showTypeProduct->num_rows > 0) {
+                                                            // Salida de datos de cada fila
+                                                            while ($row = $showTypeProduct->fetch_assoc()) {
+                                                                $selected = ($row["id"] == $producto['tipoProducto_id']) ? 'selected' : '';
+                                                                echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
+                                                            }
+                                                        } else {
+                                                            echo "<option value='' disabled>No hay categorías disponibles</option>";
                                                         }
-                                                    } else {
-                                                        echo "<option value='' disabled>No hay tipos de productos disponibles</option>";
-                                                    }
-                                                    ?>
+                                                        ?>
                                                 </select>
                                             </div>
                                             <div class="form-group d-flex align-items-center">
@@ -946,13 +951,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             <div id="color-select-main">
                                                 <div class="input-group">
                                                     <select name="color_id" id="color_id" class="form-control" required>
-                                                        <option value="<?php echo htmlspecialchars($producto['color_id']); ?>" selected><?php echo htmlspecialchars($producto['color_id']); ?></option>
-
+                                                        <option value="" disabled>Selecciona un color</option>
                                                         <?php
                                                         if ($showColors->num_rows > 0) {
                                                             // Salida de datos de cada fila
                                                             while ($row = $showColors->fetch_assoc()) {
-                                                                echo "<option value='" . $row["id"] . "' data-hex='" . $row["hex_color"] . "'>" . $row["nombre"] . "</option>";
+                                                                $selected = ($row["id"] == $producto['color_id']) ? 'selected' : '';
+                                                                echo "<option value='" . $row["id"] . "' data-hex='" . $row["hex_color"] . "' $selected>" . $row["nombre"] . "</option>";
                                                             }
                                                         } else {
                                                             echo "<option value='' disabled>No hay colores disponibles</option>";
@@ -1008,11 +1013,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </div>
                                                     <div class="col-md-6 col-12">
                                                         <select name="relleno_id" id="relleno_id" class="form-control select2bs4 w-100">
-                                                            <option value="" selected disabled>Busca el relleno</option>
+                                                            <option value="" disabled>Busca el relleno</option>
                                                             <?php
                                                             if ($showStuffed->num_rows > 0) {
                                                                 while ($row = $showStuffed->fetch_assoc()) {
-                                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                                    $selected = ($row["id"] == $producto['relleno_id']) ? 'selected' : '';
+                                                                    echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
                                                                 }
                                                             } else {
                                                                 echo "<option value='' disabled>No hay rellenos disponibles</option>";
@@ -1029,7 +1035,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 </div>
                                             </div>
                                             <!-- Fin de relleno -->
-
+                                        
                                             <!-- Madera -->
                                             <div class="form-group">
                                                 <div class="row align-items-center">
@@ -1042,11 +1048,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </div>
                                                     <div class="col-md-6 col-12">
                                                         <select name="madera_id" id="madera_id" class="form-control select2bs4 w-100">
-                                                            <option value="" selected disabled>Busca la madera</option>
+                                                            <option value="" disabled>Busca la madera</option>
                                                             <?php
                                                             if ($showWood->num_rows > 0) {
                                                                 while ($row = $showWood->fetch_assoc()) {
-                                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                                    $selected = ($row["id"] == $producto['madera_id']) ? 'selected' : '';
+                                                                    echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
                                                                 }
                                                             } else {
                                                                 echo "<option value='' disabled>No hay maderas disponibles</option>";
@@ -1063,7 +1070,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 </div>
                                             </div>
                                             <!-- Fin de madera -->
-
+                                        
                                             <!-- Patas -->
                                             <div class="form-group">
                                                 <div class="row align-items-center">
@@ -1076,11 +1083,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </div>
                                                     <div class="col-md-6 col-12">
                                                         <select name="patas_id" id="patas_id" class="form-control select2bs4 w-100">
-                                                            <option value="" selected disabled>Busca la pata</option>
+                                                            <option value="" disabled>Busca la pata</option>
                                                             <?php
                                                             if ($showLegs->num_rows > 0) {
                                                                 while ($row = $showLegs->fetch_assoc()) {
-                                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                                    $selected = ($row["id"] == $producto['patas_id']) ? 'selected' : '';
+                                                                    echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
                                                                 }
                                                             } else {
                                                                 echo "<option value='' disabled>No hay patas disponibles</option>";
@@ -1097,7 +1105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                 </div>
                                             </div>
                                             <!-- Fin de patas -->
-
+                                        
                                             <!-- Telas -->
                                             <div class="form-group">
                                                 <div class="row align-items-center">
@@ -1110,11 +1118,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     </div>
                                                     <div class="col-md-6 col-12">
                                                         <select name="telas_id" id="telas_id" class="form-control select2bs4 w-100">
-                                                            <option value="" selected disabled>Busca la tela</option>
+                                                            <option value="" disabled>Busca la tela</option>
                                                             <?php
                                                             if ($showFabrics->num_rows > 0) {
                                                                 while ($row = $showFabrics->fetch_assoc()) {
-                                                                    echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
+                                                                    $selected = ($row["id"] == $producto['telas_id']) ? 'selected' : '';
+                                                                    echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
                                                                 }
                                                             } else {
                                                                 echo "<option value='' disabled>No hay telas disponibles</option>";
@@ -1132,9 +1141,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </div>
                                             <!-- Fin de telas -->
                                         </div>
-                                        <!-- Fin de formulario de materiales -->
-                                        <!-- Fin de formulario de materiales -->
-
 
                                         <div class="form-group">
                                             <label>¿Tiene accesorios?</label>
@@ -1191,19 +1197,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <div class="form-group">
                                             <label for="proveedor_id">Proveedor</label>
                                             <select name="proveedor_id" id="proveedor_id" class="form-control select2bs4" style="width: 100%;" required>
-                                                <option selected disabled value="<?php echo htmlspecialchars($producto['precio']); ?>"value="<?php echo htmlspecialchars($producto['proveedor_id']); ?>" selected><?php echo htmlspecialchars($producto['proveedor_id']); ?></option>
-                                                <?php
-                                                if ($showProviders->num_rows > 0) {
-                                                    // Salida de datos de cada fila
-                                                    while ($row = $showProviders->fetch_assoc()) {
-                                                        echo "<option value='" . $row["id"] . "'>" . $row["nombre"] . "</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value='' disabled>No hay proveedores disponibles</option>";
-                                                }
-
-
-                                                ?>
+                                                <!-- showProviders -->
+                                                <option value="" disabled>Selecciona una categoria</option>
+                                                        <?php
+                                                        if ($showProviders->num_rows > 0) {
+                                                            // Salida de datos de cada fila
+                                                            while ($row = $showProviders->fetch_assoc()) {
+                                                                $selected = ($row["id"] == $producto['proveedor_id']) ? 'selected' : '';
+                                                                echo "<option value='" . $row["id"] . "' $selected>" . $row["nombre"] . "</option>";
+                                                            }
+                                                        } else {
+                                                            echo "<option value='' disabled>No hay categorías disponibles</option>";
+                                                        }
+                                                        ?>
                                             </select>
                                         </div>
                                         <div class="form-group active-full">
@@ -1233,7 +1239,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                         <div class="viewProduct">
                                                             <div class="product__container">
                                                                 <div class="product__image">
-                                                                    <img id="imgPreviewPhone" src="../backend/media/pages/productDefault.png" alt="">
+                                                                    <img id="imgPreviewPhone" src="./" alt="">
                                                                 </div>
                                                                 <div class="product__info">
                                                                     <div class="product__info--title">
@@ -1276,7 +1282,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- /.row -->
 </div>
 
-<script src="./middleware/inputs.products.js"></script>
+<script src="./middleware/editarProducto.inputs.js"></script>
    <script src="./middleware/show.complete.product.js"></script>
    
    <script src="./middleware/hidden.material.form.js"></script>
