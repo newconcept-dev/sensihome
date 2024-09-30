@@ -1,108 +1,248 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sensi Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./ico.png" type="image/png">
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <title>Sensi Home</title>
+
+    <!-- SEO -->
+    <meta name="description" content="Sensi Home">
+    <meta name="keywords" content="Sensi, Home, Sensi Home, Muebles, sillas, mesas">
+    <meta name="author" content="Sensi Home">
+    <meta name="robots" content="index, follow">
+    <meta name="revisit-after" content="1 day">
+    <meta name="language" content="es">
+    <meta property="og:image" content="https://sensihome.com.mx/ico.png">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/semantic.css">
+    <script src="https://kit.fontawesome.com/d6da690718.js" crossorigin="anonymous"></script>
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <!-- /.login-logo -->
-  <div class="card card-outline card-primary">
-    <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>Sensi</b>Home</a>
-    </div>
-    <div class="card-body">
-      <p class="login-box-msg">Inicia sesion</p>
-
-      <?php 
-if(isset($_POST['login'])){
-
-    /* Inicializar variable de sesion */
-    session_start();
-    $email = $_POST['email'] ?? '';
-    $pass = $_POST['pass'] ?? '';
-    $pass = md5($pass);
-
-    include_once 'db.php';
-
-    $con = mysqli_connect($host, $user, $password, $db);
-
-    if (!$con) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    /* Consulta */
-    $query = "SELECT id, email, nombre FROM usuarios WHERE email = '$email' AND pass = '$pass'";
-    $res = mysqli_query($con, $query);
-
-    if (!$res) {
-        die("Query failed: " . mysqli_error($con));
-    }
-
-    $row = mysqli_fetch_assoc($res);
-
-    if ($row) {
-        $_SESSION['id'] = $row['id'];
-        $_SESSION['email'] = $row['email'];
-        $_SESSION['nombre'] = $row['nombre'];
-        header("location: panel.php");
-        exit(); // Asegúrate de que el script se detiene después de la redirección
-    } else {
-        echo '<div class="alert alert-danger" role="alert">
-                <h3>Error</h3>
-                <img src="https://i.pinimg.com/474x/d5/7d/3e/d57d3e369e80c6e37119042ce597461f.jpg" alt="imagende no hubo" width="200px">
-              </div>';
-    }
-}
-?>
-
-      <form method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email" name="email" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
+<body>
+    <header>
+        <nav class="nav__desktop" aria-label="Menú de navegación principal">
+            <div class="nav__add">
+                <ul>
+                    <a href="#"><i class="fa-solid fa-bell"></i> Alerta tipo baner $500</a>
+                </ul>
             </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password" name="pass" required>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+
+            <div class="nav__main">
+                <ul>
+                    <li><span class="icon-company"></span><a href="#">Sensi Home</a></li>
+                    
+                    <li>
+                        <!-- input de busqueda -->
+                        <div class="nav-search">
+                            <input type="text" placeholder="Buscar">
+                            <button><i class="fa-solid fa-search"></i></button>
+                        </div>
+                    </li>
+                    <li><i class="fa-solid fa-circle-user"></i><a href="#"> Acceder</a></li>
+                    <li><i class="fa-solid fa-cart-shopping"></i><a href="#"> Carrito</a></li>
+                </ul>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block" name="login">Ingresar</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
 
-    <!-- /.card-body -->
-  </div>
-  <!-- /.card -->
-</div>
-<!-- /.login-box -->
+            <div class="nav__drop-down-category">
+                <ul>
+                    <li>
+                        <details>
+                            <summary>Salas</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+                    <li>
+                        <details>
+                            <summary>Comedores</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Sillas</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Camas</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Puff</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+                    
+                    <li>
+                        <details>
+                            <summary>Decoracion</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Tapetes</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    
+                </ul>
+            </div>
+
+
+        </nav>
+
+        <nav class="nav__mobile" aria-label="Menú de navegación móvil">
+        <div class="nav__add">
+                <ul>
+                    <a href="#"><i class="fa-solid fa-bell"></i> Alerta tipo baner $500</a>
+                </ul>
+            </div>
+
+            <div class="nav__main">
+                <ul>
+                    <li><span class="icon-company"></span><a href="#">Sensi Home</a></li>
+                    
+                    <li>
+                        <!-- input de busqueda -->
+                        <div class="nav-search">
+                            <input type="text" placeholder="Buscar">
+                            <button><i class="fa-solid fa-search"></i></button>
+                        </div>
+                    </li>
+                    <li><i class="fa-solid fa-circle-user"></i><a href="#"> Acceder</a></li>
+                    <li><i class="fa-solid fa-cart-shopping"></i><a href="#"> Carrito</a></li>
+                </ul>
+            </div>
+
+            <div class="nav__drop-down-category">
+                <ul>
+                    <li>
+                        <details>
+                            <summary>Salas</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Comedores</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Sillas</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Camas</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Puff</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+                    
+                    <li>
+                        <details>
+                            <summary>Decoracion</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    <li>
+                        <details>
+                            <summary>Tapetes</summary>
+                            <ul>
+                                <li>Exterior</li>
+                                <li>Interior</li>                                
+                            </ul>
+                        </details>
+                    </li>
+
+                    
+                </ul>
+            </div>
+
+            
+        </nav>
+    </header>
+
+
+
+    <main>
+        <!-- Contenido principal -->
+    </main>
+
+    <aside>
+        <!-- Contenido adicional -->
+    </aside>
+
+    <footer>
+        <!-- Contenido del pie de página -->
+    </footer>
+
+    <!-- Principales JS -->
+    <script src="./assets/js/app.js"></script>
 </body>
 </html>
