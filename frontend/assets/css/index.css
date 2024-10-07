@@ -1,4 +1,13 @@
+
+@font-face {
+    font-family: 'sinsum';
+    src: url('../fonts/simsun.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 :root{
+
 
     /* Paleta de colores */
     --app-color: white;
@@ -13,6 +22,7 @@
 
     --color-text-lg: #f9f9f9;
     --color-text-md: #000000;
+    --color-text-md-light: #f9f9f9;
     --color-text-sm: #f9f9f9;
 
     --color-border: #f9f9f9;
@@ -36,6 +46,10 @@
     --size-text-md: 1.25rem;
     --size-text-sm: 1rem;
 
+    /* Fondos */
+    --bg-primary: #000000;
+    --bg-secondary: #f9f9f9;
+
 
     /* Espaciados */
     --spacing-lg: 2rem;
@@ -43,8 +57,8 @@
     --spacing-sm: 1rem;
 
     /* Fuentes */
-    --font-primary: 'Roboto', sans-serif;
-    --font-secondary: 'Open Sans', sans-serif;
+    --font-primary: 'sinsum', sans-serif;;
+    --font-secondary: 'Roboto', sans-serif;
 
 
     /* Breakpoints */
@@ -80,21 +94,164 @@
 
 }
 
-body{
+
+body, html {
+    margin: 0;
+    padding: 0;
     font-family: var(--font-primary);
     background-color: var(--app-color);
     color: var(--color-text-md);
-
     color: var(--color-text-md);
 }
 
-a{
-    /* quitar decoraciones de los a */
-    text-decoration: none;
-    color: var(--color-text-md);
+.icon-nav {
+    height: 30px;
+    width: auto;
 }
 
-li{
+.nav__container{
+    /* border: 1px solid red; */
+    
+}
+
+.nav__container ul {
     list-style: none;
+    padding: 0;    
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
+.nav__container ul li {
+    /* Puedes agregar otros estilos aquí si es necesario */
+}
+
+.nav__container ul li a {
+    color: var(--color-text-md);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}
+
+.nav__desktop ul {
+    justify-content: space-between;
+    
+}
+
+.nav__desktop ul {
+    justify-content: space-between;
+}
+
+
+
+.nav__responsive ul {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos a la izquierda */    
+    padding: 0; /* Elimina el padding del ul */
+    margin: 0; /* Elimina el margen del ul */
+    
+}
+
+.nav__responsive ul li {
+    padding: 0; /* Elimina el padding de los li */
+    margin: 0; /* Elimina el margen de los li */
+    padding-left: 1rem; /* Mantiene la separación a la izquierda */
+    width: calc(100% - 1rem); /* Ajusta el ancho para mantener la separación a la izquierda */
+}
+
+.nav__responsive ul li a {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el contenido dentro del enlace */
+    padding: 0.5rem 0; /* Ajusta el padding según sea necesario */
+}
+
+.nav__responsive ul li details summary {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el contenido dentro del summary */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el summary */
+}
+
+.nav__responsive ul li details summary span {
+    padding-right: 0.5rem; /* Añade un margen derecho para separar el icono del texto */
+}
+
+.category-content a {
+    margin-left: 2rem;
+}
+
+.rectangle {
+    /* width con calc */
+     
+    height: 2vh;
+    background-color: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.nav__responsive ul li details summary .row-category {
+    margin-left: auto; /* Mueve el contenido a la derecha */;
+}
+
+
+.banner__responsive { /* banner__responsive__responsive de mensaje principal */
+    background-color: var(--bg-primary);
+    color: var(--color-text-md-light);
+    padding: 0;
+    margin-top: 0;
+    display: flex;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    display: none;
+    
+}
+
+.banner__responsive p{
+    margin: 0;
+    padding: .5rem;   
+}
+
+
+
+/* Mini Footer */
+.footer__menu i{
+    padding-right: .3rem;    
+}
+
+
+.us,
+.social-networks,
+.customer-service {
+    font-weight: bold; /* Aplica negritas a los elementos con estas clases */
+}
+
+
+.col-II {
+    display: flex;
+    flex-direction: row; /* Poner 2 columnas */
+}
+
+.col-II .col {
+    flex: 1; /* Asegura que cada columna ocupe el mismo espacio */    
+    box-sizing: border-box; /* Incluye el padding en el ancho total */
+}
+
+.line{
+    width: 96%; /* Asegura que el rectángulo ocupe todo el ancho del contenedor */
+    height: 1px;
+    background-color: var(--bg-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;   
+}
+
+.copy-mini{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}

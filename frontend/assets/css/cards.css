@@ -1,0 +1,38 @@
+
+
+.generic__container{
+    display: flex;
+
+    border: solid 1px rgb(0, 255, 17);
+    width: 100%;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.card__container{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid yellow;
+    width: 300px;
+    height: 300px;
+    padding: 1rem;
+}
+
+.card-img{
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgb(71, 165, 205);
+}
+
+.card-img img{
+    width: 100%;
+    height: 100%;
+}
+
+.price{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}

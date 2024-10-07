@@ -3,7 +3,7 @@
     margin: 50px auto;
     max-width: 100%;
   }
-  
+    
   .avatar-upload .avatar-preview {
     position: relative; /* Asegura que los elementos hijos con posición absoluta se posicionen en relación a este contenedor */
     border-radius: 100%;
