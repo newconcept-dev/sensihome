@@ -1,38 +1,118 @@
-
-
-.generic__container{
-    display: flex;
-
-    border: solid 1px rgb(0, 255, 17);
-    width: 100%;
-    height: 80vh;
-    justify-content: center;
-    align-items: center;
-}
-
-.card__container{
+.card__container {
     display: flex;
     flex-direction: column;
-    border: 1px solid yellow;
     width: 300px;
-    height: 300px;
-    padding: 1rem;
+    height: auto; /* Ajusta la altura automáticamente */    
+    box-sizing: border-box; /* Incluye el padding en el tamaño total */
+
+    /* border: dashed 2px rgb(131, 131, 131);  */
 }
 
-.card-img{
-    width: 100%;
-    height: 100%;
-    border: 2px solid rgb(71, 165, 205);
-}
-
-.card-img img{
-    width: 100%;
-    height: 100%;
-}
-
-.price{
+.oferts-product {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    background-color: black;
+    color: white;
+    padding: 0.3rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    width: fit-content;
+    margin-top: 1rem;
+    border-radius: 0px 5px 5px 0px;
+    visibility: visible; /* Este se quita y se ve el descuento */
+}
+
+.card-img {
+    width: 100%;
+    height: 150px;
+    transition: transform 0.3s ease-in-out;
+    
+}
+
+.card-img:hover {
+    cursor: pointer;
+    transform: scale(1.05);
+    filter: drop-shadow(1px 1px 2.5px rgb(0, 0, 0));
+}
+
+.card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit:scale-down; 
+    
+}
+
+.price {
+    display: flex; /* Usa Flexbox para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin-top: -1rem;
+    
+}
+
+.rank {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    text-align: center;
+    
+}
+
+.heart-rank {
+    padding-right: 1rem; /* Ajusta el padding */
+}
+
+.heart-rank i {
+    color: white;
+    filter: drop-shadow(.5px .5px .7px red);
+}
+
+.heart-rank i:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.stars-rank {
+    display: flex;
+    flex-direction: row-reverse; /* Cambia a row para que las estrellas se alineen de izquierda a derecha */
+    gap: 0.2rem; /* Añade espacio entre los elementos */
+    
+}
+
+.full-star {
+    margin: 0 0.25rem; /* Añade espacio en los laterales de cada estrella */
+    font-size: 14px;
+}
+
+/* Estrellas */
+.full-star i {
+    color: rgb(255, 255, 255);
+    filter: drop-shadow(.5px .5px .7px rgb(47, 47, 47));
+    
+}
+
+.full-star:hover i,
+.full-star:hover ~ .full-star i {
+    color: rgba(0, 0, 0, 0.749);
+    cursor: pointer;
+}
+
+.cart-rank {
+    padding-left: 1rem; /* Ajusta el padding */
+}
+
+.cart-rank i {
+    color: rgb(210, 209, 209);
+}
+
+.cart-rank i:hover {
+    color: rgb(169, 165, 165);
+    cursor: pointer;
+}
+
+.name-product {
+    display: flex;
+    justify-content: flex-end; /* Centra el texto horizontalmente */
+    color: rgb(68, 67, 67);
+    padding: 0.5rem;
+    padding-top: 1rem;
 }

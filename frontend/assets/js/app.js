@@ -1,3 +1,5 @@
+
+/* Funcion para Nav bar el menu hamburgesa */
 document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.getElementById('menu-toggle');
     const navResponsive = document.querySelector('.nav__responsive');
