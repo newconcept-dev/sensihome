@@ -29,11 +29,13 @@
 
     --color-border: #E6E6E6;
 
-    --color-hover: #f9f9f9;
+    --color-hover: #1d1b1b;
     --color-shadow: #f9f9f9;
 
     --color-btn: #f9f9f9;
     --color-btn-hover: #f9f9f9;
+
+    --color-bar-elements: #676565;
 
     --color-price: #f9f9f9;
     --color-heart: #f9f9f9;
@@ -95,6 +97,11 @@
 
 }
 
+*{
+    /* quitar la barra */
+    scrollbar-width: none;
+}
+
 
 body, html {
     
@@ -106,19 +113,9 @@ body, html {
     color: var(--color-text-md);
 }
 
-.sectiond{
-    
-    width: 100%;
-    height: 90vh;
-    justify-content: center;
-    justify-items: center;
-}
-
-.sectiond img{
-    
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.spaceDiv{
+    height: 100vh;
+    background-color: white;
 }
 
 .icon-nav {
@@ -153,6 +150,7 @@ body, html {
 
 .navbar__responsive {
     border: solid 1px var(--color-border); /* Añade un borde al contenedor */
+    
 }
 
 .navbar__responsive ul {
@@ -214,7 +212,7 @@ body, html {
 
 
 .bar__category {
-    display: flex;
+    display: none; /* flex */
     justify-content: center; /* Centra los elementos horizontalmente */
     align-items: center; /* Centra los elementos verticalmente */
     padding: 1rem; /* Añade padding si es necesario */
@@ -222,7 +220,6 @@ body, html {
 }
 
 .bar__category ul {
-    
     display: flex;
     list-style: none; /* Elimina los puntos de la lista */
     padding: 0;
@@ -230,17 +227,71 @@ body, html {
 }
 
 .bar__category li {
+    position: relative; /* Necesario para el posicionamiento del dropdown */
     margin: 0 1rem; /* Añade margen entre los elementos de la lista */
+    
 }
 
 .bar__category a {
     text-decoration: none; /* Elimina el subrayado de los enlaces */
     color: var(--bg-primary);
     font-size: var(--size-text-md);
-    /* negritas */
+    padding: 0.5rem; /* Añade padding a los enlaces */
+    display: block; /* Asegura que los enlaces ocupen todo el ancho disponible */
+}
+
+.drop__down {
+    display: none; /* Oculta el dropdown por defecto */
+    position: absolute; /* Posiciona el dropdown relativo al <li> */
+    top: 100%; /* Coloca el dropdown justo debajo del <li> */
+    left: 0;
+    right: 0;
+    margin: 0 auto; /* Centra el dropdown horizontalmente */
+    flex-direction: row; /* Distribuye los <div> en columnas */
+    
+    box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    
+    width: 630px;
+}
+
+.bar__category li:hover .drop__down {
+    display: flex; /* Muestra el dropdown al pasar el mouse sobre el <li> */
+}
+
+.elements-down {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Distribuye los items en un máximo de 2 columnas */
+    gap: 1rem; /* Añade espacio entre los items */
+    flex: 1; /* Permite que los items ocupen el espacio disponible a la izquierda */
+    align-items: center;
+    
     
 }
 
+.elements-down a {
+    display: block; /* Asegura que los enlaces ocupen todo el ancho disponible */
+    color: var(--color-bar-elements);
+    text-decoration: none; /* Elimina el subrayado de los enlaces */
+    padding: 1rem;
+}
+
+.elements-down a:hover {
+    color: var(--color-hover);
+}
+
+.img-down {
+    flex: 1; /* Permite que la imagen ocupe el espacio disponible a la derecha */
+    width: 100%;
+    height: 100%;
+}
+
+.img-down img {
+    width: 100%; /* Asegura que la imagen ocupe todo el contenedor */
+    height: auto; /* Mantiene la proporción de la imagen */
+    object-fit: scale-down;
+    margin-bottom: -2.5px;
+}
 
 /* Footer */
 
@@ -248,15 +299,12 @@ body, html {
 
 /* ---------------------------------------------------------------------- */
 .nav__responsive {
-    position: absolute; /* Posiciona el contenedor de manera absoluta */
-    
+    position: relative; /* Posiciona el contenedor de manera absoluta */
     width: 100%; /* Asegura que el contenedor ocupe todo el ancho */
     background-color: white; /* Ajusta el color de fondo según sea necesario */
     z-index: 1000; /* Asegura que el contenedor esté por encima de otros elementos */
     
 }
-
-
 
 .nav__responsive ul {
     display: flex;
@@ -307,6 +355,127 @@ body, html {
 
 .nav__responsive ul li details summary .row-category {
     margin-left: auto; /* Mueve el contenido a la derecha */;
+}
+
+.searchView__responsive {
+    display: none;
+    flex-direction: column; /* Asegura que los elementos hijos se coloquen en una columna */
+    align-items: flex-start; /* Alinea los elementos en la parte superior */
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    background-color: var(--bg-secondary);
+    padding: 1rem; /* Añade padding en los extremos */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total del elemento */
+}
+
+.search-group {
+    display: flex;
+    justify-content: space-between; /* Distribuye el espacio entre el input y el botón de cerrar */
+    width: 100%;
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    
+    box-sizing: border-box; /* Incluye el padding en el tamaño total del elemento */
+}
+
+.search__responsive-design {
+    display: flex;
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    flex-grow: 1; /* Permite que este div ocupe el espacio disponible */
+    border: solid 1px var(--color-border);
+    border-radius: 10px;
+    padding: 0.5rem; /* Añade padding interno */
+    margin-right: 1rem; /* Añade un margen derecho para separar del botón de cerrar */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total del elemento */
+}
+
+.search__responsive-design input {
+    border: none; /* Elimina el borde del input */
+    outline: none; /* Elimina el borde al hacer click */
+    width: 100%; /* Asegura que el input ocupe todo el ancho disponible */
+    
+    font-size: var(--size-text-md); /* Ajusta el tamaño de la fuente */
+    color: var(--color-search); /* Ajusta el color del texto */
+    background-color: transparent;
+    font-family: var(--font-primary);
+    box-sizing: border-box; /* Incluye el padding en el tamaño total del elemento */
+}
+
+.search__responsive-design span {
+    padding-left: 0.5rem; /* Añade padding al icono de búsqueda */
+    color: var(--color-search); /* Ajusta el color del icono de búsqueda */
+}
+
+.close-search {
+    cursor: pointer; /* Cambia el cursor al pasar sobre el icono */
+    display: flex;
+    align-items: center; /* Alinea el icono verticalmente al centro */
+}
+
+.close-search a {
+    color: var(--color-bar-elements);
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    font-size: 2rem;
+}
+
+.products-result {
+    display: flex;
+    flex-direction: column; /* Asegura que el contenido esté en una columna */
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    
+    overflow-y: auto; /* Permite el desplazamiento vertical si el contenido es demasiado alto */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total del elemento */
+}
+
+.result-title{
+    margin-top: 1rem;
+}
+
+.result-title span {
+    color: var(--color-search);
+    font-weight: bold;
+}
+
+.line-result-title {
+    display: inline-block;
+    width: calc(100% - 100px); /* Ajusta el ancho para que abarque todo el ancho disponible menos el espacio del primer span */
+    height: 3px; /* Altura de la línea */
+    background-color: var(--color-border); /* Color de la línea */
+    margin-left: 10px; /* Espacio entre el primer span y la línea */
+    vertical-align: middle; /* Alinea verticalmente al centro */
+}
+
+.content__cards__rows{
+    display: flex; 
+    flex-direction:row;
+    margin-top: .5rem;
+}
+
+.content-card-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin: 1rem;
+    gap: .5rem;
+}
+
+.content-card-info span {
+    justify-self: start;
+    align-self: flex-start; /* Alinea los span a la izquierda */
+}
+
+.content-card-img{
+    width: 150px;
+    height: 100px;
+    
+}
+
+.content-card-img img{
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down;
 }
 
 
@@ -547,3 +716,50 @@ body, html {
     align-items: center;    
 }
 
+
+/* Ocultando X elementos */
+.footer__responsive,
+.footer__desktop,
+.nav__desktop,
+.navbar__responsive {
+    display: none; /* Oculta ambos footers por defecto */
+}
+
+
+/* Responsive sections */
+
+/* Extra Small Devices (Phones) */
+@media (max-width: 576px) {
+    .footer__responsive {
+        display: block; /* Muestra el footer responsivo */
+    }
+    .navbar__responsive {
+        display: block; /* Muestra el menú responsivo */
+    }
+
+
+}
+
+@media (min-width: 577px) {
+    .footer__desktop {
+        display: block; /* Muestra el footer de escritorio */
+    }
+    .nav__desktop {
+        display: block; /* Muestra el menú de escritorio */
+    }
+}
+
+/* Medium Devices (Small Laptops) */
+@media (min-width: 768px) and (max-width: 992px) {
+    
+}
+
+/* Large Devices (Desktops) */
+@media (min-width: 992px) and (max-width: 1200px) {
+    
+}
+
+/* Extra Large Devices (Large Desktops) */
+@media (min-width: 1200px) {
+   
+}
