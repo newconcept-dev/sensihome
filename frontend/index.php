@@ -54,6 +54,7 @@ require_once './php/model.php';
 
     <!-- Font -->
     <link rel="stylesheet" href="./assets/css/index.css">
+    <link rel="stylesheet" href="./assets/css/hero-section.css">
 
     <title>Sensi Home</title>
 </head>
@@ -91,7 +92,7 @@ require_once './php/model.php';
 
         <!-- Nav bar Desktop elements -->
 
-        <nav  class="bar__category">
+        <nav class="bar__category">
             <ul>
                 <li>
                     <a href="#">Salas</a>
@@ -286,9 +287,9 @@ require_once './php/model.php';
             <div class="products-result">
 
                 <div class="result-title">
-                        <span>Resultados</span><span class="line-result-title"></span>                        
+                    <span>Resultados</span><span class="line-result-title"></span>
                 </div>
-                
+
                 <div class="content__cards__rows">
                     <div class="content-card-img">
                         <img src="./product.png" alt="" style="">
@@ -296,7 +297,7 @@ require_once './php/model.php';
                     <div class="content-card-info">
                         <span>
                             <strong>Sillon padrisimo</strong>
-                        </span>                        
+                        </span>
                         <span>$1,890</span>
                     </div>
                 </div>
@@ -308,7 +309,7 @@ require_once './php/model.php';
                     <div class="content-card-info">
                         <span>
                             <strong>Sillon padrisimo</strong>
-                        </span>                        
+                        </span>
                         <span>$1,890</span>
                     </div>
                 </div>
@@ -320,13 +321,13 @@ require_once './php/model.php';
                     <div class="content-card-info">
                         <span>
                             <strong>Sillon padrisimo</strong>
-                        </span>                        
+                        </span>
                         <span>$1,890</span>
                     </div>
                 </div>
-                
+
                 <div class="result-title">
-                        <span>Promociones</span><span class="line-result-title"></span>                        
+                    <span>Promociones</span><span class="line-result-title"></span>
                 </div>
 
                 <div class="content__cards__rows">
@@ -336,7 +337,7 @@ require_once './php/model.php';
                     <div class="content-card-info">
                         <span>
                             <strong>Sillon padrisimo</strong>
-                        </span>                        
+                        </span>
                         <span>$1,890</span>
                     </div>
                 </div>
@@ -348,24 +349,21 @@ require_once './php/model.php';
                     <div class="content-card-info">
                         <span>
                             <strong>Sillon padrisimo</strong>
-                        </span>                        
+                        </span>
                         <span>$1,890</span>
                     </div>
                 </div>
-
-
-                
-                    
-
             </div>
         </div>
 
-        <section class="banner__responsive">
+        <!-- <section class="banner__responsive">
             <span class="material-icons">notifications</span>
             <p>Aprovecha este 10% de descuento en salas</p>
-        </section>
+        </section> -->
 
-        
+
+
+
 
         <!-- <section hidden class="banner__responsive">
             <span class="material-icons">notifications</span>
@@ -374,6 +372,29 @@ require_once './php/model.php';
     </header>
 
     <main>
+        <article class="flayer__main__container">
+            <div class="flayer-row">
+                <div class="flayer-img">
+                    <img src="https://cgifurniture.com/wp-content/uploads/2018/06/furniture-photography-7-types-of-images-View6.jpg"
+                        alt="Flayer Image">
+                </div>
+                <div class="flayer-info">
+                    <div class="flayer-info-principal">
+                        <h1>Comedor <strong>amanecer</strong></h1>
+                        <p>Lo mejor para tu hogar</p>
+                        <span>$12,000</span>
+                    </div>
+                    <div class="flayer-phrase">
+                        <p>Comodidad y gran estilo, solo en Sensi Home</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flayer-divider-info">
+                <p>Aprovecha nuestros descuentos de temporada</p>
+            </div>
+        </article>            
+
         <section>
             <div class="spaceDiv">
 
@@ -436,10 +457,10 @@ require_once './php/model.php';
                     <a class="element-footer-desktop" href=""><i class="fa-brands fa-whatsapp"></i><small>WhatsApp</small></a>
                 </div>
                 <div class="desktop-column">
-                <a href="#" class="desktop-us">Nosotros</a>
-                <a class="element-footer-desktop" href="#"><i class="fa-solid fa-lock"></i><small>Aviso de privacidad</small></a>
-                <a class="element-footer-desktop" href="#"><i class="fa-solid fa-scale-balanced"></i><small>Términos y condiciones</small></a>
-            </div>
+                    <a href="#" class="desktop-us">Nosotros</a>
+                    <a class="element-footer-desktop" href="#"><i class="fa-solid fa-lock"></i><small>Aviso de privacidad</small></a>
+                    <a class="element-footer-desktop" href="#"><i class="fa-solid fa-scale-balanced"></i><small>Términos y condiciones</small></a>
+                </div>
             </div>
 
 
@@ -447,7 +468,7 @@ require_once './php/model.php';
             <span class="desktop-line"></span>
             <a href="#" class="desktop-copy-mini">&copy; Sensi Home Todos los derechos reservados.</a>
         </div>
-        
+
     </footer>
 
     <script src="./assets/js/app.js"></script>

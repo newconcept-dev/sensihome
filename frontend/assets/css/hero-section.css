@@ -1,0 +1,156 @@
+.flayer__main__container {
+    display: flex;
+    flex-direction: column; /* Por defecto, en columna */
+    width: 100%;
+    height: 80vh; /* Ajustar la altura al 100% de la ventana */
+    background-color: #FFFF;
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+    
+}
+
+.flayer-row {
+    display: flex;
+    flex-direction: row; /* En fila para escritorio */
+    height: 100%;
+    width: 100%;
+    flex: 1; /* Permitir que este contenedor crezca para llenar el espacio disponible */
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+}
+
+.flayer-img {
+    display: flex;
+    width: 55%; /* Ajustar el ancho */
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+}
+
+.flayer-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajustar la imagen para que cubra el contenedor */
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+}
+
+.flayer-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0rem;
+    gap: 1rem;
+    width: 37%; /* Ajustar el ancho para que sume 100% con flayer-img */
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+}
+
+.flayer-phrase {
+    
+    background-color: var(--bg-primary);
+    color: var(--color-text-md-light);
+    width: max-content;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    align-self: flex-end;
+    border-radius: 10px 10px 10px 10px;
+    
+}
+
+.flayer-info-principal {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end; /* Alinea este contenedor al final (derecha) */
+    text-align: right; /* Alinea el texto a la derecha */
+    margin-right: 0; /* Asegura que el contenedor esté pegado a la derecha */
+    gap: 2rem;
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+}
+
+.flayer-info-principal h1 {
+    margin-top: 0;
+    font-size: 4rem;
+    font-weight: initial; /* quitar negritas */
+}
+
+.flayer-info-principal p {
+    font-size: 1.8rem;
+    margin-top: .5rem;
+    color: gray;
+}
+
+.flayer-info-principal span {
+    font-size: 4.0rem;
+    margin-bottom: 0;
+}
+
+.flayer-divider-info {
+    width: 100%;
+    background-color: var(--bg-primary);
+    color: var(--color-secondary);
+    text-align: center;
+    padding: 0rem;
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho y alto */
+    flex-shrink: 0; /* Evitar que este contenedor se encoja */
+    
+}
+
+@media (max-width: 576px) {
+    .flayer__main__container {
+        flex-direction: column; /* En columna para móviles */
+        height: auto;
+    }
+
+    .flayer-row {
+        flex-direction: column; /* En columna para móviles */
+    }
+
+    .flayer-img,
+    .flayer-info {
+        width: 100%;
+        height: auto;
+    }
+
+    .flayer-img img {
+        height: auto;
+    }
+
+    .flayer-phrase {
+        display:flex;
+        position: relative;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0 10px 10px 0;
+        align-self: flex-start;
+
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
+
+    .flayer-info {
+        padding: 0rem;
+        margin-top: 1rem;
+    }
+
+    .flayer-info-principal {
+        align-self: flex-end; /* Alinea este contenedor al inicio (izquierda) */
+        text-align: right; /* Alinea el texto a la izquierda */
+        gap: .6rem;
+    }
+
+    .flayer-info-principal h1 {
+        font-size: 2rem;
+        padding-right: 1rem;
+    }
+
+    .flayer-info-principal p {
+        font-size: 1.3rem;
+        margin-top: 0;
+        color: gray;
+        padding-right: 1rem;
+    }
+
+    .flayer-info-principal span {
+        font-size: 2.0rem;
+        margin-bottom: 0;
+        padding-right: 1rem;
+    }
+}
