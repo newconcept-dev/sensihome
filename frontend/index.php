@@ -60,10 +60,7 @@ require_once './php/model.php';
 
 <body>
     <header>
-        <!-- <section class="banner__responsive">
-            <span class="material-icons">notifications</span>
-            <p>Aprovecha este 10% de descuento en salas exteriores y bonificación de $100 por cada $1000 de compra</p>
-        </section> -->
+
 
 
         <!-- Navbar Desktop elements-->
@@ -362,6 +359,11 @@ require_once './php/model.php';
 
             </div>
         </div>
+
+        <section class="banner__responsive">
+            <span class="material-icons">notifications</span>
+            <p>Aprovecha este 10% de descuento en salas</p>
+        </section>
 
         
 
