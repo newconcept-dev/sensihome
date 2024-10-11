@@ -4,8 +4,6 @@
     width: 300px;
     height: auto; /* Ajusta la altura automáticamente */    
     box-sizing: border-box; /* Incluye el padding en el tamaño total */
-
-    /* border: dashed 2px rgb(131, 131, 131);  */
 }
 
 .oferts-product {
@@ -21,6 +19,8 @@
     border-radius: 0px 5px 5px 0px;
     visibility: visible; /* Este se quita y se ve el descuento */
 }
+
+
 
 .card-img {
     width: 100%;
@@ -116,3 +116,8 @@
     padding: 0.5rem;
     padding-top: 1rem;
 }
+
+.change-color-ofert {
+    display: none;
+}
+

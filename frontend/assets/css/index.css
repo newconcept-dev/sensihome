@@ -22,7 +22,9 @@
     --color-title-md: #f9f9f9;
     --color-title-sm: #f9f9f9;
 
-    --color-text-lg: #f9f9f9;
+    --color-text-lg-light: #000000;
+    --color-text-lg-gray: rgb(0, 0, 0);
+    --color-text-lg: #000000;
     --color-text-md: #000000;
     --color-text-md-light: #f9f9f9;
     --color-text-sm: #f9f9f9;
@@ -212,11 +214,12 @@ body, html {
 
 
 .bar__category {
-    display: none; /* flex */
+    display: flex; /* flex */
     justify-content: center; /* Centra los elementos horizontalmente */
     align-items: center; /* Centra los elementos verticalmente */
     padding: 1rem; /* Añade padding si es necesario */
     border-top: solid 1px var(--color-border); /* Añade borde superior si es necesario */
+    
 }
 
 .bar__category ul {
@@ -265,7 +268,7 @@ body, html {
     gap: 1rem; /* Añade espacio entre los items */
     flex: 1; /* Permite que los items ocupen el espacio disponible a la izquierda */
     align-items: center;
-    
+    background-color: var(--bg-secondary);
     
 }
 
@@ -368,6 +371,7 @@ body, html {
     background-color: var(--bg-secondary);
     padding: 1rem; /* Añade padding en los extremos */
     box-sizing: border-box; /* Incluye el padding en el tamaño total del elemento */
+    z-index: 1000; /* Asegura que el contenedor esté por encima de otros elementos */
 }
 
 .search-group {
@@ -480,11 +484,11 @@ body, html {
 
 
 .banner__responsive { /* banner__responsive__responsive de mensaje principal */
+    display: none;
     background-color: var(--bg-primary);
     color: var(--color-text-md-light);
     padding: 0;
     margin-top: 0;
-    display: flex;
     align-items: center; /* Centra verticalmente el contenido */
     justify-content: center; /* Centra horizontalmente el contenido */
     /* display: none; */
@@ -497,6 +501,28 @@ body, html {
 }
 
 .banner__responsive span{
+    color: rgb(180, 139, 14);
+}
+
+
+.banner__desktop { /* banner__responsive__responsive de mensaje principal */
+    display: flex;
+    background-color: var(--bg-primary);
+    color: var(--color-text-md-light);
+    padding: 0;
+    margin-top: 0;
+    align-items: center; /* Centra verticalmente el contenido */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    /* display: none; */
+    padding: .3rem;
+}
+
+.banner__desktop p{
+    margin: 0;
+    padding: .5rem;   
+}
+
+.banner__desktop span{
     color: rgb(180, 139, 14);
 }
 
@@ -725,6 +751,127 @@ body, html {
     display: none; /* Oculta ambos footers por defecto */
 }
 
+.title-divider{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+    color: var(--color-text-lg-gray);
+    font-size: var(--size-title-md);
+    font-weight:100;
+}
+
+.cards__products__oferts{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-around;
+    padding: 2rem;
+    padding-top: 0;
+}
+
+.banner__img__container{
+    display: flex;
+    position: relative;
+    
+    width: 100%;
+    height: 70vh;
+}
+
+.banner__img__container img{
+    width: 100%;
+    height: 100%;
+}
+
+.banner__img__container span{
+    color: var(--color-text-md-light);
+    font-size: 5rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+    font-weight: bold;
+}
+
+.cards__products__group {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas de igual tamaño */
+    gap: 0rem; /* Espacio entre los elementos */
+    padding: 1rem;
+    padding-top: 0;
+}
+
+.divider-sections-black{
+    width: 100%;
+    background-color: var(--bg-primary);
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;   
+}
+
+.banner__txt-img__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: auto;
+    padding: 2rem;
+    box-sizing: border-box;
+    overflow: hidden; /* Evita el desbordamiento */
+}
+
+.container-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 50%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.container-info span {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.container-info p {
+    font-size: 1.2rem;
+    color: gray;
+    margin-bottom: 1rem;
+    word-wrap: break-word;
+}
+
+.container-info a {
+    text-decoration: none;
+    color: rgba(165, 164, 164, 0.753);
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border: solid 1px var(--color-search);
+    border-radius: 10px;
+    width: fit-content;
+}
+
+.container-info a:hover {
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.container-img {
+    max-width: 50%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+.container-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+    box-sizing: border-box;
+}
+
+
 
 /* Responsive sections */
 
@@ -735,6 +882,87 @@ body, html {
     }
     .navbar__responsive {
         display: block; /* Muestra el menú responsivo */
+    }
+    .cards__products__oferts{
+        display: flex;
+        flex-direction: column;        
+    }
+    .title-divider{
+        margin-top: 2rem;
+        font-size: 1rem;
+    }
+
+    .banner__responsive{
+        display: flex;
+    }
+
+    .banner__desktop{
+        display: none;
+    }
+
+    .bar__category{
+        display: none;
+    }
+    .banner__img__container{
+        display: flex;
+        position: relative;
+        border: solid 1px var(--color-border);
+        width: 100%;
+        height: 35vh;
+    }
+    
+    .banner__img__container img{
+        width: 100%;
+        height: 100%;
+        object-fit:fill;
+    }
+
+    .banner__img__container span{
+        color: var(--color-text-md-light);
+        font-size: 2rem;
+        bottom: 0;
+        right: 0;
+        padding-bottom: 1rem;
+        padding-right: 1rem;
+        font-weight: bold;
+    }
+
+    .cards__products__group {
+        display: flex;
+        flex-direction: column;
+        /* centrar */
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    .banner__txt-img__container {
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .container-info {
+        max-width: 100%;
+        text-align: center;
+        padding: 1rem 0;
+    }
+
+    .container-info span {
+        font-size: 2rem;
+    }
+
+    .container-info p {
+        font-size: 1rem;
+    }
+
+    .container-info a {
+        font-size: 1rem;
+        margin: 0 auto;
+    }
+
+    .container-img {
+        max-width: 100%;
+        padding: 1rem 0;
     }
 
 }
