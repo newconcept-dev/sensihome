@@ -1,0 +1,28 @@
+.category-page__container{
+    display: flex;  
+    flex-direction: row;
+    width: 100%;
+}
+
+.category__container{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin-right: 1rem;
+    padding: 1rem;
+}
+
+.leaked-products__container{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    width: 80%;
+    border: 2px solid #743a3a;
+}
+
+.products-filters{
+    display: flex;
+    flex-direction: wrap;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
