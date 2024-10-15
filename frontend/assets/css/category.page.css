@@ -10,23 +10,195 @@
     width: 20%;
     margin-right: 1rem;
     padding: 1rem;
+    
 }
 
+.category__title p{
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.position-navegation{
+    padding-bottom: 2rem;
+}
+
+.position-navegation i{
+    font-size: 1rem;
+    font-weight: lighter;
+    color: gray;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.price-dropdown{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: white;  
+}
+
+.price-dropdown details{
+     
+    background-color: white;
+}
+
+.price-dropdown summary{
+    padding: .5rem;
+    background-color: #000;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.range_container{
+    padding-top: 3.5rem;
+    padding-bottom: 2rem;        
+}
+
+.relevance-dropdown summary{
+    padding: .5rem;
+    background-color: #000;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+.group-check{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+/* Estilo para el contenedor del checkbox */
+.slide-check-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* Ocultar el checkbox original */
+.slide-check-container input[type="checkbox"] {
+    display: none;
+}
+
+/* Estilo para la etiqueta que actúa como el interruptor */
+.slide-check-container label {
+    position: relative;
+    display: inline-block;
+    width: 40px; /* Reducir el ancho */
+    height: 20px; /* Reducir la altura */
+    background-color: #ccc;
+    border-radius: 20px; /* Ajustar el radio del borde */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.slide-check-container span {
+    padding-left: 1rem;
+}
+
+/* Estilo para el círculo deslizante */
+.slide-check-container label::after {
+    content: "";
+    position: absolute;
+    top: 1.5px; /* Ajustar la posición vertical */
+    left: 1.5px; /* Ajustar la posición horizontal */
+    width: 17px; /* Reducir el ancho */
+    height: 17px; /* Reducir la altura */
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+/* Cambiar el fondo y mover el círculo cuando el checkbox está marcado */
+.slide-check-container input[type="checkbox"]:checked + label {
+    background-color: #000;
+}
+
+.slide-check-container input[type="checkbox"]:checked + label::after {
+    transform: translateX(20px); /* Ajustar la distancia de desplazamiento */
+}
+
+.color-dropdown summary {
+    padding: .5rem;
+    background-color: #000;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Fondo gris a mi check cuando este inactivo y negro cuando ya este activo */
+.color-element {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.color-element input[type="checkbox"] {
+    display: none; /* Ocultar el checkbox original */
+}
+
+.color-element label {
+    position: relative;
+    padding-left: 1.5rem;
+    cursor: pointer;
+}
+
+.color-element label::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #ccc;
+    background-color: #ccc;
+    border-radius: 3px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.color-element label::after {
+    content: "\f00c"; /* Código Unicode para el icono de check */
+    font-family: "Font Awesome 5 Free"; /* Asegúrate de que Font Awesome esté cargado */
+    font-weight: 900; /* Peso del icono */
+    position: absolute;
+    left: 0.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 0.8rem;
+    opacity: 0; /* Ocultar el icono por defecto */
+    transition: opacity 0.3s;
+}
+
+.color-element input[type="checkbox"]:checked + label::before {
+    background-color: #dbd334;
+    border-color: #dbd334;
+}
+
+.color-element input[type="checkbox"]:checked + label::after {
+    opacity: 1; /* Mostrar el icono cuando el checkbox está marcado */
+}
+
+.color-element input[type="checkbox"]:not(:checked) + label::before {
+    background-color: #ccc;
+    border-color: #ccc;
+}
 
 .filter__products{
     display: flex;
     flex-direction: column;
     width: 100%;
-    border: 2px solid #743a3a;
     
 }
-
 
 .leaked-products__container{
     display: flex;
     flex-direction: column;
     width: 80%;
-    border: 2px solid #743a3a;
+    
     padding: 1rem;
     
 }

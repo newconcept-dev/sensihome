@@ -22,13 +22,13 @@
                 </div>
 
                 <div class="filter__products">
-                    <div class="position">
+                    <div class="position-navegation">
                         <span>Inicio<i class="fa-solid fa-greater-than"></i>Salas<i class="fa-solid fa-greater-than"></i>Esquineras</span>
                     </div>
 
                     <div class="price-dropdown">
                         <!-- sumary -->
-                        <details>
+                        <details open>
                             <summary>
                                 <span>Precio</span>
                             </summary>
@@ -45,38 +45,45 @@
                     </div>
 
                     <div class="relevance-dropdown">
-                        <details>
+                        <details open>
                             <summary>
                                 <span>Relevancia</span>
                             </summary>
-                            <div class="last-models">
-                                <input type="checkbox" id="last-models" name="last-models">
-                                <label for="last-models">Ultimos modelos</label>
-                            </div>
 
-                            <div class="most-sold">
-                                <input type="checkbox" id="most-sold" name="most-sold">
-                                <label for="most-sold">Mas vendidos</label>
-                            </div>
+                            <div class="group-check">
+                                <div class="slide-check-container">
+                                    <input type="checkbox" id="last-models" name="last-models">
+                                    <label for="last-models"></label>
+                                    <span>Ultimos modelos</span>
+                                </div>
 
-                            <div class="not-exists">
-                                <input type="checkbox" id="not-exists" name="not-exists">
-                                <label for="not-exists">Sin existencias</label>
+                                <div class="slide-check-container">
+                                    <input type="checkbox" id="most-sold" name="most-sold">
+                                    <label for="most-sold"></label>
+                                    <span>Mas vendidos</span>
+                                </div>
+
+                                <div class="slide-check-container">
+                                    <input type="checkbox" id="not-exists" name="not-exists">
+                                    <label for="not-exists"></label>
+                                    <span>Sin existencias</span>
+                                </div>
                             </div>
                         </details>
                     </div>
 
                     <div class="color-dropdown">
-                        <details>
+                        <details open>
                             <summary>
                                 <span>Color</span>
                             </summary>
-
-                            <div class="colors-products">
-                                <div class="color">
-                                    <input type="checkbox" name="color">
-                                    <label for="color">Amarillo</label>
+                    
+                            <div class="colors-products group-check">
+                                <div class="color-element">
+                                    <input type="checkbox" id="color-select" name="color">
+                                    <label for="color-select">Amarillo</label>
                                 </div>
+                                <!-- Añadir más elementos de color aquí -->
                             </div>
                         </details>
                     </div>
