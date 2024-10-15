@@ -33,7 +33,7 @@
         <!-- Foooter Desktop -->
         <div hidden class="footer__desktop">
             <div class="logo-footer-desktop">
-                <a href="#"><img class="icon-nav" src="./assets/img/icons/ico.png" alt="Sensi Home Logo"></a>
+                <a href="#"><img class="icon-nav" src="../assets/img/icons/ico.png" alt="Sensi Home Logo"></a>
                 <span>Sensi Home</span>
             </div>
 
