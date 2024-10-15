@@ -93,51 +93,25 @@
 
             <div class="leaked-products__container">
                 <div class="filters-selects">
-                    <p>Filtros actuales</p>
-                    <div class="filters">
-                        <div class="filter">
+                    <p><strong>Filtros actuales</strong></p>
+
+                    <div class="filter-elements">
+                        <div class="filter-element">
                             <span>Precio: </span>
-                            <span>Desde $115 hasta $120</span>
+                            <i class="fa-solid fa-x"></i>
+                        </div>
+
+                        <div class="filter-element">
+                            <span>Precio: </span>
+                            <i class="fa-solid fa-x"></i>
                         </div>
                     </div>
+
+
                 </div>
 
                 <div class="products-filters">
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
 
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
                     <div class="card__container">
                         <div class="oferts-product change-color-ofert">
                             <span>20%</span>
@@ -421,7 +395,7 @@
                 </div>
             </div>
         </div>
-
+        <div class="divider-sections-black"></div>
         <script src="../assets/js/range-price.js"></script>
     </main>
 

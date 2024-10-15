@@ -12,17 +12,61 @@
     padding: 1rem;
 }
 
+
+.filter__products{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border: 2px solid #743a3a;
+    
+}
+
+
 .leaked-products__container{
     display: flex;
     flex-direction: column;
-    padding: 1rem;
     width: 80%;
     border: 2px solid #743a3a;
+    padding: 1rem;
+    
 }
 
 .products-filters{
-    display: flex;
-    flex-direction: wrap;
-    justify-content: space-between;
-    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas de igual tamaño */   
 }
+
+
+.filter-elements{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;    
+}
+
+.filter-element{
+    
+    transition: 0.5s;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding: 0.3rem;
+    border: 2px solid #191818;
+}
+
+.filter-element i{
+    font-size:small;
+    color: gray;
+}
+
+.filter-element i:hover{
+    cursor: pointer;
+    color: black;
+}
+
+.filter-element:hover{
+    cursor: pointer;
+    box-shadow: 0 0 5px 0 #000;
+    border-radius: 10px;    
+}
+
