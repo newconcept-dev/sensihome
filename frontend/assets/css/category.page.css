@@ -1,29 +1,43 @@
-.category-page__container{
-    display: flex;  
+/* Contenedor principal */
+.category-page__container {
+    display: flex;
     flex-direction: row;
     width: 100%;
+    overflow-x: hidden; /* Evitar el desbordamiento horizontal */
 }
 
-.category__container{
+.category-page__container details {
+    padding-bottom: 1rem;
+}
+
+.category__container {
     display: flex;
     flex-direction: column;
     width: 20%;
     margin-right: 1rem;
     padding: 1rem;
-    
 }
 
-.category__title p{
+.category__title p {
     font-size: 2rem;
     font-weight: bold;
     color: #000;
+    padding: 0;
+    margin: 0;
+    padding-bottom: 1rem;
 }
 
-.position-navegation{
+.position-navegation {
     padding-bottom: 2rem;
+    color: gray;
 }
 
-.position-navegation i{
+.position-navegation span:hover {
+    cursor: pointer;
+    color: black;
+}
+
+.position-navegation i {
     font-size: 1rem;
     font-weight: lighter;
     color: gray;
@@ -31,40 +45,43 @@
     margin-right: 1rem;
 }
 
-.price-dropdown{
+.price-dropdown {
     display: flex;
     flex-direction: column;
     width: 100%;
-    color: white;  
+    color: white;
 }
 
-.price-dropdown details{
-     
+.price-dropdown details {
     background-color: white;
 }
 
-.price-dropdown summary{
+.price-dropdown summary {
     padding: .5rem;
     background-color: #000;
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+    width: 100%; /* Asegura que el summary no exceda el ancho del contenedor */
 }
 
-.range_container{
+.range_container {
     padding-top: 3.5rem;
-    padding-bottom: 2rem;        
+    padding-bottom: 2rem;
 }
 
-.relevance-dropdown summary{
+.relevance-dropdown summary {
     padding: .5rem;
     background-color: #000;
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+    width: 100%; /* Asegura que el summary no exceda el ancho del contenedor */
 }
 
-.group-check{
+.group-check {
     display: flex;
     flex-direction: column;
     padding: 1rem;
@@ -126,6 +143,8 @@
     border-radius: 5px;
     color: white;
     cursor: pointer;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+    width: 100%; /* Asegura que el summary no exceda el ancho del contenedor */
 }
 
 /* Fondo gris a mi check cuando este inactivo y negro cuando ya este activo */
@@ -187,36 +206,31 @@
     border-color: #ccc;
 }
 
-.filter__products{
+.filter__products {
     display: flex;
     flex-direction: column;
     width: 100%;
-    
 }
 
-.leaked-products__container{
+.leaked-products__container {
     display: flex;
     flex-direction: column;
     width: 80%;
-    
     padding: 1rem;
-    
 }
 
-.products-filters{
+.products-filters {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 4 columnas de igual tamaño */   
+    grid-template-columns: repeat(4, 1fr); /* 4 columnas de igual tamaño */
 }
 
-
-.filter-elements{
+.filter-elements {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;    
+    gap: 0.5rem;
 }
 
-.filter-element{
-    
+.filter-element {
     transition: 0.5s;
     width: fit-content;
     justify-content: center;
@@ -226,19 +240,112 @@
     border: 2px solid #191818;
 }
 
-.filter-element i{
-    font-size:small;
+.filter-element i {
+    font-size: small;
     color: gray;
 }
 
-.filter-element i:hover{
+.filter-element i:hover {
     cursor: pointer;
     color: black;
 }
 
-.filter-element:hover{
+.filter-element:hover {
     cursor: pointer;
     box-shadow: 0 0 5px 0 #000;
-    border-radius: 10px;    
+    border-radius: 10px;
 }
 
+/* Media Queries para hacer la página responsive */
+@media (max-width: 768px) {
+    .category-page__container {
+        flex-direction: column;
+    }
+
+    .category__container {
+        width: 100%;
+        padding-right: 1rem;
+    }
+
+    .leaked-products__container {
+        width: 100%;
+    }
+
+    .products-filters {
+        grid-template-columns: repeat(2, 1fr); /* 2 columnas en pantallas medianas */
+        margin-left: 1.2rem;
+        padding: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .products-filters {
+        grid-template-columns: 1fr; /* 1 columna en pantallas pequeñas */
+    }
+
+    .responsive-2-col {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin-right: 2rem;
+        gap: 1rem;
+        font-size: small;
+        display: none;
+    }
+
+    .responsive-1-col {
+        margin-right: 2rem;
+        display: none;
+    }
+
+    .category__title {
+        display: flex;
+        justify-content: space-between; /* Asegura que los elementos se distribuyan entre sí */
+        align-items: center; /* Centra verticalmente los elementos */
+        width: 100%;
+    }
+
+    .category__title p {
+        font-size: 1.5rem;
+    }
+
+    .category__title a {
+        display: flex;
+        padding: .3rem;
+        background-color: #000;
+        color: white;
+        text-decoration: none; /* Quitar decoración */
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        margin-right: 2rem;
+    }
+
+    .position-navegation i {
+        font-size: 0.8rem;
+    }
+
+    .enter-filter{
+        display: flex;
+        justify-content: center;
+        margin-right: 1rem;
+        display: none;
+    }
+
+    .enter-filter a{
+        text-decoration: none;
+        padding: .5rem;
+        width: 80%;
+        background-color: #000;
+        color: white;
+        border-radius: 5px;
+        text-align: center;
+        
+    }
+
+    .leaked-products__container{
+        padding-top: 0;
+    }
+
+    .filters-selects {
+        display: none;
+    }
+}

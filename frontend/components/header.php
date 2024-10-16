@@ -1,3 +1,5 @@
+<?php require_once '../php/model.php'; ?>
+
 <section class="banner__desktop">
     <span class="material-icons">notifications</span>
     <p>Aprovecha este 10% de descuento en salas selecta para tu hogar</p>
@@ -231,7 +233,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product.png" alt="" style="">
+                <img src="../product.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>
@@ -243,7 +245,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product.png" alt="" style="">
+                <img src="../product.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>
@@ -255,7 +257,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product.png" alt="" style="">
+                <img src="../product.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>
@@ -267,7 +269,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product.png" alt="" style="">
+                <img src="../product.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>
@@ -279,7 +281,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product.png" alt="" style="">
+                <img src="../product.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>
@@ -295,7 +297,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product.png" alt="" style="">
+                <img src="../product.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>
@@ -307,7 +309,7 @@
 
         <div class="content__cards__rows">
             <div class="content-card-img">
-                <img src="./product2.png" alt="" style="">
+                <img src="../product2.png" alt="" style="">
             </div>
             <div class="content-card-info">
                 <span>

@@ -1,7 +1,7 @@
 <span class="line-div-responsive"></span>
         <div hidden class="footer__responsive">
             <div class="logo-footer-responsive">
-                <a href="#"><img class="icon-nav" src="./assets/img/icons/ico.png" alt="Sensi Home Logo"></a>
+                <a href="#"><img class="icon-nav" src="../assets/img/icons/ico.png" alt="Sensi Home Logo"></a>
                 <span>Sensi Home</span>
             </div>
 
@@ -61,4 +61,5 @@
 
             <span class="desktop-line"></span>
             <a href="#" class="desktop-copy-mini">&copy; Sensi Home Todos los derechos reservados.</a>
+            <script src="../assets/js/app.js"></script>
         </div>

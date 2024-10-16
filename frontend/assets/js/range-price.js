@@ -13,9 +13,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const fromTooltip = document.querySelector('#fromSliderTooltip');
     const toTooltip = document.querySelector('#toSliderTooltip');
     
-
-    // Get min and max values from the fromSlider element
-    
+    // Define min, max, and steps values
+    const MIN = parseInt(fromSlider.min, 10);
+    const MAX = parseInt(fromSlider.max, 10);
+    const STEPS = parseInt(fromSlider.step, 10);
 
     function controlFromSlider(fromSlider, toSlider, fromTooltip, toTooltip) {
         const [from, to] = getParsed(fromSlider, toSlider);
@@ -78,9 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createScale(min, max, step) {
-       
         const range = max - min;
         const steps = range / step;
+        const scale = document.querySelector('#scale'); // Asegúrate de que el elemento con id "scale" exista en tu HTML
         for (let i = 0; i <= steps; i++) {
             const value = min + (i * step);
             const percent = (value - min) / range * 100;

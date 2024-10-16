@@ -18,7 +18,7 @@
                 <div class="category__title">
                     <p>Salas</p>
 
-                    <a hidden href="#">Filtrar</a>
+                    <a class="apply-filters-category" hidden href="#">Filtrar</a>
                 </div>
 
                 <div class="filter__products">
@@ -26,66 +26,70 @@
                         <span>Inicio<i class="fa-solid fa-greater-than"></i>Salas<i class="fa-solid fa-greater-than"></i>Esquineras</span>
                     </div>
 
-                    <div class="price-dropdown">
-                        <!-- sumary -->
-                        <details open>
-                            <summary>
-                                <span>Precio</span>
-                            </summary>
-                            <div class="range_container">
-                                <div class="sliders_control">
-                                    <div id="fromSliderTooltip" class="slider-tooltip">115</div>
-                                    <input id="fromSlider" type="range" value="120" min="50" max="350" steps="10" />
-                                    <div id="toSliderTooltip" class="slider-tooltip">120</div>
-                                    <input id="toSlider" type="range" value="260" min="50" max="350" steps="10" />
+                    <div class="responsive-2-col">
+                        <div class="price-dropdown">
+                            <!-- sumary -->
+                            <details open>
+                                <summary>
+                                    <span>Precio</span>
+                                </summary>
+                                <div class="range_container">
+                                    <div class="sliders_control">
+                                        <div id="fromSliderTooltip" class="slider-tooltip">115</div>
+                                        <input id="fromSlider" type="range" value="120" min="50" max="350" steps="10" />
+                                        <div id="toSliderTooltip" class="slider-tooltip">120</div>
+                                        <input id="toSlider" type="range" value="260" min="50" max="350" steps="10" />
+                                    </div>
+                                    <div id="scale" class="scale" data-steps="50"></div>
                                 </div>
-                                <div id="scale" class="scale" data-steps="50"></div>
-                            </div>
-                        </details>
+                            </details>
+                        </div>
+
+                        <div class="relevance-dropdown">
+                            <details open>
+                                <summary>
+                                    <span>Relevancia</span>
+                                </summary>
+
+                                <div class="group-check">
+                                    <div class="slide-check-container">
+                                        <input type="checkbox" id="last-models" name="last-models">
+                                        <label for="last-models"></label>
+                                        <span>Ultimos modelos</span>
+                                    </div>
+
+                                    <div class="slide-check-container">
+                                        <input type="checkbox" id="most-sold" name="most-sold">
+                                        <label for="most-sold"></label>
+                                        <span>Mas vendidos</span>
+                                    </div>
+
+                                    <div class="slide-check-container">
+                                        <input type="checkbox" id="not-exists" name="not-exists">
+                                        <label for="not-exists"></label>
+                                        <span>Sin existencias</span>
+                                    </div>
+                                </div>
+                            </details>
+                        </div>
                     </div>
 
-                    <div class="relevance-dropdown">
-                        <details open>
-                            <summary>
-                                <span>Relevancia</span>
-                            </summary>
+                    <div class="responsive-1-col">
+                        <div class="color-dropdown">
+                            <details open>
+                                <summary>
+                                    <span>Color</span>
+                                </summary>
 
-                            <div class="group-check">
-                                <div class="slide-check-container">
-                                    <input type="checkbox" id="last-models" name="last-models">
-                                    <label for="last-models"></label>
-                                    <span>Ultimos modelos</span>
+                                <div class="colors-products group-check">
+                                    <div class="color-element">
+                                        <input type="checkbox" id="color-select" name="color">
+                                        <label for="color-select">Amarillo</label>
+                                    </div>
+                                    <!-- Añadir más elementos de color aquí -->
                                 </div>
-
-                                <div class="slide-check-container">
-                                    <input type="checkbox" id="most-sold" name="most-sold">
-                                    <label for="most-sold"></label>
-                                    <span>Mas vendidos</span>
-                                </div>
-
-                                <div class="slide-check-container">
-                                    <input type="checkbox" id="not-exists" name="not-exists">
-                                    <label for="not-exists"></label>
-                                    <span>Sin existencias</span>
-                                </div>
-                            </div>
-                        </details>
-                    </div>
-
-                    <div class="color-dropdown">
-                        <details open>
-                            <summary>
-                                <span>Color</span>
-                            </summary>
-                    
-                            <div class="colors-products group-check">
-                                <div class="color-element">
-                                    <input type="checkbox" id="color-select" name="color">
-                                    <label for="color-select">Amarillo</label>
-                                </div>
-                                <!-- Añadir más elementos de color aquí -->
-                            </div>
-                        </details>
+                            </details>
+                        </div>
                     </div>
 
                     <div hidden class="enter-filter">
