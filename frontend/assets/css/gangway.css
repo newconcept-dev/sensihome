@@ -98,6 +98,10 @@
         border-bottom: 1px solid #d4d1d1;
     }
     
+    .cart-review summary{
+        color: gray;
+    }
+
     .cart-review__product__img {
         flex: 0 0 100px; /* Fija el ancho de la columna de la imagen */
         display: flex;
@@ -133,6 +137,7 @@
 
     .cr-info-top span{
         font-size: .8rem;
+        color: gray;
     }
 
 
@@ -151,6 +156,10 @@
         padding: 0;
         margin: 0;
         font-size: .8rem;
+    }
+
+    .cr-info-bottom span{
+        color: gray;
     }
 
     .payment-count{
@@ -236,6 +245,79 @@
     }
 
     
+    .payment-process-step2{
+        display: flex;
+        flex-direction: column;
+        margin: 1.5rem 1.5rem 0 1.5rem;
+        
+    }
+
+    .method-pay{
+        border: solid 2px #aeaaaa6e;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .method-pay p, span{
+        margin: 0;
+        padding: 0;
+    }
+
+    .method-col-left{
+        padding: 1rem 1.2rem 1rem 0rem;
+
+    }
+
+    .method-col-left i{
+        filter: drop-shadow(0 0 1px black);
+        color: white;
+        font-size: 2rem;
+        
+    }
+
+    .method-col-right{
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 0 1rem 0;
+    }
+
+    .mc-top span{
+        font-size: .9rem;
+        color: gray;
+    }
+
+    .mc-bottom i{
+        font-size: 1.2rem;
+        padding-top: .5rem;
+    }
+
+    .method-col-right i{
+        padding-right: 2px;
+    }
+
+    .fa-cc-visa{
+        color: blue;
+    }
+
+    .fa-cc-mastercard {
+        background: linear-gradient(45deg, orange, red);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .fa-credit-card{
+        color: rgb(50, 166, 255);
+    }
+
+    .fa-location-dot{
+        color: red;
+    }
+
 
 
 

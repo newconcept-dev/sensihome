@@ -38,54 +38,56 @@
     </div>
 
     <main>
-        <div class="payment__container">
-            <div class="payment-title">
-                <p><strong>Resumen del pedido</strong></p>
-            </div>
 
-            <div class="cart-review">
-                <details open>
-                    <summary>1 Producto</summary>
-                    <span class="line-cr"></span>
+        <div hidden class="payment-process-step1">
+            <div class="payment__container">
+                <div class="payment-title">
+                    <p><strong>Resumen del pedido</strong></p>
+                </div>
 
-                    <!-- bucle con php para mostrar contenido html 5 veces -->
-                    <?php for ($i = 0; $i < 2; $i++) { ?>
-                        <div class="cart-review__product">
-                            <div class="cart-review__product__img">
-                                <img src="../product.png" alt="product">
-                            </div>
-                            <div class="cart-review__product__info">
-                                <div class="cr-info-top">
-                                    <p><strong>Sofa Lemvig-piel</strong></p>
-                                    <span>04 Oct - 8 Oct al CP 45400</span>
+                <div class="cart-review">
+                    <details open>
+                        <summary>2 Productos</summary>
+                        <span class="line-cr"></span>
+
+                        <!-- bucle con php para mostrar contenido html 5 veces -->
+                        <?php for ($i = 0; $i < 2; $i++) { ?>
+                            <div class="cart-review__product">
+                                <div class="cart-review__product__img">
+                                    <img src="../product.png" alt="product">
+                                </div>
+                                <div class="cart-review__product__info">
+                                    <div class="cr-info-top">
+                                        <p><strong>Sofa Lemvig-piel</strong></p>
+                                        <span>04 Oct - 8 Oct al CP 45400</span>
+                                    </div>
+
+                                    <div class="cr-info-bottom">
+                                        <p><strong>Costo</strong></p>
+                                        <p><strong>Cant</strong></p>
+                                        <p><strong>Total</strong></p>
+                                        <span>$9000</span>
+                                        <span>1</span>
+                                        <span>$9000</span>
+                                    </div>
                                 </div>
 
-                                <div class="cr-info-bottom">
-                                    <p><strong>Costo</strong></p>
-                                    <p><strong>Cant</strong></p>
-                                    <p><strong>Total</strong></p>
-                                    <span>$9000</span>
-                                    <span>1</span>
-                                    <span>$9000</span>
-                                </div>
                             </div>
+                        <?php } ?>
 
+
+                        <div class="payment-count">
+                            <p>Subtotal</p>
+                            <span>$9000</span>
+                            <p>Envio</p>
+                            <span>$0</span>
+                            <p><strong>Total</strong></p>
+                            <span><strong>$9000</strong></span>
                         </div>
-                    <?php } ?>
-
-
-                    <div class="payment-count">
-                        <p>Subtotal</p>
-                        <span>$9000</span>
-                        <p>Envio</p>
-                        <span>$0</span>
-                        <p><strong>Total</strong></p>
-                        <span><strong>$9000</strong></span>
-                    </div>
-                </details>
+                    </details>
+                </div>
             </div>
-            </div>                
-            
+
 
             <div class="form-client">
                 <form action="">
@@ -156,7 +158,7 @@
 
                         <div class="form-group-cl">
                             <label for="indication-delivery-cl">Indicaciones de entrega <span>*</span></label>
-                            <textarea name="indication-delivery-cl" id="indication-delivery-cl" cols="30" rows="5" ></textarea>
+                            <textarea name="indication-delivery-cl" id="indication-delivery-cl" cols="30" rows="5"></textarea>
                         </div>
 
                         <button class="confirm-group-cl">Continuar</button>
@@ -164,7 +166,59 @@
                     </div>
                 </form>
             </div>
-        
+
+
+        </div>
+
+        <div class="payment-process-step2">
+            <div class="payment-title">
+                <p><strong>Metodos de pago</strong></p>
+            </div>
+
+            <div class="method-pay">
+                <div class="method-col-left">
+                    <i class="fa-solid fa-circle"></i>
+                </div>
+
+                <div class="method-col-right">
+                    <div class="mc-top">
+                        <p><strong>Targeta de credito o debito</strong></p>
+                        <span>Texto de beneficios de pagar con este </span>
+                    </div>
+
+                    <div class="mc-bottom">
+                        <i class="fa-brands fa-cc-visa"></i>
+                        <i class="fa-brands fa-cc-mastercard"></i>
+                        <i class="fa-solid fa-credit-card"></i>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="method-pay">
+                <div class="method-col-left">
+                    <i class="fa-solid fa-circle"></i>
+                </div>
+
+                <div class="method-col-right">
+                    <div class="mc-top">
+                        <p><strong>Pargo en sucursal</strong></p>
+                        <span>Texto de beneficios de pagar con este </span>
+                    </div>
+
+                    <div class="mc-bottom">
+                        <i class="fa-solid fa-location-dot"></i>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="payment-process-step3">
+
+        </div>
     </main>
 
 </body>
