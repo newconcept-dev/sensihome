@@ -1,0 +1,242 @@
+
+
+
+@media (max-width: 576px) {
+    .payment-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+    
+    .icon-nav {
+        width: 40px;
+        height: 40px;
+        margin-left: -.5rem;
+    }
+    
+    .text-nav-logo {
+        margin-left: 0px; /* Añade un margen izquierdo para separar el texto de la imagen */
+        font-size: 1.3rem;
+        color: black;
+    }
+    
+    .payment-nav a {
+        display: flex; /* Asegura que el contenido del enlace se comporte como un elemento flex */
+        align-items: center; /* Centra verticalmente el contenido dentro del enlace */
+        text-decoration: none;
+        color: gray;
+        text-align: center;
+        font-size: 0.8rem;
+    }
+
+    .payment-progress{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.6rem;
+    }
+
+    .stape-pp{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .stape-pp span{
+        font-size: .9rem;
+        color: gray;
+    }
+
+    .stape-pp i{
+        color: white;
+        filter: drop-shadow(0 0 1px black);
+        font-size: 1.5rem;
+        
+    }
+
+    .bar-status{
+        position: absolute;
+        width: 110px;
+        height: 1px;
+        padding: 4px;
+        margin-bottom: 1rem;
+        background-color: gray;
+    }
+
+    .line-cr{
+        display: flex;
+        width: 100%;
+        height: 1.5px;
+        background-color: rgb(216, 215, 215);
+    }
+
+
+
+    .payment__container{
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        border: solid 2px #aeaaaa6e;
+        margin: 1.5rem 1.5rem 0 1.5rem;
+    }
+
+
+
+    .payment-title p{
+        font-size: 1.6rem;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 1rem;
+    }
+
+    .cart-review__product {
+        display: flex;
+        
+        border-bottom: 1px solid #d4d1d1;
+    }
+    
+    .cart-review__product__img {
+        flex: 0 0 100px; /* Fija el ancho de la columna de la imagen */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .cart-review__product__img img {
+        width: 100px;
+        height: 100px;
+        object-fit:scale-down; /* Asegura que la imagen mantenga su proporción */
+    }
+    
+    .cart-review__product__info {
+        flex: 1; /* Permite que la columna de información ocupe el resto del espacio */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        
+    }
+    
+    .cr-info-top {
+        display: flex;
+        flex-direction: column;
+        margin-top: .5rem;
+        padding-left: 1rem;
+    }
+
+    .cr-info-top p{
+        margin: 0;
+        padding: 0;
+    }
+
+    .cr-info-top span{
+        font-size: .8rem;
+    }
+
+
+    
+    .cr-info-bottom {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas de igual tamaño */
+        align-items: center; /* Centra verticalmente el contenido */
+        margin-bottom: .5rem;
+        
+    }
+    
+    .cr-info-bottom p,
+    .cr-info-bottom span {
+        text-align: center; /* Centra el texto dentro de las celdas */
+        padding: 0;
+        margin: 0;
+        font-size: .8rem;
+    }
+
+    .payment-count{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        align-items: center;
+        font-size: 1rem;
+        padding: .5rem .5rem 0 .5rem;
+        box-sizing: border-box;
+        gap: .5rem;
+    }
+
+    .payment-count p{
+        margin: 0;
+        padding: 0;
+    }
+
+    .payment-count span{
+        justify-self: end;
+    }
+
+    .form-client{
+        display: flex;
+        flex-direction: column;
+        margin: 0 1.5rem 1.5rem 1.5rem;
+        
+        
+    }
+
+    .form-client__title{
+        padding-bottom: .5rem;
+        font-size: 1.3rem;
+    }
+
+
+
+    .form-client span{
+        color: rgb(201, 21, 21);
+    }
+
+    .form-group-cl {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 1.5rem;
+        border: 2px solid #aeaaaa6e;
+        box-sizing: border-box;
+        border-radius: 5px;
+        position: relative; /* Necesario para posicionar el label absolutamente dentro del contenedor */
+        
+    }
+    
+    .form-group-cl label {
+        position: absolute;
+        top: -0.75rem; /* Ajusta la posición vertical del label */
+        left: 0.8rem; /* Ajusta la posición horizontal del label */
+        background: white; /* Fondo blanco para que no se superponga con el borde */
+        padding: 0 0.25rem; /* Añade padding para que el texto no toque los bordes */
+        font-size: 0.875rem; /* Ajusta el tamaño de la fuente */
+    }
+    
+    .form-group-cl input, textarea {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        font-size: 1rem;
+        padding: 0.5rem; /* Añade padding para el input */
+    }
+
+    .confirm-group-cl {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: .5rem;
+        background-color: black;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    
+
+
+
+}

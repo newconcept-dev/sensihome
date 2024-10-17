@@ -123,286 +123,46 @@
 
                 <div class="products-filters">
 
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
+                    <?php
+                    for ($i = 0; $i < 12; $i++) { ?>
+                        <div class="card__container">
+                            <div class="oferts-product change-color-ofert">
+                                <span>20%</span>
                             </div>
 
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                            <div class="card-img">
+                                <a href="./product.php"><img src="../product.png" alt="Imagen de producto compuesta"></a>
                             </div>
 
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
+                            <div class="price">
+                                <p>$10,000</p>
                             </div>
 
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                            <div class="rank">
+                                <div class="heart-rank">
+                                    <span><i class="fa-solid fa-heart"></i></span>
+                                </div>
+
+                                <div class="stars-rank">
+                                    <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                                    <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                                    <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                                    <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                                    <span class="full-star"><i class="fa-solid fa-star"></i></span>
+                                </div>
+
+                                <div class="cart-rank">
+                                    <span><i class="fa-solid fa-cart-plus"></i></span>
+                                </div>
                             </div>
 
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
+                            <div class="name-product">
+                                <span>Nibe</span>
                             </div>
                         </div>
 
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
+                    <?php } ?>
 
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
-                    <div class="card__container">
-                        <div class="oferts-product change-color-ofert">
-                            <span>20%</span>
-                        </div>
-
-                        <div class="card-img">
-                            <img src="../product.png" alt="Imagen de producto compuesta">
-                        </div>
-
-                        <div class="price">
-                            <p>$10,000</p>
-                        </div>
-
-                        <div class="rank">
-                            <div class="heart-rank">
-                                <span><i class="fa-solid fa-heart"></i></span>
-                            </div>
-
-                            <div class="stars-rank">
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                                <span class="full-star"><i class="fa-solid fa-star"></i></span>
-                            </div>
-
-                            <div class="cart-rank">
-                                <span><i class="fa-solid fa-cart-plus"></i></span>
-                            </div>
-                        </div>
-
-                        <div class="name-product">
-                            <span>Nibe</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

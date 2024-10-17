@@ -9,9 +9,8 @@
 <nav hidden class="nav__container nav__desktop">
     <ul>
         <li>
-            <a href="#"><img class="icon-nav" src="../assets/img/icons/ico.png" alt="Sensi Home Logo"><span class="text-nav-logo">Sensi Home</span></a>
+            <a href="../"><img class="icon-nav" src="../assets/img/icons/ico.png" alt="Sensi Home Logo"><span class="text-nav-logo">Sensi Home</span></a>
         </li>
-
         <li>
             <div class="searchDesktop">
                 <span class="material-icons">search</span>
@@ -19,14 +18,14 @@
             </div>
         </li>
         <li hidden class="search-responsive">
-            <a href="#"><span class="material-icons">search</span></a>
+            <a href="../pages/build-site.html"><span class="material-icons">search</span></a>
         </li>
         <li>
-            <a href=""><span class="material-icons">account_circle</span><span class="text-nav-icon">Acceder</span></a>
+            <a href="../pages/build-site.html"><span class="material-icons">account_circle</span><span class="text-nav-icon">Acceder</span></a>
 
         </li>
         <li>
-            <a href="#"><span class="material-icons">shopping_cart</span><span class="text-nav-icon">Carrito</span></a>
+            <a href="../pages/build-site.html"><span class="material-icons">shopping_cart</span><span class="text-nav-icon">Carrito</span></a>
         </li>
     </ul>
 </nav>
@@ -39,12 +38,12 @@
             <a href="#">Salas</a>
             <div class="drop__down">
                 <div class="elements-down">
-                    <a href="#">Item 1</a>
-                    <a href="#">Item 2</a>
-                    <a href="#">Item 3</a>
-                    <a href="#">Item 4</a>
-                    <a href="#">Item 5</a>
-                    <a href="#">Item 6</a>
+                    <a href="../pages/category.php">Item 1</a>
+                    <a href="../pages/category.php">Item 2</a>
+                    <a href="../pages/category.php">Item 3</a>
+                    <a href="../pages/category.php">Item 4</a>
+                    <a href="../pages/category.php">Item 5</a>
+                    <a href="../pages/category.php">Item 6</a>
                 </div>
                 <div class="img-down">
                     <img src="https://th.bing.com/th/id/R.6622f856544dccf3e7fa45bf2e0733fa?rik=H53FcEIbOQzQIw&riu=http%3a%2f%2fwww.elmueble.com%2fmedio%2f2016%2f06%2f13%2fsalon-en-tonos-beige-con-suelo-de-terrazo-y-puerta-en-arco_603555ce.jpg&ehk=ZnQsFHb9fF15MLWOxxNtET3Sxc3LU7iK%2fWETmR9V3Xg%3d&risl=&pid=ImgRaw&r=0" alt="Productos sensi">
@@ -56,12 +55,12 @@
             <a href="#">Comedores</a>
             <div class="drop__down">
                 <div class="elements-down">
-                    <a href="#">Item 1</a>
-                    <a href="#">Item 2</a>
-                    <a href="#">Item 3</a>
-                    <a href="#">Item 4</a>
-                    <a href="#">Item 5</a>
-                    <a href="#">Item 6</a>
+                    <a href="../pages/category.php">Item 1</a>
+                    <a href="../pages/category.php">Item 2</a>
+                    <a href="../pages/category.php">Item 3</a>
+                    <a href="../pages/category.php">Item 4</a>
+                    <a href="../pages/category.php">Item 5</a>
+                    <a href="../pages/category.php">Item 6</a>
                 </div>
                 <div class="img-down">
                     <img src="https://th.bing.com/th/id/R.6622f856544dccf3e7fa45bf2e0733fa?rik=H53FcEIbOQzQIw&riu=http%3a%2f%2fwww.elmueble.com%2fmedio%2f2016%2f06%2f13%2fsalon-en-tonos-beige-con-suelo-de-terrazo-y-puerta-en-arco_603555ce.jpg&ehk=ZnQsFHb9fF15MLWOxxNtET3Sxc3LU7iK%2fWETmR9V3Xg%3d&risl=&pid=ImgRaw&r=0" alt="Productos sensi">
@@ -73,12 +72,12 @@
             <a href="#">Recamaras</a>
             <div class="drop__down">
                 <div class="elements-down">
-                    <a href="#">Item 1</a>
-                    <a href="#">Item 2</a>
-                    <a href="#">Item 3</a>
-                    <a href="#">Item 4</a>
-                    <a href="#">Item 5</a>
-                    <a href="#">Item 6</a>
+                    <a href="../pages/category.php">Item 1</a>
+                    <a href="../pages/category.php">Item 2</a>
+                    <a href="../pages/category.php">Item 3</a>
+                    <a href="../pages/category.php">Item 4</a>
+                    <a href="../pages/category.php">Item 5</a>
+                    <a href="../pages/category.php">Item 6</a>
                 </div>
                 <div class="img-down">
                     <img src="https://th.bing.com/th/id/R.6622f856544dccf3e7fa45bf2e0733fa?rik=H53FcEIbOQzQIw&riu=http%3a%2f%2fwww.elmueble.com%2fmedio%2f2016%2f06%2f13%2fsalon-en-tonos-beige-con-suelo-de-terrazo-y-puerta-en-arco_603555ce.jpg&ehk=ZnQsFHb9fF15MLWOxxNtET3Sxc3LU7iK%2fWETmR9V3Xg%3d&risl=&pid=ImgRaw&r=0" alt="Productos sensi">
@@ -90,12 +89,12 @@
             <a href="#">Cocinas</a>
             <div class="drop__down">
                 <div class="elements-down">
-                    <a href="#">Item 1</a>
-                    <a href="#">Item 2</a>
-                    <a href="#">Item 3</a>
-                    <a href="#">Item 4</a>
-                    <a href="#">Item 5</a>
-                    <a href="#">Item 6</a>
+                    <a href="../pages/category.php">Item 1</a>
+                    <a href="../pages/category.php">Item 2</a>
+                    <a href="../pages/category.php">Item 3</a>
+                    <a href="../pages/category.php">Item 4</a>
+                    <a href="../pages/category.php">Item 5</a>
+                    <a href="../pages/category.php">Item 6</a>
                 </div>
                 <div class="img-down">
                     <img src="https://th.bing.com/th/id/R.6622f856544dccf3e7fa45bf2e0733fa?rik=H53FcEIbOQzQIw&riu=http%3a%2f%2fwww.elmueble.com%2fmedio%2f2016%2f06%2f13%2fsalon-en-tonos-beige-con-suelo-de-terrazo-y-puerta-en-arco_603555ce.jpg&ehk=ZnQsFHb9fF15MLWOxxNtET3Sxc3LU7iK%2fWETmR9V3Xg%3d&risl=&pid=ImgRaw&r=0" alt="Productos sensi">
@@ -107,12 +106,12 @@
             <a href="#">Decoración</a>
             <div class="drop__down">
                 <div class="elements-down">
-                    <a href="#">Item 1</a>
-                    <a href="#">Item 2</a>
-                    <a href="#">Item 3</a>
-                    <a href="#">Item 4</a>
-                    <a href="#">Item 5</a>
-                    <a href="#">Item 6</a>
+                    <a href="../pages/category.php">Item 1</a>
+                    <a href="../pages/category.php">Item 2</a>
+                    <a href="../pages/category.php">Item 3</a>
+                    <a href="../pages/category.php">Item 4</a>
+                    <a href="../pages/category.php">Item 5</a>
+                    <a href="../pages/category.php">Item 6</a>
                 </div>
                 <div class="img-down">
                     <img src="https://th.bing.com/th/id/R.6622f856544dccf3e7fa45bf2e0733fa?rik=H53FcEIbOQzQIw&riu=http%3a%2f%2fwww.elmueble.com%2fmedio%2f2016%2f06%2f13%2fsalon-en-tonos-beige-con-suelo-de-terrazo-y-puerta-en-arco_603555ce.jpg&ehk=ZnQsFHb9fF15MLWOxxNtET3Sxc3LU7iK%2fWETmR9V3Xg%3d&risl=&pid=ImgRaw&r=0" alt="Productos sensi">
@@ -124,12 +123,12 @@
             <a href="#">Ofertas</a>
             <div class="drop__down">
                 <div class="elements-down">
-                    <a href="#">Item 1</a>
-                    <a href="#">Item 2</a>
-                    <a href="#">Item 3</a>
-                    <a href="#">Item 4</a>
-                    <a href="#">Item 5</a>
-                    <a href="#">Item 6</a>
+                    <a href="../pages/category.php">Item 1</a>
+                    <a href="../pages/category.php">Item 2</a>
+                    <a href="../pages/category.php">Item 3</a>
+                    <a href="../pages/category.php">Item 4</a>
+                    <a href="../pages/category.php">Item 5</a>
+                    <a href="../pages/category.php">Item 6</a>
                 </div>
                 <div class="img-down">
                     <img src="https://th.bing.com/th/id/R.6622f856544dccf3e7fa45bf2e0733fa?rik=H53FcEIbOQzQIw&riu=http%3a%2f%2fwww.elmueble.com%2fmedio%2f2016%2f06%2f13%2fsalon-en-tonos-beige-con-suelo-de-terrazo-y-puerta-en-arco_603555ce.jpg&ehk=ZnQsFHb9fF15MLWOxxNtET3Sxc3LU7iK%2fWETmR9V3Xg%3d&risl=&pid=ImgRaw&r=0" alt="Productos sensi">
@@ -144,16 +143,16 @@
 <nav hidden class="nav__container navbar__responsive">
     <ul>
         <li>
-            <a href="#"><img class="icon-nav" src="../assets/img/icons/ico.png" alt="Sensi Home Logo"><span>Sensi Home</span></a>
+            <a href="../"><img class="icon-nav" src="../assets/img/icons/ico.png" alt="Sensi Home Logo"><span>Sensi Home</span></a>
         </li>
         <li class="search-responsive">
             <a id="search-open-responsive" href="#"><span class="material-icons">search</span></a>
         </li>
         <li>
-            <a href=""><span class="material-icons">account_circle</span></a>
+            <a href="../pages/build-site.html"><span class="material-icons">account_circle</span></a>
         </li>
         <li>
-            <a href="#"><span class="material-icons">shopping_cart</span></a>
+            <a href="../pages/build-site.html"><span class="material-icons">shopping_cart</span></a>
         </li>
         <li>
             <a id="menu-toggle" href="#"><span class="material-icons">menu</span></a>
@@ -231,93 +230,42 @@
             <span>Resultados</span><span class="line-result-title"></span>
         </div>
 
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
-
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
-
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
-
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
-
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
+        <?php for ($i = 0; $i < 3; $i++) { ?>
+            <a href="../pages/product.php">
+                <div class="content__cards__rows">
+                    <div class="content-card-img">
+                        <img src="../product.png" alt="" >
+                    </div>
+                    <div class="content-card-info">
+                        <span>
+                            <strong>Sillon padrisimo</strong>
+                        </span>
+                        <span>$1,890</span>
+                    </div>
+                </div>
+            </a>
+        <?php } ?>
 
         <div class="result-title">
             <span>Promociones</span><span class="line-result-title"></span>
         </div>
 
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
+        <?php for ($i = 0; $i < 3; $i++) { ?>
+            <a href="../pages/product.php">
+                <div class="content__cards__rows">
+                    <div class="content-card-img">
+                        <img src="../product.png" alt="" >
+                    </div>
+                    <div class="content-card-info">
+                        <span>
+                            <strong>Sillon padrisimo</strong>
+                        </span>
+                        <span>$1,890</span>
+                    </div>
+                </div>
+            </a>
+        <?php } ?>
 
-        <div class="content__cards__rows">
-            <div class="content-card-img">
-                <img src="../product2.png" alt="" style="">
-            </div>
-            <div class="content-card-info">
-                <span>
-                    <strong>Sillon padrisimo</strong>
-                </span>
-                <span>$1,890</span>
-            </div>
-        </div>
     </div>
 </div>
 
