@@ -511,7 +511,7 @@ require_once './php/model.php';
                     <a href="#" class="responsive-social-networks">Redes Sociales</a>
                     <a class="elemt-footer-responsive" href="https://es-la.facebook.com/people/Sensi-Home/100086412055824/"><i class="fa-brands fa-facebook"></i><small>Facebook</small></a>
                     <a class="elemt-footer-responsive" href="https://www.instagram.com/sensi.home.mx/"><i class="fa-brands fa-instagram"></i><small>Instagram</small></a>
-                    <a class="elemt-footer-responsive" href=""><i class="fa-brands fa-whatsapp"></i><small>WhatsApp</small></a>
+                    <a class="elemt-footer-responsive" href="https://wa.me/3333333333"><i class="fa-brands fa-whatsapp"></i><small>WhatsApp</small></a>
                 </div>
             </div>
 
@@ -543,7 +543,7 @@ require_once './php/model.php';
                     <a href="#" class="desktop-social-networks">Redes Sociales</a>
                     <a class="element-footer-desktop" href="https://es-la.facebook.com/people/Sensi-Home/100086412055824/"><i class="fa-brands fa-facebook"></i><small>Facebook</small></a>
                     <a class="element-footer-desktop" href="https://www.instagram.com/sensi.home.mx/"><i class="fa-brands fa-instagram"></i><small>Instagram</small></a>
-                    <a class="element-footer-desktop" href=""><i class="fa-brands fa-whatsapp"></i><small>WhatsApp</small></a>
+                    <a class="element-footer-desktop" href="https://wa.me/3333333333"><i class="fa-brands fa-whatsapp"></i><small>WhatsApp</small></a>
                 </div>
                 <div class="desktop-column">
                     <a href="#" class="desktop-us">Nosotros</a>
@@ -555,11 +555,44 @@ require_once './php/model.php';
 
 
             <span class="desktop-line"></span>
-            <a href="#" class="desktop-copy-mini">&copy; Sensi Home Todos los derechos reservados.</a>
+            <a href="" class="desktop-copy-mini">&copy; Sensi Home Todos los derechos reservados.</a>
         </div>
     </footer>
 
+    <!-- Boton whatsap -->
+    <a class="whatsapp-float" href="https://wa.me/3333333333">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Boton de arriba -->
+    <!-- <a class="arrow-up" href="#">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a> -->
+
     <script src="./assets/js/app.js"></script>
+
+    <!-- Boton arriba -->
+<!--     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const arrowUp = document.querySelector('.arrow-up');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 200) { // Mostrar el botón después de hacer scroll 200px
+                    document.body.classList.add('scrolled');
+                } else {
+                    document.body.classList.remove('scrolled');
+                }
+            });
+
+            arrowUp.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script> -->
 </body>
 
 </html>

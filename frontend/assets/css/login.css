@@ -1,0 +1,158 @@
+.banner__desktop {
+    display: none;
+}
+
+.bar__category {
+    display: none;
+}
+
+.banner__responsive {
+    display: none;
+}
+
+.lands-view {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 20rem;
+    
+}
+
+.container__login-sign {
+    display: flex;
+    justify-content: center;
+    align-items: stretch; /* Asegura que los contenedores hijos se estiren para llenar el contenedor principal */
+    box-sizing: border-box;
+    position: relative;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    padding: 0;
+    height: 550px; /* Define una altura fija para el contenedor principal */
+    width: 60vw;
+}
+
+.container__left, .container__right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 0;
+}
+
+.container__left {
+    padding: 1rem;
+     
+    
+}
+
+.container__right {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.form-sign {
+    width: 100%;
+}
+
+.form-group-sign {
+    display: flex;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    justify-content: start;
+    align-items: center;
+    margin-top: .5rem;
+    
+    width: 100%;
+}
+
+.form-group-sign input {
+    border: none;
+    outline: none;
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.square-for-icon {
+    width: 60px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.container__right img {
+    height: 100%;
+    width: 100%;
+    border-radius: 0 10px 10px 0;
+    object-fit: cover; /* Asegura que la imagen cubra todo el contenedor */
+}
+
+.form-sign h1 {
+    font-size: 1.5rem;
+    
+ 
+}
+
+.form-sign span {
+    font-size: .9rem;
+    /* que no salte de linea */
+    white-space: nowrap;
+    
+    
+}
+
+.form-group-sign-check {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: .5rem;
+}
+
+.form-group-sign-check input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin-right: 0.5rem;
+    /* has rendondo los check */
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.form-group-sign-check label {
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+.btn-sign {
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #000000;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    margin-top: .5rem;
+}
+
+.form-sign a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: .5rem;
+}
+
+.form-sign a:hover {
+    text-decoration: underline;
+}
+
+/* Media screen para pantallas mas grandes */
+/* Media screen para pantallas más grandes */

@@ -813,8 +813,8 @@ body, html {
 .divider-sections-black{
     width: 100%;
     background-color: var(--bg-primary);
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;   
+    padding-top: 1.0rem;
+    padding-bottom: 1.0rem;   
 }
 
 .banner__txt-img__container {
@@ -877,6 +877,53 @@ body, html {
     height: auto;
     display: block;
     box-sizing: border-box;
+}
+
+/* Whatsapp Float */
+
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000;
+}
+
+.whatsapp-float i {
+    margin-top: 16px; /* Ajusta el margen superior para centrar el icono verticalmente */
+}
+
+/* Arriba boton */
+.arrow-up {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 110px; /* Ajusta la posición para que no se superponga con el botón de WhatsApp */
+    right: 40px;
+    background-color: #000; /* Color de fondo negro */
+    color: #FFF; /* Color del icono blanco */
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000;
+    display: none; /* Oculta el botón por defecto */
+}
+
+.arrow-up i {
+    margin-top: 16px; /* Ajusta el margen superior para centrar el icono verticalmente */
+}
+
+/* Mostrar el botón cuando se hace scroll hacia abajo */
+body.scrolled .arrow-up {
+    display: block;
 }
 
 
