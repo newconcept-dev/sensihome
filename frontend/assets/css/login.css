@@ -154,5 +154,108 @@
     text-decoration: underline;
 }
 
+
+.sign-screen{
+    display: flex;
+    flex-direction: column;
+}
+
+.info-sign{
+    /* centrar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.space-top{
+    margin-top: 1rem;
+}
+
+
+.info-sign a{
+    margin-top: 1rem;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+
+}
 /* Media screen para pantallas mas grandes */
 /* Media screen para pantallas más grandes */
+
+@media (max-width: 576px){
+
+    .container__login-sign {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Asegura que los contenedores hijos se estiren para llenar el contenedor principal */
+        
+
+        
+        
+        
+        padding: 0;
+        height:fit-content; /* Define una altura fija para el contenedor principal */
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .lands-view {
+        margin: 0;
+        padding: 0;
+    }
+
+    .container__right{
+        display: none;
+    }
+
+    .form-sign{
+        margin: 0;
+        padding: 2rem;
+
+    }
+
+    .sign-screen{
+        padding: 2rem;
+    }
+
+
+    .form-sign h1{
+        font-size: 2rem;
+        
+    }
+
+    .form-sign span{
+        /* que si salte el espacio */
+        white-space:inherit;
+        /* que no se justifiique el txto */
+        text-align: center;
+    }
+
+    .container__left{
+        width: 100%;;
+    }
+
+    .form-group-sign{
+        margin-top: 1rem;
+    }
+
+    .form-group-sign-check{
+        margin-top: 1rem;
+    }
+
+    .btn-sign{
+        margin-top: 2rem;
+    }
+
+    
+
+    
+
+    
+
+}
+
+
+
+

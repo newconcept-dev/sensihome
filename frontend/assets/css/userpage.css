@@ -1,0 +1,147 @@
+.banner__responsive {
+    display: none;
+}
+
+
+.title-view-user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title-view-user h1{
+    font-size: 1.5rem;
+    color: #000;
+    
+}
+
+.user-info__menu{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 2rem 1rem 2rem; 
+}
+
+.user-info__menu ul{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    border-radius: 10px ;
+    padding: .5rem;
+    width: 30vw;
+}
+
+.user-info__menu ul li{
+    margin-right: 1rem;
+}
+
+.user-info__menu ul li a{
+    color: #f9f8f8;
+    text-decoration: none;
+    font-size: 1rem;   
+}
+
+.user-info__menu ul li a:hover{
+    color: #f9f8f8;
+    text-decoration: underline;
+}
+
+.info-user__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1rem;
+    border: 2px solid #b0acac;
+    width: 30vw;
+    height:fit-content;
+    margin: 0 2rem;
+    box-sizing: border-box; /* Incluye el padding y el borde en el ancho y alto */
+    overflow: hidden; /* Oculta cualquier contenido que se desborde */
+    padding: .5rem;
+    justify-self: center;
+}
+
+.profile-info{
+    display: none;
+}
+
+.info-user-now{
+    display: flex; /* cambiar a flex */
+    flex-direction: column;
+    justify-content: center;
+}
+
+.group-info{
+    display: flex;
+    margin: .5rem 0;
+}
+
+.group-info span{
+    margin-left: .5rem;
+}
+
+.check-gi{
+    color: gray;
+}
+
+.change-data-user button{
+    background-color: #000;
+    color: #f9f8f8;
+    padding: .5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    justify-self: center;
+
+}
+
+.change-data-user{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: .5rem 0;
+}
+
+.form-row-group{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 1rem 0;
+}
+
+.form-row-group input{
+    width: 100%;
+    padding: .5rem;
+    border: 1px solid #b0acac;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.info-user__container{
+    margin-bottom: 2rem;
+}
+
+.orders-info{
+    display: none;
+}
+
+@media (max-width: 576px){
+    .user-info__menu ul{
+        width: 100%;
+    }
+
+    .info-user__container{
+        
+        width: calc(100% - 4rem); /* Ajusta el ancho para tener en cuenta los márgenes */
+    }
+}
+
+
+
+
+
+
+

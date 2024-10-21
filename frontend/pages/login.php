@@ -14,7 +14,7 @@
     <main class="lands-view">
         <div class="container__login-sign">
             <div class="container__left">
-                <form action="" method="POST" class="form-sign">
+                <form action="" method="POST" class="form-sign" style="display: none;">
                     <h1>Crea tu cuenta</h1>
                     <span>Ingresa tus datos,para ver tu seguimiento de tus productos</span>
                     <div class="form-group-sign">
@@ -76,6 +76,49 @@
                     <a href="#"><strong>¿Ya tienes cuenta?</strong></a>
                     <a href="#">Ingresar</a>
                 </form>
+
+
+                <div class="sign-screen">
+                    <h2>Acceder a tu cuenta</h2>
+                    <span>Ingresa tus datos para ver el seguimiento de tus productos</span>
+
+                    <form action="" method="POST" class="form-login">
+                    <div class="form-group-sign">
+                        <div class="square-for-icon">
+                            <i class="fa-solid fa-circle-user"></i>
+                        </div>
+                        <input type="text" name="name-client-sign-in" id="name-client-sign-in" placeholder="Nombre *">
+                    </div>
+
+                    <div class="form-group-sign">
+                        <div class="square-for-icon">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <input type="password" name="password-client-sign-in" id="password-client-sign-in" placeholder="Contraseña *">
+                    </div>
+
+                    <button type="submit" class="btn-sign space-top">Ingresar</button>
+                    
+                    <div class="info-sign">
+                    <a href="">Términos y condiciones</a>
+                    </div>
+
+                    <div class="info-sign">
+                    <a href="#"><strong>¿Aun no tienes cuenta?</strong></a>
+                    </div>
+
+                    <div class="info-sign">
+                    <a href="#">Registrarme </a>
+                    </div>
+                    
+
+
+
+
+                    </form>
+
+
+                </div>
             </div>
 
             <div class="container__right">
