@@ -1,8 +1,7 @@
 <?php
-include_once 'db.php';
-
-
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+include_once './models/model.php';
 
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -47,9 +46,6 @@ if ($id > 0) {
     die("ID de producto no válido.");
 }
 
-
-
-
 // Función para obtener datos de una tabla
 function obtenerDatos($con, $tabla)
 {
@@ -79,21 +75,19 @@ function insertarMaterial($con, $nombre, $tipo)
     return $material_id;
 }
 
-// Función para insertar un producto
-function insertarProducto($con, $datos)
+// Función para actualizar un producto
+function actualizarProducto($con, $datos, $producto_id)
 {
-    $sql = "INSERT INTO productos (nombre_producto, categoria_id, existencia, descripcion, tipoProducto_id, color_id, relleno_id, madera_id, patas_id, telas_id, precio, precioVenta, proveedor_id, fechaCompra, garantia, status, promocionar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "UPDATE productos SET nombre_producto = ?, categoria_id = ?, existencia = ?, descripcion = ?, tipoProducto_id = ?, color_id = ?, relleno_id = ?, madera_id = ?, patas_id = ?, telas_id = ?, precio = ?, precioVenta = ?, proveedor_id = ?, fechaCompra = ?, garantia = ?, status = ?, promocionar = ? WHERE id = ?";
     $stmt = $con->prepare($sql);
     if (!$stmt) {
         throw new Exception("Error en la preparación: " . $con->error);
     }
-    $stmt->bind_param("siissiiiiidisssss", ...array_values($datos));
+    $stmt->bind_param("siissiiiiidisssssi", ...array_values($datos), $producto_id);
     if (!$stmt->execute()) {
         throw new Exception("Error en la ejecución: " . $stmt->error);
     }
-    $producto_id = $stmt->insert_id;
     $stmt->close();
-    return $producto_id;
 }
 
 // Función para insertar una imagen
@@ -213,42 +207,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'promocionar' => $promocionar
         ];
 
-        // Insertar el producto
-        $producto_id = insertarProducto($con, $datos);
+        // Actualizar el producto
+        actualizarProducto($con, $datos, $id);
 
         // Verificar y agregar accesorios
         if (isset($_POST['plugins-inputs']) && $_POST['plugins-inputs'] == 'on') {
             $accesorio_id = filter_var($_POST['accesorios_select'], FILTER_VALIDATE_INT);
             $cantidad = filter_var($_POST['accesorios_cantidad'], FILTER_VALIDATE_INT);
             if ($accesorio_id && $cantidad) {
-                insertarAccesorio($con, $producto_id, $accesorio_id, $cantidad);
+                insertarAccesorio($con, $id, $accesorio_id, $cantidad);
             }
         }
 
-        // Función para manejar la subida de imágenes con prefijo
-        function manejarSubidaImagen($con, $input_name, $producto_id, $nombre_producto, $prefijo)
+        // Función para manejar la subida de imágenes con la API
+        function manejarSubidaImagen($con, $input_name, $producto_id, $nombre_categoria, $nombre_producto, $prefijo, $prevImagePath = null)
         {
             if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
                 $imagen = $_FILES[$input_name];
                 $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
                 $nombre_imagen = $prefijo . '_' . uniqid() . '.' . $extension;
-                $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
-                $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
-                $ruta_imagen_bd = "../backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
 
-                // Verificar si la carpeta existe, si no, crearla
-                if (!is_dir($ruta_carpeta)) {
-                    mkdir($ruta_carpeta, 0777, true);
+                // Enviar la imagen a la API
+                $ch = curl_init();
+                $cfile = new CURLFile($imagen['tmp_name'], $imagen['type'], $imagen['name']);
+                $data = [
+                    'userId' => $producto_id,
+                    'file' => $cfile,
+                    'categoria' => $nombre_categoria,
+                    'producto' => $nombre_producto,
+                    'prefijo' => $prefijo,
+                    'prevImagePath' => $prevImagePath
+                ];
+
+                curl_setopt($ch, CURLOPT_URL, "https://cloud-dev.sensihome.com.mx/api/uploads.php");
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                $responseData = json_decode($response, true);
+                if (isset($responseData['error'])) {
+                    throw new Exception($responseData['error']);
                 }
 
-                if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
-                    throw new Exception("Error al mover la imagen subida.");
-                }
+                $ruta_imagen_bd = $responseData['filePath'];
 
                 // Insertar la imagen en la tabla imagenes_productos
                 insertarImagen($con, $ruta_imagen_bd, $producto_id, $nombre_imagen);
             }
         }
+
+        // Obtener el nombre de la categoría
+        $query_categoria = "SELECT nombre FROM categorias WHERE id = ?";
+        $stmt_categoria = $con->prepare($query_categoria);
+        $stmt_categoria->bind_param("i", $categoria_id);
+        $stmt_categoria->execute();
+        $result_categoria = $stmt_categoria->get_result();
+        $row_categoria = $result_categoria->fetch_assoc();
+        $nombre_categoria = $row_categoria['nombre'];
+        $stmt_categoria->close();
 
         // Manejar la subida de las imágenes con prefijos
         $imagenes = [
@@ -266,12 +285,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ];
         foreach ($imagenes as $input_name => $prefijo) {
             if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
-                manejarSubidaImagen($con, $input_name, $producto_id, $datos['nombre_producto'], $prefijo);
+                // Obtener la ruta de la imagen previa si existe
+                $queryImagen = "SELECT ruta FROM imagenes_productos WHERE producto_id = ? AND frontend_id = ?";
+                $stmtImagen = $con->prepare($queryImagen);
+                $stmtImagen->bind_param("is", $id, $prefijo);
+                $stmtImagen->execute();
+                $resultImagen = $stmtImagen->get_result();
+                $imagen = $resultImagen->fetch_assoc();
+                $stmtImagen->close();
+
+                $prevImagePath = $imagen['ruta'] ?? null;
+
+                manejarSubidaImagen($con, $input_name, $id, $nombre_categoria, $datos['nombre_producto'], $prefijo, $prevImagePath);
             }
         }
 
         // Redirigir a una página de confirmación
-        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto agregado exitosamente">';
+        echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=productos&mensaje=Producto actualizado exitosamente">';
     } catch (Exception $e) {
         die($e->getMessage());
     }

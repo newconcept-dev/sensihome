@@ -23,6 +23,9 @@ if (isset($_REQUEST['guardar'])) {
     return;
   }
 
+  // Iniciar una transacción
+  mysqli_begin_transaction($con);
+
   // Insertar en la tabla para obtener el ID del usuario
   $query = "INSERT INTO usuarios (email, pass, nombre, segundo_nombre, apellido_paterno, apellido_materno, telefono, cargo_id) VALUES ('$email', '$pass', '$nombre', '$segundo_nombre', '$apellido_paterno', '$apellido_materno', '$telefono', '$cargo_id')";
   $res = mysqli_query($con, $query);
@@ -30,26 +33,31 @@ if (isset($_REQUEST['guardar'])) {
   if ($res) {
     $userId = mysqli_insert_id($con); // Obtener el ID del usuario insertado
 
-    // Crear una carpeta nombrada usr0000n
-    $userFolder = sprintf('/path/to/cloud.sensihome.com.mx/cloud/data/users/usr%05d', $userId);
-    if (!is_dir($userFolder)) {
-      if (!mkdir($userFolder, 0777, true)) {
-        echo '<div class="alert alert-danger" role="alert">Error al crear el directorio del usuario.</div>';
+    // Enviar la imagen a la API
+    $ch = curl_init();
+    $cfile = new CURLFile($_FILES['profileImage']['tmp_name'], $_FILES['profileImage']['type'], $_FILES['profileImage']['name']);
+    $data = [
+        'userId' => $userId,
+        'file' => $cfile
+    ];
+
+    curl_setopt($ch, CURLOPT_URL, "https://cloud-dev.sensihome.com.mx/api/uploads.php");
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $responseData = json_decode($response, true);
+    if (isset($responseData['error'])) {
+        echo '<div class="alert alert-danger" role="alert">' . $responseData['error'] . '</div>';
+        mysqli_rollback($con); // Revertir la transacción
         return;
-      }
     }
 
-    // Guardar la imagen con un nombre aleatorio
-    $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-    $imageFileName = uniqid() . '.' . $imageFileType;
-    $imageFilePath = $userFolder . '/' . $imageFileName;
-    if (!move_uploaded_file($_FILES['profileImage']['tmp_name'], $imageFilePath)) {
-      echo '<div class="alert alert-danger" role="alert">Error al subir la imagen.</div>';
-      return;
-    }
-
-    // Guardar la dirección de la imagen como string
-    $profileImage = mysqli_real_escape_string($con, $imageFilePath);
+    $profileImage = mysqli_real_escape_string($con, $responseData['filePath']);
+    $userFolder = $responseData['userFolder'];
 
     // Actualizar la tabla con la ruta de la imagen
     $query = "UPDATE usuarios SET profileImage='$profileImage' WHERE id='$userId'";
@@ -74,23 +82,21 @@ if (isset($_REQUEST['guardar'])) {
       $jsonFilePath = $userFolder . '/' . $jsonFileName;
       if (file_put_contents($jsonFilePath, json_encode($userData, JSON_PRETTY_PRINT)) === false) {
         echo '<div class="alert alert-danger" role="alert">Error al crear el archivo JSON del usuario.</div>';
+        mysqli_rollback($con); // Revertir la transacción
         return;
       }
 
+      // Confirmar la transacción
+      mysqli_commit($con);
+
       echo '<meta http-equiv="refresh" content="0; url=panel.php?modulo=usuarios&mensaje=Usuario creado exitosamente">';
     } else {
-      ?>
-      <div class="alert alert-danger" role="alert">
-        Error al actualizar la imagen del usuario <?php echo mysqli_error($con) ?>
-      </div>
-      <?php
+      echo '<div class="alert alert-danger" role="alert">Error al actualizar la imagen del usuario ' . mysqli_error($con) . '</div>';
+      mysqli_rollback($con); // Revertir la transacción
     }
   } else {
-    ?>
-    <div class="alert alert-danger" role="alert">
-      Error al crear el usuario <?php echo mysqli_error($con) ?>
-    </div>
-    <?php
+    echo '<div class="alert alert-danger" role="alert">Error al crear el usuario ' . mysqli_error($con) . '</div>';
+    mysqli_rollback($con); // Revertir la transacción
   }
 }
 ?>

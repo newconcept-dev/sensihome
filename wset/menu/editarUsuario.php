@@ -38,30 +38,32 @@ if (isset($_REQUEST['guardar'])) {
         $row_prev_image = mysqli_fetch_assoc($res_prev_image);
         $prevImagePath = $row_prev_image['profileImage'];
 
-        // Guardar la nueva imagen con un nombre aleatorio
-        $imageFileType = strtolower(pathinfo($_FILES['profileImage']['name'], PATHINFO_EXTENSION));
-        $imageFileName = uniqid() . '.' . $imageFileType;
-        $userFolder = sprintf('/opt/lampp/htdocs/AppsFiles/sensihome/cloud/data/users/usr%05d', $id);
-        if (!is_dir($userFolder)) {
-            if (!mkdir($userFolder, 0777, true)) {
-                echo '<div class="alert alert-danger" role="alert">Error al crear el directorio del usuario.</div>';
-                return;
-            }
-        }
-        $imageFilePath = $userFolder . '/' . $imageFileName;
-        if (!move_uploaded_file($_FILES['profileImage']['tmp_name'], $imageFilePath)) {
-            echo '<div class="alert alert-danger" role="alert">Error al subir la imagen.</div>';
+        // Enviar la imagen a la API
+        $ch = curl_init();
+        $cfile = new CURLFile($_FILES['profileImage']['tmp_name'], $_FILES['profileImage']['type'], $_FILES['profileImage']['name']);
+        $data = [
+            'userId' => $id,
+            'file' => $cfile,
+            'prevImagePath' => $prevImagePath
+        ];
+
+        curl_setopt($ch, CURLOPT_URL, "https://cloud-dev.sensihome.com.mx/api/uploads.php");
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        $responseData = json_decode($response, true);
+        if (isset($responseData['error'])) {
+            echo '<div class="alert alert-danger" role="alert">' . $responseData['error'] . '</div>';
             return;
         }
 
-        // Guardar la dirección de la imagen como string
-        $profileImage = mysqli_real_escape_string($con, $imageFilePath);
-        $query .= ", profileImage = '$profileImage'";
+        $profileImage = mysqli_real_escape_string($con, $responseData['filePath']);
 
-        // Eliminar la imagen previa
-        if (file_exists($prevImagePath)) {
-            unlink($prevImagePath);
-        }
+        $query .= ", profileImage = '$profileImage'";
     }
 
     $query .= " WHERE id = '$id'";
@@ -103,9 +105,11 @@ $nombre_completo = $row['nombre'] . ' ' . $row['segundo_nombre'] . ' ' . $row['a
 $profileImage = $row['profileImage'];
 
 /* Convertir la ruta del sistema de archivos a una URL accesible */
-$profileImageUrl = str_replace('/opt/lampp/htdocs/AppsFiles/sensihome/', 'http://localhost/AppsFiles/sensihome/', $profileImage);
+$profileImageUrl = $profileImage;
 
 ?>
+
+
 
 <div class="content-wrapper">
     <!--  -->

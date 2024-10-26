@@ -176,30 +176,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Función para manejar la subida de imágenes con prefijo
-        function manejarSubidaImagen($con, $input_name, $producto_id, $nombre_producto, $prefijo)
+        // Función para manejar la subida de imágenes con la API
+        function manejarSubidaImagen($con, $input_name, $producto_id, $nombre_categoria, $nombre_producto, $prefijo)
         {
             if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
                 $imagen = $_FILES[$input_name];
                 $extension = pathinfo($imagen['name'], PATHINFO_EXTENSION);
                 $nombre_imagen = $prefijo . '_' . uniqid() . '.' . $extension;
-                $ruta_carpeta = "../backend/media/admin/product/linea/" . $nombre_producto;
-                $ruta_imagen = $ruta_carpeta . "/" . $nombre_imagen;
-                $ruta_imagen_bd = "../backend/media/admin/product/linea/" . $nombre_producto . "/" . $nombre_imagen;
 
-                // Verificar si la carpeta existe, si no, crearla
-                if (!is_dir($ruta_carpeta)) {
-                    mkdir($ruta_carpeta, 0777, true);
+                // Enviar la imagen a la API
+                $ch = curl_init();
+                $cfile = new CURLFile($imagen['tmp_name'], $imagen['type'], $imagen['name']);
+                $data = [
+                    'userId' => $producto_id,
+                    'file' => $cfile,
+                    'categoria' => $nombre_categoria,
+                    'producto' => $nombre_producto,
+                    'prefijo' => $prefijo
+                ];
+
+                curl_setopt($ch, CURLOPT_URL, "https://cloud-dev.sensihome.com.mx/api/uploads.php");
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                $response = curl_exec($ch);
+                curl_close($ch);
+
+                $responseData = json_decode($response, true);
+                if (isset($responseData['error'])) {
+                    throw new Exception($responseData['error']);
                 }
 
-                if (!move_uploaded_file($imagen['tmp_name'], $ruta_imagen)) {
-                    throw new Exception("Error al mover la imagen subida.");
-                }
+                $ruta_imagen_bd = $responseData['filePath'];
 
                 // Insertar la imagen en la tabla imagenes_productos
                 insertarImagen($con, $ruta_imagen_bd, $producto_id, $nombre_imagen);
             }
         }
+
+        // Obtener el nombre de la categoría
+        $query_categoria = "SELECT nombre FROM categorias WHERE id = ?";
+        $stmt_categoria = $con->prepare($query_categoria);
+        $stmt_categoria->bind_param("i", $categoria_id);
+        $stmt_categoria->execute();
+        $result_categoria = $stmt_categoria->get_result();
+        $row_categoria = $result_categoria->fetch_assoc();
+        $nombre_categoria = $row_categoria['nombre'];
+        $stmt_categoria->close();
 
         // Manejar la subida de las imágenes con prefijos
         $imagenes = [
@@ -217,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ];
         foreach ($imagenes as $input_name => $prefijo) {
             if (isset($_FILES[$input_name]) && $_FILES[$input_name]['error'] == UPLOAD_ERR_OK) {
-                manejarSubidaImagen($con, $input_name, $producto_id, $datos['nombre_producto'], $prefijo);
+                manejarSubidaImagen($con, $input_name, $producto_id, $nombre_categoria, $datos['nombre_producto'], $prefijo);
             }
         }
 

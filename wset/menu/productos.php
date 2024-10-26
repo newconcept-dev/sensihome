@@ -1,6 +1,31 @@
 <?php
 include_once "./models/model.php";
 
+// Manejar la eliminación del producto
+if (isset($_GET['accion']) && $_GET['accion'] == 'eliminar' && isset($_GET['id'])) {
+    $producto_id = intval($_GET['id']);
+
+    // Eliminar el producto de la base de datos
+    $sql = "DELETE FROM productos WHERE id = ?";
+    $stmt = $con->prepare($sql);
+    if (!$stmt) {
+        die("Error en la preparación: " . $con->error);
+        header("Location: panel.php?modulo=productos");
+        exit();
+    }
+    $stmt->bind_param("i", $producto_id);
+    if (!$stmt->execute()) {
+        die("Error en la ejecución: " . $stmt->error);
+        header("Location: panel.php?modulo=productos");
+        exit();
+    }
+    $stmt->close();
+
+    // Redirigir de vuelta a la página de productos con un mensaje de éxito
+    
+}
+
+// Consultar los productos
 $sqlQuery = "
     SELECT 
         p.id, 
@@ -37,6 +62,7 @@ while($row = $queryResult->fetch_assoc()) {
     $productos[] = $row;
 }
 ?>
+
 
 <!-- Estilos propios -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
@@ -290,19 +316,18 @@ while($row = $queryResult->fetch_assoc()) {
                                                         transform: scale(1.2);
                                                     }
                                                 </style>
-                                                <div class="product-cell sales">
-                                                    <span class="cell-label">Acciones ⚙️</span>
-                                                    <i class="fas fa-edit" style="color: gray; cursor: pointer;" 
-                                                       onmouseover="this.style.color='rgb(49, 176, 176)';" 
-                                                       onmouseout="this.style.color='gray';" 
-                                                       onclick="window.location.href='panel.php?modulo=editarProducto&id=<?php echo $producto['id']; ?>';"></i>
-                                                    <i class="fas fa-trash" style="margin-left: 1em; color: gray;" 
-                                                       onmouseover="this.style.color='rgb(161, 18, 18)';" 
-                                                       onmouseout="this.style.color='gray';"
-                                                       onclick="window.location.href='panel.php?modulo=agregarProductos';"
-                                                       ></i>
-                                                </div>
-
+                                                    <div class="product-cell sales">
+                                                        <span class="cell-label">Acciones ⚙️</span>
+                                                        <i class="fas fa-edit" style="color: gray; cursor: pointer;" 
+                                                           onmouseover="this.style.color='rgb(49, 176, 176)';" 
+                                                           onmouseout="this.style.color='gray';" 
+                                                           onclick="window.location.href='panel.php?modulo=editarProducto&id=<?php echo $producto['id']; ?>';"></i>
+                                                        <i class="fas fa-trash" style="margin-left: 1em; color: gray;" 
+                                                           onmouseover="this.style.color='rgb(161, 18, 18)';" 
+                                                           onmouseout="this.style.color='gray';"
+                                                           onclick="if(confirm('¿Estás seguro de que deseas eliminar este producto?')) { window.location.href='panel.php?modulo=productos&accion=eliminar&id=<?php echo $producto['id']; ?>'; }"
+                                                           ></i>
+                                                    </div>
                                                 
                                                 
                                             </div>
